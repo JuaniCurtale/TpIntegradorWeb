@@ -3,6 +3,13 @@
 Este proyecto corresponde a la cursada de Programacion Web.
 El objetivo es desarrollar una aplicación web CRUD en Go, de manera incremental a lo largo de los trabajos prácticos.
 
+💡 Dominio del Proyecto
+
+La aplicación está diseñada para administrar los turnos de una barbería de manera sencilla y eficiente.
+Se pueden registrar clientes y barberos, y asignar turnos específicos para cada cliente con un barbero determinado. Cada turno contiene información sobre el cliente, el barbero, la fecha y hora, el tipo de servicio y observaciones adicionales.
+
+Con esta aplicación, los turnos pueden ser agregados, modificados, consultados o eliminados, permitiendo llevar un control completo de la agenda de la barbería y mejorar la organización del servicio.
+
 📂 Estructura del Proyecto
 ```
 TpIntegradorWeb/
