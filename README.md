@@ -14,12 +14,14 @@ Con esta aplicación, los turnos pueden ser agregados, modificados, consultados 
 ```
 TpIntegradorWeb/
 ├── db/
-│ ├── schema.sql # Definición de la tabla principal
-│ ├── queries.sql # Consultas CRUD con anotaciones para sqlc
-│ └── sqlc.yaml # Configuración de sqlc
-├── main.go # Servidor web básico en Go
-├── index.html # Página de presentación inicial
-└── README.md # Documentación del proyecto
+│   ├── schema.sql       # Definición de las tablas Cliente, Barbero y Turno
+│   ├── queries.sql      # Consultas CRUD con anotaciones para sqlc
+│   └── sqlc.yaml        # Configuración de sqlc
+├── go.mod               # Módulo Go
+├── go.sum               # Dependencias del módulo
+├── main.go              # Servidor web básico en Go
+├── index.html           # Página de presentación inicial
+└── README.md            # Documentación del proyecto
 ```
 🚀 Cómo ejecutar el servidor
 
