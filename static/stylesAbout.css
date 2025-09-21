@@ -1,0 +1,55 @@
+/* Contenedor principal */
+.about-container {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #fff; /* para texto sobre overlay oscuro */
+}
+
+/* Hero full screen */
+.hero {
+    position: relative;
+    height: 100vh; /* ocupa toda la pantalla */
+    width: 100%;
+    background: url('/static/fondoabout.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Story full width con overlay */
+.story {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* opcional: ocupa toda la pantalla si querés scroll */
+    background: url('/static/tijeras.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Recuadro del texto */
+.hero .overlay,
+.story .overlay {
+    background-color: rgba(0, 0, 0, 0.6); /* overlay semitransparente */
+    padding: 40px 60px;
+    text-align: center;
+    border-radius: 10px;
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.hero h2 {
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.story .overlay p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
