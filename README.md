@@ -17,6 +17,16 @@ TpIntegradorWeb/
 │   ├── schema.sql       # Definición de las tablas Cliente, Barbero y Turno
 │   ├── queries.sql      # Consultas CRUD con anotaciones para sqlc
 │   └── sqlc.yaml        # Configuración de sqlc
+├── templates/           # Archivos HTML de la interfaz
+│   ├── about.html
+│   └── index.html
+├── static/              # Archivos estáticos (CSS, imágenes)
+│   ├── BarberFondo.jpg
+│   ├── fondoabout.jpg
+│   ├── tijeras.jpg
+│   ├── stylesAbout.css
+│   ├── stylesForms.css
+│   └── styles.css
 ├── go.mod               # Módulo Go
 ├── go.sum               # Dependencias del módulo
 ├── main.go              # Servidor web básico en Go
