@@ -1,0 +1,100 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    height: 100vh;           
+    margin: 0;              
+    background-image: url('/static/FondoAbout.jpg'); 
+}
+
+.presentacion {
+    max-width: 650px;
+    margin: 70px auto;
+    padding: 35px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #d4af37;
+    color: #f8f8f8;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    text-align: left;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(6px); 
+}
+
+.presentacion h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.presentacion h2 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #ffd369;  
+}
+
+.presentacion p {
+    font-size: 1.1em;
+    text-align: justify;
+}
+
+
+.titulo-cartel {
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.titulo-cartel h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    color: #fff;
+    margin: 0;
+}
+
+.slogan-recuadro {
+    background-color: rgba(0,0,0,0.65);
+    border: 2px solid #d4af37;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden; 
+    transition: transform 0.3s ease;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.slogan-recuadro::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    transform: rotate(25deg);
+    transition: all 0.7s ease;
+}
+
+.slogan-recuadro:hover::before {
+    left: 125%;
+}
+
+
+.slogan-recuadro h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 1000;
+    color: #ffd369;
+    margin: 0;
+}

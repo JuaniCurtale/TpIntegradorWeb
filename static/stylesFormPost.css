@@ -1,0 +1,47 @@
+body {
+    background-image: url("BarberFondo.jpg");
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.card {
+    max-width: 480px;
+    margin: 70px auto;
+    padding: 35px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #d4af37;
+    color: #f8f8f8;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    text-align: left;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(6px); 
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+}
+
+.card h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffd369; 
+}
+
+.card .subtitle {
+    font-size: 1.2em;
+    margin-bottom: 18px;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+.card p {
+    font-size: 1em;
+    margin: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 8px;
+    text-align: center;
+}

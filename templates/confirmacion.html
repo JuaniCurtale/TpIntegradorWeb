@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de turno</title>
+    <link rel="stylesheet" href="static/stylesFormPost.css">
+</head>
+<body>
+    <div class="card">
+        <h1>¡Tu turno ha sido agendado, {{.Nombre}}!</h1>
+        <p class="subtitle">Detalles de tu reserva:</p>
+        <p><strong>Teléfono:</strong> {{.Telefono}}</p>
+        <p><strong>Email:</strong> {{.Email}}</p>
+        <p><strong>Servicio:</strong> {{.Servicio}}</p>
+        <p><strong>Barbero:</strong> {{.Barbero}}</p>
+        <p><strong>Fecha:</strong> {{.Fecha}}</p>
+        <p><strong>Hora:</strong> {{.Hora}}</p>
+        <p><strong>Notas:</strong> {{.Notas}}</p>
+    </div>
+</body>
+</html>

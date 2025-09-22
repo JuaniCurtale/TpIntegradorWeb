@@ -1,3 +1,5 @@
+/* archivo CSS */
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
 
 body {
@@ -92,28 +94,4 @@ h1{
     box-sizing: border-box;
   }
   
-/* Contenedor para centrar el botón */
-.button-container {
-    text-align: center;
-    margin: 40px 0; /* espacio arriba y abajo */
-}
-
-/* Estilo del botón */
-.btn {
-    display: inline-block;
-    padding: 15px 30px;
-    background-color: #222;  /* color de fondo */
-    color: #fff;             /* texto blanco */
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;   /* quita subrayado */
-    border-radius: 12px;     /* bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #555;  /* color al pasar mouse */
-    transform: translateY(-2px); /* pequeño efecto de movimiento */
-    box-shadow: 0 6px 14px rgba(0,0,0,0.4);
-}
+  

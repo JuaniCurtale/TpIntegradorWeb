@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="/static/stylesIndex.css">
     <title>Document</title>
 </head>
 <body>
-    <div class="button-container">
-        <a href="/about" class="btn">Sobre Nosotros</a>
-    </div>
-    <form action="" method="post" accept-charset="utf-8" autocomplete="on" class="form-turno">
-    <header>
-        <h1>Curtale Barber shop</h1>
-    </header>
+<a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
+<form action="/formsPost" method="post" accept-charset="utf-8" autocomplete="on" class="form-turno">
+    <h1>Curtale Barber shop</h1>
     <fieldset>
       <legend>Sacar turno – Barbería</legend>
   
       <label for="nombre">Nombre y apellido</label>
-      <input id="nombre" name="nombre" type="text" required autocomplete="name" />
+      <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Carlos Sanchez"/>
   
       <label for="telefono">Teléfono</label>
       <input id="telefono" 
@@ -33,11 +29,11 @@
 
   
       <label for="email">Email (opcional)</label>
-      <input id="email" name="email" type="email" autocomplete="email" />
+      <input id="email" name="email" type="email" autocomplete="email"  placeholder="nombre@dominio.com"/>
   
       <label for="servicio">Servicio</label>
       <select id="servicio" name="servicio" required>
-        <option value="" selected disabled>Seleccionar…</option>
+        <option value="" selected disabled>Seleccionar servicio…</option>
         <option value="corte">Corte</option>
         <option value="barba">Barba</option>
         <option value="corte-barba">Corte + Barba</option>
@@ -69,8 +65,6 @@
         <option value="11:30">11:30</option>
         <option value="12:00">12:00</option>
         <option value="12:30">12:30</option>
-        <option value="13:00">13:00</option>
-        <option value="13:30">13:30</option>
         <option value="14:00">14:00</option>
         <option value="14:30">14:30</option>
         <option value="15:00">15:00</option>
@@ -100,6 +94,9 @@
       <button type="submit">Reservar turno</button>
     </fieldset>
   </form>
+
+  
+
   
 </body>
 </html>

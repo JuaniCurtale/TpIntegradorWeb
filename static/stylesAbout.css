@@ -53,3 +53,27 @@
     line-height: 1.6;
 }
 
+body{
+    display: flex;
+    justify-content: center; /* centra horizontal */
+    align-items: center;     /* centra vertical */
+    height: 100vh;           /* ocupa toda la altura de la ventana */
+    margin: 0;               /* elimina márgenes por defecto */
+    background-image: url('/static/fondoabout.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color:antiquewhite;
+}
+
+.presentacion {
+    background-color: rgba(51, 28, 1, 0.918);
+    /*display: flex;*/
+    justify-content: center; /* centra horizontal */
+    align-items: center;  
+    text-align: center;
+    width: 40%; 
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(15, 9, 0, 0.65);
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -24,18 +25,57 @@ func handlerDescrip(w http.ResponseWriter, r *http.Request) {
 func handlerAbout(w http.ResponseWriter, r *http.Request) {
 
 	//Se chequea si el path no es el indicado, de no serlo la pagina arroja error 404
-	if r.URL.Path != "/about" {
+	if r.URL.Path != "/aboutUs" {
 		http.NotFound(w, r)
 		return
 	}
 
 	http.ServeFile(w, r, "templates/about.html")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+}
 
+type Turno struct {
+	Nombre   string
+	Telefono string
+	Email    string
+	Servicio string
+	Barbero  string
+	Fecha    string
+	Hora     string
+	Notas    string
+	Acepta   string
+}
+
+func handlerFormsPost(rw http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(rw, "Método no permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	turno := Turno{
+		Nombre:   r.FormValue("nombre"),
+		Telefono: r.FormValue("telefono"),
+		Email:    r.FormValue("email"),
+		Servicio: r.FormValue("servicio"),
+		Barbero:  r.FormValue("barbero"),
+		Fecha:    r.FormValue("fecha"),
+		Hora:     r.FormValue("hora"),
+		Notas:    r.FormValue("notas"),
+		Acepta:   r.FormValue("acepta_politicas"),
+	}
+
+	tmpl, err := template.ParseFiles("templates/confirmacion.html")
+	if err != nil {
+		http.Error(rw, "Error cargando plantilla", http.StatusInternalServerError)
+		return
+	}
+
+	tmpl.Execute(rw, turno)
 }
 
 func main() {
-	http.HandleFunc("/about", handlerAbout)
+	http.HandleFunc("/formsPost", handlerFormsPost)
+	http.HandleFunc("/aboutUs", handlerAbout)
 	http.HandleFunc("/", handlerDescrip)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
