@@ -23,6 +23,7 @@ TpIntegradorWeb/
 ├── go.sum               # Dependencias del módulo
 ├── main.go              # Servidor web básico en Go
 ├── index.html           # Página de presentación inicial
+├── sqlc.yaml            # Configuración de sqlc para generar código Go a partir de SQL
 └── README.md            # Documentación del proyecto
 ```
 🚀 Cómo ejecutar el servidor
