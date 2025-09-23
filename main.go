@@ -30,7 +30,7 @@ func handlerAbout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.ServeFile(w, r, "templates/about.html")
+	http.ServeFile(w, r, "templates/aboutUs.html")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 }
 
