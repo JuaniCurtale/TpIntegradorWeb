@@ -7,6 +7,7 @@ import (
 )
 
 func handlerDescrip(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	//Se chequea si el path no es el indicado, de no serlo la pagina arroja error 404
 	if r.URL.Path != "/" {
@@ -14,16 +15,12 @@ func handlerDescrip(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Se establecera la cabecera
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
 	//Se sirve el HTML index.html "Se enlaza"
 	http.ServeFile(w, r, "templates/index.html")
-
 }
 
 func handlerAbout(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	//Se chequea si el path no es el indicado, de no serlo la pagina arroja error 404
 	if r.URL.Path != "/aboutUs" {
 		http.NotFound(w, r)
@@ -31,7 +28,6 @@ func handlerAbout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.ServeFile(w, r, "templates/aboutUs.html")
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 }
 
 type Turno struct {
@@ -46,9 +42,10 @@ type Turno struct {
 	Acepta   string
 }
 
-func handlerFormsPost(rw http.ResponseWriter, r *http.Request) {
+func handlerFormsPost(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if r.Method != http.MethodPost {
-		http.Error(rw, "Método no permitido", http.StatusMethodNotAllowed)
+		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -66,11 +63,11 @@ func handlerFormsPost(rw http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("templates/confirmacion.html")
 	if err != nil {
-		http.Error(rw, "Error cargando plantilla", http.StatusInternalServerError)
+		http.Error(w, "Error cargando plantilla", http.StatusInternalServerError)
 		return
 	}
 
-	tmpl.Execute(rw, turno)
+	tmpl.Execute(w, turno)
 }
 
 func main() {
