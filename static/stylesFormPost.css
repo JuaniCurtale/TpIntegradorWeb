@@ -45,3 +45,45 @@ body {
     padding-bottom: 8px;
     text-align: center;
 }
+
+.btn-sacarTurno{
+    display: block;             
+    width: 100%;               
+    padding: 18px 0;
+    font-size: 1.25em;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
+}
+.btn-sacarTurno:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+}
+
+.btn-about {
+    display: block;             
+    width: 100%;               
+    padding: 18px 0;
+    font-size: 1.25em;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgb(0, 0, 0); 
+}
+.btn-about:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+}

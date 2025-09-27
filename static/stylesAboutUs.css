@@ -1,10 +1,12 @@
-body{
+body {
+    position: relative; /* Para que los elementos absolutos se posicionen respecto a body */
     display: flex;
     justify-content: center;
-    align-items: center;     
-    height: 100vh;           
-    margin: 0;              
+    align-items: flex-start; /* cambiamos de center a flex-start para que todo quede arriba */
+    height: 100vh;
+    margin: 0;
     background-image: url('/static/FondoAbout.jpg'); 
+    padding-top: 30px; /* espacio desde el top */
 }
 
 .presentacion {
@@ -97,4 +99,29 @@ body{
     font-weight: 1000;
     color: #ffd369;
     margin: 0;
+}
+
+
+.btn-sacarTurno {
+    position: absolute; /* lo saca del flujo normal */
+    top: 0px;          /* distancia desde arriba */
+    left: 50%;          /* lo centramos horizontalmente */
+    transform: translateX(-50%); /* compensamos el left 50% */
+    width: 100%;        /* puedes ajustar el ancho si quieres */
+    padding: 18px 30px;
+    font-size: 1.25em;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+.btn-sacarTurno:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translate(-50%, -1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
 }

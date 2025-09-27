@@ -6,16 +6,27 @@ import (
 	"net/http"
 )
 
-func handlerDescrip(w http.ResponseWriter, r *http.Request) {
+func handlerSacarTurno(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
+	//Se chequea si el path no es el indicado, de no serlo la pagina arroja error 404
+	if r.URL.Path != "/sacarTurno" {
+		http.NotFound(w, r)
+		return
+	}
+
+	//Se sirve el HTML index.html "Se enlaza"
+	http.ServeFile(w, r, "templates/sacarTurno.html")
+}
+
+func handlerDescrip(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	//Se chequea si el path no es el indicado, de no serlo la pagina arroja error 404
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
 
-	//Se sirve el HTML index.html "Se enlaza"
 	http.ServeFile(w, r, "templates/index.html")
 }
 
@@ -71,9 +82,10 @@ func handlerFormsPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	http.HandleFunc("/", handlerDescrip)
 	http.HandleFunc("/formsPost", handlerFormsPost)
 	http.HandleFunc("/aboutUs", handlerAbout)
-	http.HandleFunc("/", handlerDescrip)
+	http.HandleFunc("/sacarTurno", handlerSacarTurno)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	port := ":8080"

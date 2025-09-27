@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
+
+body {
+    background-image: url("BarberFondo.jpg");
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+}
+
+.form-turno {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 35px;
+    border-radius: 15px;
+    background: rgba(20, 20, 20, 0.85); 
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffd369;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-color: #ffd369;
+}
+
+.form-turno:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+}
+
+.form-turno h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffd369; 
+}
+
+.form-turno legend {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.form-turno label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.form-turno input,
+.form-turno select,
+.form-turno textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95em;
+    background: #2a2a2a;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-turno input:focus,
+.form-turno select:focus,
+.form-turno textarea:focus {
+    border-color: #ffd369;
+    box-shadow: 0 0 5px #ffd369;
+}
+
+.form-turno button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffd369, #d4af37);
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-turno button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.form-turno label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.btn-about {
+    display: block;             
+    width: 100%;               
+    padding: 18px 0;
+    font-size: 1.25em;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
+}
+.btn-about:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+}
+
