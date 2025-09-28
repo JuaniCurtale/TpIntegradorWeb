@@ -5,7 +5,7 @@ body {
     align-items: flex-start; /* cambiamos de center a flex-start para que todo quede arriba */
     height: 100vh;
     margin: 0;
-    background-image: url('/static/FondoAbout.jpg'); 
+    background-image: url('/static/fondoabout.jpg'); 
     padding-top: 30px; /* espacio desde el top */
 }
 
