@@ -40,6 +40,39 @@ En futuras etapas planeamos implementar también la vista/rol del **Barbero**, p
 
 ## 🚀 Cómo ejecutar el servidor
 
+###  Cómo ejecutar el servidor (desde archivos fuente)
+
+Si descargaste o recibiste el proyecto directamente (por ejemplo, por archivo .zip o carpeta), seguí estos pasos para ejecutarlo:
+
+📁 1. Ubícate en la carpeta del proyecto
+
+Abre una terminal y navega hasta la carpeta donde está el proyecto:
+```
+cd TpIntegradorWeb
+```
+
+Por ejemplo, si lo descomprimiste en el Escritorio:
+```
+cd ~/Escritorio/TpIntegradorWeb
+```
+
+🧑‍💻 2. Ejecuta el servidor
+
+Asegúrate de tener Go 1.21 o superior instalado. Luego, desde la terminal, ejecuta:
+```
+go run main.go
+```
+🌐 3. Abre el navegador
+
+Accede a la siguiente URL en tu navegador:
+```
+http://localhost:8080
+```
+
+¡Listo! Tu servidor estará corriendo localmente.
+
+### Cómo ejecutar el servidor (A traves de github) 😺
+
 Verifica que tengas Go 1.21 o superior instalado.
 
 📋 Clona este repositorio: 
