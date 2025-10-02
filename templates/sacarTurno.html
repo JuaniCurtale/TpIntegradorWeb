@@ -9,11 +9,13 @@
     <link rel="icon" href="static/logo.png" type="image/png">
 </head>
 <body>
-<a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
+<div class="botones">
+        <a href="/" class="btn-inicio">Inicio</a>
+        <a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
+    </div>
 <form action="/formsPost" method="post" accept-charset="utf-8" autocomplete="on" class="form-turno">
     <h1>CurtSaide Barber shop</h1>
     <fieldset>
-      <legend>Sacar turno – Barbería</legend>
   
       <label for="nombre">Nombre y apellido</label>
       <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Carlos Sanchez"/>

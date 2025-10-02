@@ -1,33 +1,34 @@
 body {
-    position: relative; /* Para que los elementos absolutos se posicionen respecto a body */
-    display: flex;
+    position: relative;
     justify-content: center;
-    align-items: flex-start; /* cambiamos de center a flex-start para que todo quede arriba */
+    align-items: flex-start; 
     height: 100vh;
     margin: 0;
-    background-image: url('/static/fondoabout.jpg'); 
-    padding-top: 30px; /* espacio desde el top */
+    background-image: url('fondoabout2.png'); 
+    color: #f0f0f0;
 }
 
 .presentacion {
-    max-width: 650px;
+    max-width: 700px;
     margin: 70px auto;
-    padding: 35px;
-    border-radius: 15px;
-    background: rgba(0, 0, 0, 0.75);
-    border: 2px solid #d4af37;
+    padding: 40px 50px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid #ffd369;
     color: #f8f8f8;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.85);
     text-align: left;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    backdrop-filter: blur(6px); 
+    backdrop-filter: blur(8px);
 }
 
 .presentacion h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    color: #fff;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 2.8em;
+    margin-bottom: 25px;
+    color: #ffd369;  
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
 .presentacion h2 {
@@ -38,37 +39,49 @@ body {
 }
 
 .presentacion p {
-    font-size: 1.1em;
+    font-size: 1.2em;
+    line-height: 1.7;
     text-align: justify;
+    letter-spacing: 0.5px;
 }
-
 
 .titulo-cartel {
-    padding: 20px 30px;
-    border-radius: 10px;
+    padding: 5px 25px;
+    border-radius: 15px;
     text-align: center;
-    margin-bottom: 15px;
-}
-
-.titulo-cartel h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5em;
-    color: #fff;
-    margin: 0;
-}
-
-.slogan-recuadro {
-    background-color: rgba(0,0,0,0.65);
-    border: 2px solid #d4af37;
-    padding: 15px 25px;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 25px;
-    position: relative;
-    overflow: hidden; 
     transition: transform 0.3s ease;
     font-family: 'Playfair Display', serif;
     font-style: italic;
+}
+
+
+.titulo-cartel h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 3em;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+}
+
+.slogan-recuadro {
+    max-width: 800px;
+    width: 85%;
+    padding: 15px 35px;
+    border-radius: 15px;
+    text-align: center;
+    background: linear-gradient(145deg, rgba(0,0,0,0.7), rgba(20,20,20,0.7));
+    border: 3px solid #ffd369;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+    margin: 30px auto 0 auto;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.slogan-recuadro:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
 }
 
 .slogan-recuadro::before {
@@ -81,7 +94,7 @@ body {
     background: linear-gradient(
         120deg,
         rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0.45) 50%,
         rgba(255,255,255,0) 100%
     );
     transform: rotate(25deg);
@@ -98,17 +111,39 @@ body {
     font-style: italic;
     font-weight: 1000;
     color: #ffd369;
+    font-size: 2.2em;
     margin: 0;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    letter-spacing: 1px;
+}
+
+.btn-sacarTurno{
+    display: block;             
+    width: 100%;               
+    padding: 18px 0;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-size: 1.25em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
+}
+.btn-sacarTurno:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
 }
 
 
-.btn-sacarTurno {
-    position: absolute; /* lo saca del flujo normal */
-    top: 0px;          /* distancia desde arriba */
-    left: 50%;          /* lo centramos horizontalmente */
-    transform: translateX(-50%); /* compensamos el left 50% */
-    width: 100%;        /* puedes ajustar el ancho si quieres */
-    padding: 18px 30px;
+.btn-inicio {
+    display: block;
+    width: 100%;               
+    padding: 18px 0;
     font-size: 1.25em;
     background-color: rgba(0,0,0,0.85);
     color: #ffd369;
@@ -118,10 +153,49 @@ body {
     border: none;
     text-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
 }
-.btn-sacarTurno:hover {
+.btn-inicio:hover {
     background-color: rgba(48, 48, 48, 0.85);
-    transform: translate(-50%, -1px);
+    transform: translateY(-1px);
     box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
 }
+
+.botones {
+  display: flex;
+  gap: 0; 
+}
+
+.botones a {
+  flex: 1;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 1.2em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ffd369;
+  background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(40,40,40,0.85));
+  border: 2px solid #ffd369;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.botones a + a {
+  border-left: none;
+}
+
+
+.botones a:hover::before {
+  left: 125%;
+}
+
+.botones a:hover {
+  color: #000;
+  background: #ffd369;
+  box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
+  transform: translateY(-2px);
+}
+

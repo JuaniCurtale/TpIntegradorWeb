@@ -1,47 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
 
 body {
-    background-image: url("BarberFondo.jpg");
+    position: relative;
+    justify-content: center;
+    align-items: flex-start; 
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    color: #ffffff;
+    background-image: url('BarberFondo.jpg'); 
+    color: #f0f0f0;
 }
 
 .form-turno {
     max-width: 500px;
-    margin: 60px auto;
+    margin: 30px auto;
     padding: 35px;
     border-radius: 15px;
     background: rgba(20, 20, 20, 0.85); 
     backdrop-filter: blur(6px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
     border: 2px solid #ffd369;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    border-color: #ffd369;
+    
 }
-
-.form-turno:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
-}
-
+ 
 .form-turno h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
     margin-bottom: 20px;
     text-align: center;
-    color: #ffd369; 
+    color: #ffffff; 
+    margin-bottom: 0;
 }
 
-.form-turno legend {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    color: #f0f0f0;
+
+.form-turno fieldset {
+    border: none;
+    justify-content: center;
+    padding: 10px;
 }
+
+
 
 .form-turno label {
     display: block;
@@ -99,7 +96,8 @@ body {
     vertical-align: middle;
 }
 
-.btn-about {
+.btn-about,
+.btn-inicio {
     display: block;             
     width: 100%;               
     padding: 18px 0;
@@ -114,9 +112,43 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
 }
-.btn-about:hover {
+
+.btn-about:hover,
+.btn-inicio:hover {
     background-color: rgba(48, 48, 48, 0.85);
     transform: translateY(-1px);
     box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
 }
 
+.botones {
+    display: flex;
+    gap: 0;
+}
+
+.botones a {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffd369;
+    background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(40,40,40,0.85));
+    border: 2px solid #ffd369;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.botones a + a {
+    border-left: none;
+}
+
+.botones a:hover {
+    color: #000;
+    background: #ffd369;
+    box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
+    transform: translateY(-2px);
+}

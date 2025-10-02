@@ -1,5 +1,5 @@
 body {
-    background-image: url("BarberFondo.jpg");
+    background-image: url("fondoabout.jpg");
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
@@ -9,26 +9,39 @@ body {
     max-width: 480px;
     margin: 70px auto;
     padding: 35px;
-    border-radius: 15px;
-    background: rgba(0, 0, 0, 0.75);
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.85), rgba(25, 25, 25, 0.9));
     border: 2px solid #d4af37;
     color: #f8f8f8;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.3);
     text-align: left;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    backdrop-filter: blur(6px); 
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+.card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(212,175,55,0.15), transparent 30%);
+    animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .card h1 {
     font-size: 1.8em;
     margin-bottom: 20px;
     text-align: center;
-    color: #ffd369; 
+    color: #ffd369;
 }
 
 .card .subtitle {
@@ -46,9 +59,10 @@ body {
     text-align: center;
 }
 
-.btn-sacarTurno{
-    display: block;             
-    width: 100%;               
+.btn-about,
+.btn-inicio {
+    display: block;
+    width: 100%;
     padding: 18px 0;
     font-size: 1.25em;
     background-color: rgba(0,0,0,0.85);
@@ -59,31 +73,45 @@ body {
     border: none;
     text-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
-}
-.btn-sacarTurno:hover {
-    background-color: rgba(48, 48, 48, 0.85);
-    transform: translateY(-1px);
-    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 
-.btn-about {
-    display: block;             
-    width: 100%;               
-    padding: 18px 0;
-    font-size: 1.25em;
-    background-color: rgba(0,0,0,0.85);
-    color: #ffd369;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    text-decoration: none;
-    border: none;
-    text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgb(0, 0, 0); 
-}
-.btn-about:hover {
+.btn-about:hover,
+.btn-inicio:hover {
     background-color: rgba(48, 48, 48, 0.85);
     transform: translateY(-1px);
-    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.7);
+}
+
+.botones {
+    display: flex;
+    gap: 0;
+}
+
+.botones a {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffd369;
+    background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(40,40,40,0.85));
+    border: 2px solid #ffd369;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.botones a + a {
+    border-left: none;
+}
+
+.botones a:hover {
+    color: #000;
+    background: #ffd369;
+    box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
+    transform: translateY(-2px);
 }

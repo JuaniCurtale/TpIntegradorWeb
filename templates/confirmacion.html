@@ -8,8 +8,10 @@
     <link rel="icon" href="static/logo.png" type="image/png">
 </head>
 <body>
-    <a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
-    <a href="/sacarTurno" class="btn-sacarTurno">Sacar turno</a>
+    <div class="botones">
+        <a href="/" class="btn-inicio">Inicio</a>
+        <a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
+    </div>
     <div class="card">
         <h1>¡Tu turno ha sido agendado, {{.Nombre}}!</h1>
         <p class="subtitle">Detalles de tu reserva:</p>
