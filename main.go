@@ -13,7 +13,6 @@ import (
 	db "tpIntegradorSaideCurtale/db/sqlc"
 
 	_ "github.com/lib/pq"
-	// Ruta del package generado por sqlc
 )
 
 func handlerSacarTurno(w http.ResponseWriter, r *http.Request) {
@@ -82,10 +81,6 @@ func handlerFormsPost(w http.ResponseWriter, r *http.Request, queries *db.Querie
 		Acepta:   r.FormValue("acepta_politicas"),
 	}
 
-	// Ejemplo: guardar en la base de datos usando queries
-	// _, err := queries.CreateTurno(r.Context(), sqlc.CreateTurnoParams{ ... })
-	// if err != nil { ... }
-
 	tmpl, err := template.ParseFiles("templates/confirmacion.html")
 	if err != nil {
 		http.Error(w, "Error cargando plantilla", http.StatusInternalServerError)
@@ -96,61 +91,130 @@ func handlerFormsPost(w http.ResponseWriter, r *http.Request, queries *db.Querie
 		return
 	}
 }
-
-func listClientesHandler(db *db.Queries) http.HandlerFunc {
+func clienteHandler(queries *db.Queries) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Metodo no permitido", http.StatusMethodNotAllowed)
-			return
-		}
-
-		cliente, err := db.ListClientes(r.Context())
-		if err != nil {
-			log.Printf("Error al obtener clientes: %v", err)
-			http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(cliente)
-	}
-}
-
-func getClienteByIDHandler(db *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
-			return
-		}
-
 		path := strings.Trim(r.URL.Path, "/")
 		parts := strings.Split(path, "/")
-		if len(parts) != 2 || parts[0] != "cliente" {
-			http.NotFound(w, r)
-			return
-		}
 
-		id64, err := strconv.ParseInt(parts[1], 10, 32)
-		if err != nil {
-			http.Error(w, "ID inválido", http.StatusBadRequest)
-			return
-		}
-		id := int32(id64)
-
-		cliente, err := db.GetClienteByID(r.Context(), id)
-		if err != nil {
-			if err == sql.ErrNoRows {
-				http.Error(w, "Cliente no encontrado", http.StatusNotFound)
-			} else {
-				// <- Mostramos el error real en consola
-				log.Printf("Error al obtener cliente con id %d: %v\n", id, err)
-				http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
+		switch r.Method {
+		case http.MethodGet:
+			if len(parts) == 1 && parts[0] == "cliente" {
+				// GET all
+				clientes, err := queries.ListClientes(r.Context())
+				if err != nil {
+					http.Error(w, "Error interno", http.StatusInternalServerError)
+					return
+				}
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(clientes)
+				return
+			} else if len(parts) == 2 && parts[0] == "cliente" {
+				// GET by ID
+				id64, err := strconv.ParseInt(parts[1], 10, 32)
+				if err != nil {
+					http.Error(w, "ID inválido", http.StatusBadRequest)
+					return
+				}
+				id := int32(id64)
+				cliente, err := queries.GetClienteByID(r.Context(), id)
+				if err != nil {
+					if err == sql.ErrNoRows {
+						http.Error(w, "Cliente no encontrado", http.StatusNotFound)
+					} else {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+					}
+					return
+				}
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(cliente)
+				return
 			}
-			return
-		}
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(cliente)
+		case http.MethodPost:
+			if len(parts) == 1 && parts[0] == "cliente" {
+				// CREATE
+				var input struct {
+					Nombre   string `json:"nombre"`
+					Apellido string `json:"apellido"`
+					Telefono string `json:"telefono"`
+				}
+				if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+					http.Error(w, "JSON inválido", http.StatusBadRequest)
+					return
+				}
+				if input.Nombre == "" || input.Apellido == "" {
+					http.Error(w, "Nombre y apellido son obligatorios", http.StatusBadRequest)
+					return
+				}
+
+				cliente, err := queries.CreateCliente(r.Context(), db.CreateClienteParams{
+					Nombre:   input.Nombre,
+					Apellido: input.Apellido,
+					Telefono: sql.NullString{String: input.Telefono, Valid: input.Telefono != ""},
+				})
+				if err != nil {
+					http.Error(w, "Error al crear cliente", http.StatusInternalServerError)
+					return
+				}
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusCreated)
+				json.NewEncoder(w).Encode(cliente)
+				return
+			}
+
+		case http.MethodPut, http.MethodDelete:
+			if len(parts) != 2 || parts[0] != "cliente" {
+				http.NotFound(w, r)
+				return
+			}
+			id64, err := strconv.ParseInt(parts[1], 10, 32)
+			if err != nil {
+				http.Error(w, "ID inválido", http.StatusBadRequest)
+				return
+			}
+			id := int32(id64)
+
+			if r.Method == http.MethodPut {
+				var input struct {
+					Nombre   string `json:"nombre"`
+					Apellido string `json:"apellido"`
+					Telefono string `json:"telefono"`
+				}
+				if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+					http.Error(w, "JSON inválido", http.StatusBadRequest)
+					return
+				}
+				if input.Nombre == "" || input.Apellido == "" {
+					http.Error(w, "Nombre y apellido son obligatorios", http.StatusBadRequest)
+					return
+				}
+				cliente, err := queries.UpdateCliente(r.Context(), db.UpdateClienteParams{
+					IDCliente: id,
+					Nombre:    input.Nombre,
+					Apellido:  input.Apellido,
+					Telefono:  sql.NullString{String: input.Telefono, Valid: input.Telefono != ""},
+				})
+				if err != nil {
+					http.Error(w, "Error al actualizar cliente", http.StatusInternalServerError)
+					return
+				}
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(cliente)
+				return
+			}
+
+			if r.Method == http.MethodDelete {
+				if err := queries.DeleteCliente(r.Context(), id); err != nil {
+					http.Error(w, "Error al eliminar cliente", http.StatusInternalServerError)
+					return
+				}
+				w.WriteHeader(http.StatusNoContent)
+				return
+			}
+
+		default:
+			http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+		}
 	}
 }
 
@@ -175,8 +239,9 @@ func main() {
 	queries := ConnectDB()
 
 	// Rutas HTTP
-	http.HandleFunc("/cliente/", getClienteByIDHandler(queries))
-	http.HandleFunc("/clientes/", listClientesHandler(queries))
+	http.HandleFunc("/cliente", clienteHandler(queries))  // POST, GET all
+	http.HandleFunc("/cliente/", clienteHandler(queries)) // GET by ID, PUT, DELETE
+
 	http.HandleFunc("/", handlerDescrip)
 	http.HandleFunc("/formsPost", func(w http.ResponseWriter, r *http.Request) {
 		handlerFormsPost(w, r, queries)
