@@ -2,10 +2,13 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	db "tpIntegradorSaideCurtale/db/sqlc"
 
@@ -94,6 +97,44 @@ func handlerFormsPost(w http.ResponseWriter, r *http.Request, queries *db.Querie
 	}
 }
 
+func getClienteByIDHandler(db *db.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+			return
+		}
+
+		path := strings.Trim(r.URL.Path, "/")
+		parts := strings.Split(path, "/")
+		if len(parts) != 2 || parts[0] != "clientes" {
+			http.NotFound(w, r)
+			return
+		}
+
+		id64, err := strconv.ParseInt(parts[1], 10, 32)
+		if err != nil {
+			http.Error(w, "ID inválido", http.StatusBadRequest)
+			return
+		}
+		id := int32(id64)
+
+		cliente, err := db.GetClienteByID(r.Context(), id)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "Cliente no encontrado", http.StatusNotFound)
+			} else {
+				// <- Mostramos el error real en consola
+				log.Printf("Error al obtener cliente con id %d: %v\n", id, err)
+				http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
+			}
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(cliente)
+	}
+}
+
 func ConnectDB() *db.Queries {
 	connStr := "postgres://postgres:admin@localhost:5432/barberia?sslmode=disable"
 	dbConn, err := sql.Open("postgres", connStr)
@@ -115,12 +156,14 @@ func main() {
 	queries := ConnectDB()
 
 	// Rutas HTTP
+	http.HandleFunc("/clientes/", getClienteByIDHandler(queries))
 	http.HandleFunc("/", handlerDescrip)
 	http.HandleFunc("/formsPost", func(w http.ResponseWriter, r *http.Request) {
 		handlerFormsPost(w, r, queries)
 	})
 	http.HandleFunc("/aboutUs", handlerAbout)
 	http.HandleFunc("/sacarTurno", handlerSacarTurno)
+
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	port := ":8080"
