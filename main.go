@@ -97,6 +97,25 @@ func handlerFormsPost(w http.ResponseWriter, r *http.Request, queries *db.Querie
 	}
 }
 
+func listClientesHandler(db *db.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Metodo no permitido", http.StatusMethodNotAllowed)
+			return
+		}
+
+		cliente, err := db.ListClientes(r.Context())
+		if err != nil {
+			log.Printf("Error al obtener clientes: %v", err)
+			http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(cliente)
+	}
+}
+
 func getClienteByIDHandler(db *db.Queries) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
@@ -106,7 +125,7 @@ func getClienteByIDHandler(db *db.Queries) http.HandlerFunc {
 
 		path := strings.Trim(r.URL.Path, "/")
 		parts := strings.Split(path, "/")
-		if len(parts) != 2 || parts[0] != "clientes" {
+		if len(parts) != 2 || parts[0] != "cliente" {
 			http.NotFound(w, r)
 			return
 		}
@@ -156,7 +175,8 @@ func main() {
 	queries := ConnectDB()
 
 	// Rutas HTTP
-	http.HandleFunc("/clientes/", getClienteByIDHandler(queries))
+	http.HandleFunc("/cliente/", getClienteByIDHandler(queries))
+	http.HandleFunc("/clientes/", listClientesHandler(queries))
 	http.HandleFunc("/", handlerDescrip)
 	http.HandleFunc("/formsPost", func(w http.ResponseWriter, r *http.Request) {
 		handlerFormsPost(w, r, queries)
