@@ -219,7 +219,8 @@ func clienteHandler(queries *db.Queries) http.HandlerFunc {
 }
 
 func ConnectDB() *db.Queries {
-	connStr := "postgres://postgres:admin@localhost:5432/barberia?sslmode=disable"
+	connStr := "postgres://postgres:admin@barberia_db:5432/barberia?sslmode=disable"
+
 	dbConn, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatalf("Error al conectar con la base de datos: %v", err)
