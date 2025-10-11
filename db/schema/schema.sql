@@ -20,6 +20,13 @@ CREATE TABLE turno (
     fechaHora TIMESTAMP NOT NULL,
     servicio VARCHAR(100) NOT NULL,
     observaciones TEXT,
-    CONSTRAINT fk_cliente FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
-    CONSTRAINT fk_barbero FOREIGN KEY (id_barbero) REFERENCES barbero (id_barbero)
-);
+    CONSTRAINT fk_cliente
+        FOREIGN KEY (id_cliente)
+        REFERENCES cliente (id_cliente)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_barbero
+        FOREIGN KEY (id_barbero)
+        REFERENCES barbero (id_barbero)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
