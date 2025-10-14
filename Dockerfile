@@ -11,8 +11,9 @@ RUN go mod download
 # Copiar el resto del código fuente
 COPY . .
 
+
 # Compilar la aplicación
-RUN go build -o app .
+RUN go build -o app ./cmd
 
 
 # Etapa 2: Imagen final
@@ -27,6 +28,9 @@ COPY --from=builder /app/app .
 # Copiar las carpetas necesarias para que el servidor Go sirva los archivos
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/static ./static
+
+# Copiar .env al contenedor
+COPY .env .env
 
 # Exponer el puerto del servidor
 EXPOSE 8080
