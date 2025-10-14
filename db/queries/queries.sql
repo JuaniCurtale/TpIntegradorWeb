@@ -2,8 +2,8 @@
 -- CRUD para Cliente
 
 -- name: CreateCliente :one
-INSERT INTO Cliente (nombre, apellido, telefono)
-VALUES ($1, $2, $3)
+INSERT INTO Cliente (nombre, apellido, telefono, email)
+VALUES ($1, $2, $3, $4)
 RETURNING *;
 
 -- name: GetClienteByID :one
@@ -18,7 +18,9 @@ ORDER BY id_cliente;
 UPDATE Cliente
 SET nombre = $2,
     apellido = $3,
-    telefono = $4
+    telefono = $4,
+    email = $5
+
 WHERE id_cliente = $1
 RETURNING *;
 
@@ -30,8 +32,8 @@ WHERE id_cliente = $1;
 -- CRUD para Barbero
 
 -- name: CreateBarbero :one
-INSERT INTO Barbero (nombre, especialidad)
-VALUES ($1, $2)
+INSERT INTO Barbero (nombre, apellido, especialidad)
+VALUES ($1, $2, $3)
 RETURNING *;
 
 -- name: GetBarberoByID :one
@@ -45,7 +47,8 @@ ORDER BY id_barbero;
 -- name: UpdateBarbero :one
 UPDATE Barbero
 SET nombre = $2,
-    especialidad = $3
+    apellido = $3,
+    especialidad = $4
 WHERE id_barbero = $1
 RETURNING *;
 

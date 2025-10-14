@@ -13,46 +13,59 @@ import (
 
 const createBarbero = `-- name: CreateBarbero :one
 
-INSERT INTO Barbero (nombre, especialidad)
-VALUES ($1, $2)
-RETURNING id_barbero, nombre, especialidad
+INSERT INTO Barbero (nombre, apellido, especialidad)
+VALUES ($1, $2, $3)
+RETURNING id_barbero, nombre, apellido, especialidad
 `
 
 type CreateBarberoParams struct {
 	Nombre       string         `json:"nombre"`
+	Apellido     string         `json:"apellido"`
 	Especialidad sql.NullString `json:"especialidad"`
 }
 
 // CRUD para Barbero
 func (q *Queries) CreateBarbero(ctx context.Context, arg CreateBarberoParams) (Barbero, error) {
-	row := q.db.QueryRowContext(ctx, createBarbero, arg.Nombre, arg.Especialidad)
+	row := q.db.QueryRowContext(ctx, createBarbero, arg.Nombre, arg.Apellido, arg.Especialidad)
 	var i Barbero
-	err := row.Scan(&i.IDBarbero, &i.Nombre, &i.Especialidad)
+	err := row.Scan(
+		&i.IDBarbero,
+		&i.Nombre,
+		&i.Apellido,
+		&i.Especialidad,
+	)
 	return i, err
 }
 
 const createCliente = `-- name: CreateCliente :one
 
-INSERT INTO Cliente (nombre, apellido, telefono)
-VALUES ($1, $2, $3)
-RETURNING id_cliente, nombre, apellido, telefono
+INSERT INTO Cliente (nombre, apellido, telefono, email)
+VALUES ($1, $2, $3, $4)
+RETURNING id_cliente, nombre, apellido, telefono, email
 `
 
 type CreateClienteParams struct {
 	Nombre   string         `json:"nombre"`
 	Apellido string         `json:"apellido"`
 	Telefono sql.NullString `json:"telefono"`
+	Email    sql.NullString `json:"email"`
 }
 
 // CRUD para Cliente
 func (q *Queries) CreateCliente(ctx context.Context, arg CreateClienteParams) (Cliente, error) {
-	row := q.db.QueryRowContext(ctx, createCliente, arg.Nombre, arg.Apellido, arg.Telefono)
+	row := q.db.QueryRowContext(ctx, createCliente,
+		arg.Nombre,
+		arg.Apellido,
+		arg.Telefono,
+		arg.Email,
+	)
 	var i Cliente
 	err := row.Scan(
 		&i.IDCliente,
 		&i.Nombre,
 		&i.Apellido,
 		&i.Telefono,
+		&i.Email,
 	)
 	return i, err
 }
@@ -124,19 +137,24 @@ func (q *Queries) DeleteTurno(ctx context.Context, idTurno int32) error {
 }
 
 const getBarberoByID = `-- name: GetBarberoByID :one
-SELECT id_barbero, nombre, especialidad FROM Barbero
+SELECT id_barbero, nombre, apellido, especialidad FROM Barbero
 WHERE id_barbero = $1
 `
 
 func (q *Queries) GetBarberoByID(ctx context.Context, idBarbero int32) (Barbero, error) {
 	row := q.db.QueryRowContext(ctx, getBarberoByID, idBarbero)
 	var i Barbero
-	err := row.Scan(&i.IDBarbero, &i.Nombre, &i.Especialidad)
+	err := row.Scan(
+		&i.IDBarbero,
+		&i.Nombre,
+		&i.Apellido,
+		&i.Especialidad,
+	)
 	return i, err
 }
 
 const getClienteByID = `-- name: GetClienteByID :one
-SELECT id_cliente, nombre, apellido, telefono FROM Cliente
+SELECT id_cliente, nombre, apellido, telefono, email FROM Cliente
 WHERE id_cliente = $1
 `
 
@@ -148,6 +166,7 @@ func (q *Queries) GetClienteByID(ctx context.Context, idCliente int32) (Cliente,
 		&i.Nombre,
 		&i.Apellido,
 		&i.Telefono,
+		&i.Email,
 	)
 	return i, err
 }
@@ -172,7 +191,7 @@ func (q *Queries) GetTurnoByID(ctx context.Context, idTurno int32) (Turno, error
 }
 
 const listBarberos = `-- name: ListBarberos :many
-SELECT id_barbero, nombre, especialidad FROM Barbero
+SELECT id_barbero, nombre, apellido, especialidad FROM Barbero
 ORDER BY id_barbero
 `
 
@@ -185,7 +204,12 @@ func (q *Queries) ListBarberos(ctx context.Context) ([]Barbero, error) {
 	var items []Barbero
 	for rows.Next() {
 		var i Barbero
-		if err := rows.Scan(&i.IDBarbero, &i.Nombre, &i.Especialidad); err != nil {
+		if err := rows.Scan(
+			&i.IDBarbero,
+			&i.Nombre,
+			&i.Apellido,
+			&i.Especialidad,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -200,7 +224,7 @@ func (q *Queries) ListBarberos(ctx context.Context) ([]Barbero, error) {
 }
 
 const listClientes = `-- name: ListClientes :many
-SELECT id_cliente, nombre, apellido, telefono FROM Cliente
+SELECT id_cliente, nombre, apellido, telefono, email FROM Cliente
 ORDER BY id_cliente
 `
 
@@ -218,6 +242,7 @@ func (q *Queries) ListClientes(ctx context.Context) ([]Cliente, error) {
 			&i.Nombre,
 			&i.Apellido,
 			&i.Telefono,
+			&i.Email,
 		); err != nil {
 			return nil, err
 		}
@@ -270,21 +295,33 @@ func (q *Queries) ListTurnos(ctx context.Context) ([]Turno, error) {
 const updateBarbero = `-- name: UpdateBarbero :one
 UPDATE Barbero
 SET nombre = $2,
-    especialidad = $3
+    apellido = $3,
+    especialidad = $4
 WHERE id_barbero = $1
-RETURNING id_barbero, nombre, especialidad
+RETURNING id_barbero, nombre, apellido, especialidad
 `
 
 type UpdateBarberoParams struct {
 	IDBarbero    int32          `json:"id_barbero"`
 	Nombre       string         `json:"nombre"`
+	Apellido     string         `json:"apellido"`
 	Especialidad sql.NullString `json:"especialidad"`
 }
 
 func (q *Queries) UpdateBarbero(ctx context.Context, arg UpdateBarberoParams) (Barbero, error) {
-	row := q.db.QueryRowContext(ctx, updateBarbero, arg.IDBarbero, arg.Nombre, arg.Especialidad)
+	row := q.db.QueryRowContext(ctx, updateBarbero,
+		arg.IDBarbero,
+		arg.Nombre,
+		arg.Apellido,
+		arg.Especialidad,
+	)
 	var i Barbero
-	err := row.Scan(&i.IDBarbero, &i.Nombre, &i.Especialidad)
+	err := row.Scan(
+		&i.IDBarbero,
+		&i.Nombre,
+		&i.Apellido,
+		&i.Especialidad,
+	)
 	return i, err
 }
 
@@ -292,9 +329,11 @@ const updateCliente = `-- name: UpdateCliente :one
 UPDATE Cliente
 SET nombre = $2,
     apellido = $3,
-    telefono = $4
+    telefono = $4,
+    email = $5
+
 WHERE id_cliente = $1
-RETURNING id_cliente, nombre, apellido, telefono
+RETURNING id_cliente, nombre, apellido, telefono, email
 `
 
 type UpdateClienteParams struct {
@@ -302,6 +341,7 @@ type UpdateClienteParams struct {
 	Nombre    string         `json:"nombre"`
 	Apellido  string         `json:"apellido"`
 	Telefono  sql.NullString `json:"telefono"`
+	Email     sql.NullString `json:"email"`
 }
 
 func (q *Queries) UpdateCliente(ctx context.Context, arg UpdateClienteParams) (Cliente, error) {
@@ -310,6 +350,7 @@ func (q *Queries) UpdateCliente(ctx context.Context, arg UpdateClienteParams) (C
 		arg.Nombre,
 		arg.Apellido,
 		arg.Telefono,
+		arg.Email,
 	)
 	var i Cliente
 	err := row.Scan(
@@ -317,6 +358,7 @@ func (q *Queries) UpdateCliente(ctx context.Context, arg UpdateClienteParams) (C
 		&i.Nombre,
 		&i.Apellido,
 		&i.Telefono,
+		&i.Email,
 	)
 	return i, err
 }

@@ -12,6 +12,7 @@ import (
 type Barbero struct {
 	IDBarbero    int32          `json:"id_barbero"`
 	Nombre       string         `json:"nombre"`
+	Apellido     string         `json:"apellido"`
 	Especialidad sql.NullString `json:"especialidad"`
 }
 
@@ -20,6 +21,7 @@ type Cliente struct {
 	Nombre    string         `json:"nombre"`
 	Apellido  string         `json:"apellido"`
 	Telefono  sql.NullString `json:"telefono"`
+	Email     sql.NullString `json:"email"`
 }
 
 type Turno struct {
