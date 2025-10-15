@@ -380,6 +380,8 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 			id := int32(id64)
 
 			var input struct {
+				IDCliente     int32          `json:"id_cliente"`
+				IDBarbero     int32          `json:"id_barbero"`
 				Fechahora     time.Time      `json:"fechahora"`
 				Servicio      string         `json:"servicio"`
 				Observaciones sql.NullString `json:"observaciones"`
@@ -395,6 +397,8 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 
 			turno, err := queries.UpdateTurno(r.Context(), db.UpdateTurnoParams{
 				IDTurno:       id,
+				IDCliente:     input.IDCliente,
+				IDBarbero:     input.IDBarbero,
 				Fechahora:     input.Fechahora,
 				Servicio:      input.Servicio,
 				Observaciones: input.Observaciones,

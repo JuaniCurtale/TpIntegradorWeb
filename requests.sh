@@ -85,11 +85,27 @@ curl -s -X GET "$BASE_URL/barbero"
 echo "==============================="
 echo "🕒 TURNOS"
 echo "==============================="
+
+echo -e "Creo barbero \n"
+curl -s -X POST "$BASE_URL/barbero" \
+-H "Content-Type: application/json" \
+-d '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}' 
+echo -e "\n"
+
+echo -e "Creo cliente \n"
+
+curl -s -X POST "$BASE_URL/cliente" \
+-H "Content-Type: application/json" \
+-d '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}' 
+echo -e "\n"
+
 echo -e "Creo turno \n"
 # Crear turno
 curl -s -X POST "$BASE_URL/turno" \
 -H "Content-Type: application/json" \
--d '{"id_cliente":1,"id_barbero":1,"fechahora":"2024-10-14T10:30:00Z","servicio":"Corte de pelo"}'
+-d '{"id_cliente":2,"id_barbero":2,"fechahora":"2025-10-15T15:00:00Z","servicio":"Corte de pelo"}'
+
+
 
 
 # Listar turnos
@@ -102,11 +118,12 @@ echo -e "Chequeo turno con ID \n"
 curl -s -X GET "$BASE_URL/turno/1"
 echo -e "\n"
 
+
 # Actualizar turno
 echo -e "Actualizo turno \n"
 curl -s -X PUT "$BASE_URL/turno/1" \
 -H "Content-Type: application/json" \
--d '{"id_cliente":1,"id_barbero":1,"Fechahora":"2026-10-15T15:00:00Z","servicio":"Afeitado y corte"}'
+-d '{"id_cliente":2,"id_barbero":2,"fechahora":"2027-10-15T15:00:00Z","servicio":"que te importa loro"}'
 echo -e "\n"
 
 # Eliminar turno
