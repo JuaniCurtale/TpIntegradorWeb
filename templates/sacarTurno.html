@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="/static/stylesSacarTurno.css">
     <title>CurtSaide Barber Shop</title>
     <meta charset="UTF-8">
-    <link rel="icon" href="static/logo.png" type="image/png">
+    <link rel="icon" href="/static/logo.png" type="image/png">
 </head>
 <body>
 <div class="botones">
         <a href="/" class="btn-inicio">Inicio</a>
         <a href="/aboutUs" class="btn-about">Más sobre nosotros</a>
     </div>
-<form action="/formsPost" method="post" accept-charset="utf-8" autocomplete="on" class="form-turno">
+<form accept-charset="utf-8" autocomplete="on" class="form-turno" id="form-turno">
     <h1>CurtSaide Barber shop</h1>
     <fieldset>
   
@@ -95,7 +95,12 @@
       </label>
   
       <button type="submit">Reservar turno</button>
+      <div id="respuestaApi"></div>
     </fieldset>
   </form>
+
+  
+
+  <script src="/static/sacarTurno.js" defer></script>
 </body>
 </html>
