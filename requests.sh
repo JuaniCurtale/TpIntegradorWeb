@@ -1,143 +1,108 @@
 #!/bin/bash
 # ==========================================
-# PRUEBAS API - TP INTEGRADOR WEB
+# PRUEBAS API - TP INTEGRADOR WEB (con HTTP codes)
 # ==========================================
 
-DB_CONTAINER="barberia_db"  # nombre del contenedor de la DB
-DB_USER="postgres"                  # usuario de la DB
-DB_NAME="barberia"                  # nombre de la DB
-BASE_URL="http://localhost:8080"    # URL de la API
+DB_CONTAINER="barberia_db"   # nombre del contenedor de la DB
+DB_USER="postgres"           # usuario de la DB
+DB_NAME="barberia"           # nombre de la DB
+BASE_URL="http://localhost:8080"   # URL de la API
+
+function curl_request() {
+    # $1 = método, $2 = endpoint, $3 = body (opcional)
+    if [ -z "$3" ]; then # se chequea con -z si el body esta vacio
+        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2")
+    else
+        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2" -H "Content-Type: application/json" -d "$3")
+    fi
+    http_code=$(echo "$response" | tail -n1)
+    body=$(echo "$response" | head -n-1)
+    echo "HTTP: $http_code"
+    echo "BODY: $body"
+    echo
+}
 
 echo "==============================="
-echo "🧍‍♂️ CLIENTES"
+echo "CLIENTES"
 echo "==============================="
 
-# Crear cliente
-echo -e "Creo cliente \n"
+echo "Creo cliente"
+curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}'
 
-curl -s -X POST "$BASE_URL/cliente" \
--H "Content-Type: application/json" \
--d '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}' 
-echo -e "\n"
+echo "Listo clientes"
+curl_request GET "cliente"
 
-# Listar clientes
-echo -e "Listo cliente \n"
-curl -s -X GET "$BASE_URL/cliente" 
-echo -e "\n"
+echo "Chequeo cliente por ID"
+curl_request GET "cliente/1"
 
-# Ver cliente por ID
-echo -e "Chequeo id_cliente"
-curl -s -X GET "$BASE_URL/cliente/1" 
-echo -e "\n"
+echo "Actualizo cliente"
+curl_request PUT "cliente/1" '{"nombre": "Juan Carlos", "apellido": "Perez", "telefono": "87654321"}'
 
-# Actualizar cliente
-echo -e "Actualizo cliente \n"
-curl -s -X PUT "$BASE_URL/cliente/1" \
--H "Content-Type: application/json" \
--d '{"nombre": "Juan Carlos", "apellido": "Perez", "telefono": "87654321"}' 
-echo -e "\n"
+echo "Elimino cliente"
+curl_request DELETE "cliente/1"
 
-# Eliminar cliente
-echo -e "Elimina cliente \n"
-curl -s -X DELETE "$BASE_URL/cliente/1"
-echo -e "\n"
-
-curl -s -X GET "$BASE_URL/cliente" 
-
-
-echo "==============================="
-echo "💈 BARBEROS"
-echo "==============================="
-
-# Crear barbero
-echo -e "Creo barbero \n"
-curl -s -X POST "$BASE_URL/barbero" \
--H "Content-Type: application/json" \
--d '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}' 
-echo -e "\n"
-
-# Listar barberos
-echo -e "Listar barberos \n"
-curl -s -X GET "$BASE_URL/barbero" 
-echo -e "\n"
-
-# Ver barbero por ID
-echo -e "buscar barbero con ID \n"
-curl -s -X GET "$BASE_URL/barbero/1" 
-echo -e "\n"
-
-# Actualizar barbero
-echo -e "Actualizar barbero \n"
-curl -s -X PUT "$BASE_URL/barbero/1" \
--H "Content-Type: application/json" \
--d '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Degradados"}' 
-echo -e "\n"
-
-# Eliminar barbero
-echo -e "Elimino barbero \n"
-curl -s -X DELETE "$BASE_URL/barbero/1"
-echo -e "\n"
-
-curl -s -X GET "$BASE_URL/barbero" 
-
+echo "Listo clientes después de eliminar"
+curl_request GET "cliente"
 
 
 echo "==============================="
-echo "🕒 TURNOS"
+echo "BARBEROS"
 echo "==============================="
 
-echo -e "Creo barbero \n"
-curl -s -X POST "$BASE_URL/barbero" \
--H "Content-Type: application/json" \
--d '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}' 
-echo -e "\n"
+echo "Creo barbero"
+curl_request POST "barbero" '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}'
 
-echo -e "Creo cliente \n"
+echo "Listo barberos"
+curl_request GET "barbero"
 
-curl -s -X POST "$BASE_URL/cliente" \
--H "Content-Type: application/json" \
--d '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}' 
-echo -e "\n"
+echo "Chequeo barbero por ID"
+curl_request GET "barbero/1"
 
-echo -e "Creo turno \n"
-# Crear turno
-curl -s -X POST "$BASE_URL/turno" \
--H "Content-Type: application/json" \
--d '{"id_cliente":2,"id_barbero":2,"fechahora":"2025-10-15T15:00:00Z","servicio":"Corte de pelo"}'
+echo "Actualizo barbero"
+curl_request PUT "barbero/1" '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Degradados"}'
 
+echo "Elimino barbero"
+curl_request DELETE "barbero/1"
+
+echo "Listo barberos después de eliminar"
+curl_request GET "barbero"
 
 
+echo "==============================="
+echo "TURNOS"
+echo "==============================="
 
-# Listar turnos
-echo -e "Listo turnos \n"
-curl -s -X GET "$BASE_URL/turno"
-echo -e "\n"
+echo "Creo barbero para turno"
+curl_request POST "barbero" '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}'
 
-# Ver turno por ID
-echo -e "Chequeo turno con ID \n"
-curl -s -X GET "$BASE_URL/turno/1"
-echo -e "\n"
+echo "Creo cliente para turno"
+curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}'
+
+echo "Creo turno"
+curl_request POST "turno" '{"id_cliente":2,"id_barbero":2,"fechahora":"2026-10-15T15:00:00Z","servicio":"Corte de pelo"}'
+
+echo "Listo turnos"
+curl_request GET "turno"
+
+echo "Chequeo turno por ID"
+curl_request GET "turno/1"
+
+echo "Actualizo turno"
+curl_request PUT "turno/1" '{"id_cliente":2,"id_barbero":2,"fechahora":"2027-10-15T15:00:00Z","servicio":"Corte actualizado"}'
+
+echo "Elimino turno"
+curl_request DELETE "turno/1"
+
+echo "Listo turnos después de eliminar"
+curl_request GET "turno"
 
 
-# Actualizar turno
-echo -e "Actualizo turno \n"
-curl -s -X PUT "$BASE_URL/turno/1" \
--H "Content-Type: application/json" \
--d '{"id_cliente":2,"id_barbero":2,"fechahora":"2027-10-15T15:00:00Z","servicio":"que te importa loro"}'
-echo -e "\n"
+echo "Pruebas completadas"
 
-# Eliminar turno
-echo -e "Elimino turno \n"
-curl -s -X DELETE "$BASE_URL/turno/1"
-echo -e "\n"
-
-echo "✅ Pruebas completadas"
-
-echo "🧹 Limpiando la base de datos..."
+echo "Limpiando la base de datos..."
 docker exec -i $DB_CONTAINER psql -U $DB_USER -d $DB_NAME <<EOF
 TRUNCATE TABLE cliente, barbero, turno RESTART IDENTITY CASCADE;
 EOF
 
-# 2️⃣ Esperar un momento para que todo esté listo
 echo "⏱ Esperando 2 segundos..."
 sleep 2
