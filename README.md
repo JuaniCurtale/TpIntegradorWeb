@@ -94,3 +94,12 @@ La capa de datos ya está definida y lista para usarse, pero no se conecta a un 
 Todos los archivos generados por sqlc (db.go, models.go, queries.sql.go) ya se incluyen en el proyecto.
 
 ### ✍️ Autores : Curtale Juan Ignacio y Saide Felipe
+
+
+A completar:
+
+Asegurate de tener abierta la aplicacion de Docker Desktop
+
+A continuacion corre el siguiente comando para levantar los contenedores y correr los testeos de la API
+
+bash runtest.sh
