@@ -41,15 +41,6 @@ func HandlerAbout(w http.ResponseWriter, r *http.Request) { //SOBRE NOSOTROS
 	http.ServeFile(w, r, "templates/aboutUs.html")
 }
 
-func HandlerSacarTurno(w http.ResponseWriter, r *http.Request) { //FORMULARIO PARA SACAR TURNO
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if r.URL.Path != "/sacarTurno" {
-		http.NotFound(w, r)
-		return
-	}
-	http.ServeFile(w, r, "templates/sacarTurno.html")
-}
-
 func HandlerFormsPost(w http.ResponseWriter, r *http.Request, dbConn *sql.DB) { //FORMULARIO ENVIADO
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 

@@ -280,14 +280,8 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "turno" {
-				// GET all
-				turnos, err := queries.ListTurnos(r.Context())
-				if err != nil {
-					http.Error(w, "Error interno", http.StatusInternalServerError)
-					return
-				}
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode(turnos)
+				w.Header().Set("Content-Type", "text/html; charset=utf-8")
+				http.ServeFile(w, r, "templates/sacarTurno.html")
 				return
 			} else if len(parts) == 2 && parts[0] == "turno" {
 				// GET by ID
