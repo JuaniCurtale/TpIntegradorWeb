@@ -7,9 +7,14 @@ document.addEventListener('DOMContentLoaded', () => { //esperamos a que cargue e
         
         event.preventDefault(); //prevenimos el envio tradicional
 
-        const formData = new FormData(form) // creamos objeto  'FormData' para capturar los datos facilmente
+        const formData = new FormData(form) // creamos objeto 'FormData'
 
+        const datosTurno = Object.fromEntries(formData.entries()); 
+
+    
         datosTurno.acepto_politicas = formData.has('aceptar_politicas');
+        
+
 
         divRespuesta.innerHTML = 'Reservando...';
         divRespuesta.style.color = 'black';
@@ -19,18 +24,19 @@ document.addEventListener('DOMContentLoaded', () => { //esperamos a que cargue e
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(datosTurno),
+            body: JSON.stringify(datosTurno), // Ahora 'datosTurno' es el objeto que queremos enviar
         })
         .then(response => {
             if (!response.ok){
-                throw new Error('Hubo un problema con el servidor: ' + response.statusText);
+                // Lanzamos el error para que sea capturado por el .catch
+                return response.text().then(text => { 
+                    throw new Error(`Error del servidor: ${response.status} ${response.statusText}. Detalles: ${text}`);
+                });
             }
-
             return response.json();
         })
-
-        then(data =>{
-            console.log('Respues del servidor: ', data);
+        .then(data => {
+            console.log('Respuesta del servidor: ', data);
             divRespuesta.innerHTML = `
                 <div class="card">
                     <h2>¡Tu turno ha sido agendado, ${data.Nombre}!</h2>
@@ -48,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => { //esperamos a que cargue e
         })
         .catch(error => {
             console.error('Error en la reserva:', error);
-            divRespuesta.innerHTML = '<p> Error al reservar: ${error.messaje}</p>';
+            divRespuesta.innerHTML = `<p>Error al reservar: ${error.message}</p>`; 
             divRespuesta.style.color = 'red';
-        })
-    })
-})
+        });
+    });
+});
