@@ -104,5 +104,5 @@ docker exec -i $DB_CONTAINER psql -U $DB_USER -d $DB_NAME <<EOF
 TRUNCATE TABLE cliente, barbero, turno RESTART IDENTITY CASCADE;
 EOF
 
-echo "⏱ Esperando 2 segundos..."
+echo "Esperando 2 segundos..."
 sleep 2
