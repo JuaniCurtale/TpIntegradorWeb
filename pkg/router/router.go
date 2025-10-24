@@ -13,9 +13,6 @@ func NewRouter(dbconn *sql.DB) http.Handler {
 
 	mux.HandleFunc("/", handlers.HandlerDescrip)
 	mux.HandleFunc("/aboutUs", handlers.HandlerAbout)
-	mux.HandleFunc("/sacarTurno", handlers.HandlerSacarTurno)
-	mux.HandleFunc("/formsPost", func(w http.ResponseWriter, r *http.Request) { handlers.HandlerFormsPost(w, r, dbconn) })
-	mux.HandleFunc("/clientes", func(w http.ResponseWriter, r *http.Request) { handlers.HandlerGetClientes(w, r, dbconn) }) //lista de clientes
 
 	mux.HandleFunc("/cliente", handlers.ClienteHandler(queries))  //POST, GET ALL
 	mux.HandleFunc("/cliente/", handlers.ClienteHandler(queries)) // ID, PUT, DELETE
