@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // === CLIENTES ===
+    // CLIENTES
     const formCliente = document.getElementById("form-cliente");
     const clientesContainer = document.getElementById("clientesContainer");
 
@@ -34,20 +34,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 clientesContainer.innerHTML = "";
                 clientes.forEach(c => {
                     const div = document.createElement("div");
-                    div.textContent = `${c.nombre} ${c.apellido} (${c.email || "sin email"})`;
-                    const btnEliminar = document.createElement("button");
-                    btnEliminar.textContent = "Eliminar";
-                    btnEliminar.addEventListener("click", async () => {
-                        await fetch(`/cliente/${c.id}`, { method: "DELETE" });
-                        loadClientes();
-                    });
-                    div.appendChild(btnEliminar);
+                    div.dataset.id = c.id_cliente;
+                    div.innerHTML = `
+                        ${c.nombre} ${c.apellido} (${c.email || "sin email"})
+                        <button class="btn-eliminar">Eliminar</button>
+                    `;
                     clientesContainer.appendChild(div);
                 });
             } catch (err) {
                 console.error("Error cargando clientes:", err);
             }
         }
+
+        // Delegación de eventos para el borrado
+            clientesContainer.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("btn-eliminar")) {
+        const clienteDiv = e.target.closest("div");
+        const id = Number(clienteDiv.dataset.id);
+        if (!id) return;
+
+        try {
+            const res = await fetch(`/cliente/${id}`, { method: "DELETE" });
+            if (!res.ok) console.error("Error del servidor:", await res.text());
+            loadClientes();
+        } catch (err) {
+            console.error("Error eliminando cliente:", err);
+             }
+        }
+    });
+
 
         loadClientes(); // carga inicial
     }
