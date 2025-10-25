@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Cliente - CurtSaide</title>
+</head>
+<body>
+
+<h1>Registrar Cliente</h1>
+
+<form id="form-cliente">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" required placeholder="Juan">
+
+    <label for="apellido">Apellido</label>
+    <input type="text" id="apellido" name="apellido" required placeholder="Pérez">
+
+    <label for="telefono">Teléfono</label>
+    <input type="tel" id="telefono" name="telefono" required placeholder="541112345678">
+
+    <label for="email">Email (opcional)</label>
+    <input type="email" id="email" name="email" placeholder="correo@dominio.com">
+
+    <button type="submit">Crear Cliente</button>
+</form>
+
+<div id="clientesContainer"></div>
+
+<script src="/static/app.js"></script>
+
+</body>
+</html>

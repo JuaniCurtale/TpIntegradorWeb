@@ -23,6 +23,7 @@ func NewRouter(dbconn *sql.DB) http.Handler {
 	mux.HandleFunc("/barbero/", handlers.BarberoHandler(queries)) // ID, PUT, DELETE
 	mux.HandleFunc("/turno", handlers.TurnoHandler(queries))      //POST, GET ALL
 	mux.HandleFunc("/turno/", handlers.TurnoHandler(queries))     // ID, PUT, DELETE
+	mux.HandleFunc("/registrarCliente", handlers.HandlerRegistrarCliente)
 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 

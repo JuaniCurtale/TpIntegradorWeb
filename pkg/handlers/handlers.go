@@ -118,3 +118,7 @@ func HandlerGetClientes(w http.ResponseWriter, r *http.Request, dbConn *sql.DB) 
 		http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
 	}
 }
+
+func HandlerRegistrarCliente(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/registrarCliente.html")
+}
