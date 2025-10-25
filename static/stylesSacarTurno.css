@@ -152,3 +152,52 @@ body {
     box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
     transform: translateY(-2px);
 }
+
+.card {
+    background: rgba(20, 20, 20, 0.85); 
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffd369;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    margin: 10px 0;
+}
+
+.card button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffd369, #d4af37);
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.oculto {
+    display: none;
+}

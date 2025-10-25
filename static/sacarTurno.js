@@ -1,61 +1,108 @@
-document.addEventListener('DOMContentLoaded', () => { //esperamos a que cargue el dominio (html)
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-turno');
 
-    const form = document.getElementById('turnoForm'); // seleccionamos el formulario
-    const divRespuesta = document.getElementById('respuestaApi') // obtenemos la respuesta de la api
+    if (!form) {
+        console.error("Error: No se encontró el formulario 'form-turno'.");
+        return;
+    }
 
-    form.addEventListener('submit', (event) => { //el activador es el envio de los datos
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const divRespuestaInterna = document.getElementById('respuestaApi');
+        const contenedorExito = document.getElementById('contenedorExito');
+
+        if (!contenedorExito) {
+            console.error("Error: No se encontró el div 'contenedorExito'.");
+            if(divRespuestaInterna){
+                divRespuestaInterna.innerHTML = `<p>Error: No se encontró el div 'contenedorExito'.</p>`;
+                divRespuestaInterna.style.color = 'red';
+            }
+            return;
+        }
+
+        // Resetea la UI al enviar
+        contenedorExito.classList.add('oculto');
+        form.style.display = 'block';
+
+        const formData = {
+                nombre: form.nombre.value,
+                telefono: form.telefono.value,
+                email: form.email.value,
+                servicio: form.servicio.value,
+                barbero: form.barbero.value,
+                fecha: form.fecha.value,
+                hora: form.hora.value,
+                notas: form.notas.value
+            };
+
+        // Mapeo de valores del form a IDs/datos para el API
+        const barberoMap = { 'martin': 1, 'sofia': 2, 'lucas': 3, 'cualquiera': 1 };
+        const servicioMap = { 'corte': 'Corte', 'barba': 'Barba', 'corte-barba': 'Corte + Barba', 'afeitado': 'Afeitado tradicional', 'color': 'Color/Matiz' };
         
-        event.preventDefault(); //prevenimos el envio tradicional
-
-        const formData = new FormData(form) // creamos objeto 'FormData'
-
-        const datosTurno = Object.fromEntries(formData.entries()); 
-
-    
-        datosTurno.acepto_politicas = formData.has('aceptar_politicas');
+        const fechaHoraISO = `${formData.fecha}T${formData.hora}:00Z`;
         
+        // ID de cliente fijo (hardcodeado) para que la llamada funcione
+        const idClienteFijo = 2; 
 
+        const datosParaApi = {
+        id_cliente: idClienteFijo,
+        id_barbero: barberoMap[formData.barbero],
+        fechahora: fechaHoraISO,
+        servicio: servicioMap[formData.servicio],
+        observaciones: {
+            String: formData.notas,
+            Valid: formData.notas !== "" && formData.notas !== null 
+            }
+        };
 
-        divRespuesta.innerHTML = 'Reservando...';
-        divRespuesta.style.color = 'black';
+        divRespuestaInterna.innerHTML = 'Reservando...';
+        divRespuestaInterna.style.color = 'black';
 
-        fetch('/formsPost', {
+        fetch('/turno', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(datosTurno), // Ahora 'datosTurno' es el objeto que queremos enviar
+            body: JSON.stringify(datosParaApi),
         })
         .then(response => {
-            if (!response.ok){
-                // Lanzamos el error para que sea capturado por el .catch
-                return response.text().then(text => { 
-                    throw new Error(`Error del servidor: ${response.status} ${response.statusText}. Detalles: ${text}`);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Error ${response.status}: ${text}`);
                 });
             }
             return response.json();
         })
         .then(data => {
-            console.log('Respuesta del servidor: ', data);
-            divRespuesta.innerHTML = `
+            // Éxito: Oculta el form y muestra la card de éxito
+            console.log('Respuesta de la API (turno creado): ', data);
+
+            form.style.display = 'none';
+            divRespuestaInterna.innerHTML = '';
+            contenedorExito.classList.remove('oculto');
+            
+            contenedorExito.innerHTML = `
                 <div class="card">
-                    <h2>¡Tu turno ha sido agendado, ${data.Nombre}!</h2>
-                    <p class="subtitle">Detalles de tu reserva:</p>
-                    <p><strong>Teléfono:</strong> ${data.Telefono}</p>
-                    <p><strong>Email:</strong> ${data.Email || 'No provisto'}</p>
-                    <p><strong>Servicio:</strong> ${data.Servicio}</p>
-                    <p><strong>Barbero:</strong> ${data.Barbero}</p>
-                    <p><strong>Fecha:</strong> ${data.Fecha}</p>
-                    <p><strong>Hora:</strong> ${data.Hora}</p>
-                    <p><strong>Notas:</strong> ${data.Notas || 'Ninguna'}</p>
+                    <h2>¡Tu turno ha sido agendado!</h2>
+                    <p><strong>Nombre:</strong> ${formData.nombre}</p>
+                    <p><strong>Barbero:</strong> ${formData.barbero}</p>
+                    <p><strong>Servicio:</strong> ${data.servicio}</p>
+                    <p><strong>Fecha:</strong> ${new Date(data.fechahora).toLocaleString()}</p>
+                    <p><strong>ID de Reserva:</strong> ${data.IDTurno}</p> 
+                    <br>
+                    <button id="btnOtraReserva" type="button">Hacer otra reserva</button>
                 </div>`;
-            divRespuesta.style.color = 'green';
-            form.reset();
+
+            document.getElementById('btnOtraReserva').addEventListener('click', () => {
+                window.location.reload();
+            });
         })
         .catch(error => {
+            // Error: Muestra el mensaje en el div interno
             console.error('Error en la reserva:', error);
-            divRespuesta.innerHTML = `<p>Error al reservar: ${error.message}</p>`; 
-            divRespuesta.style.color = 'red';
+            divRespuestaInterna.innerHTML = `<p>Error al reservar: ${error.message}</p>`;
+            divRespuestaInterna.style.color = 'red';
         });
     });
 });
