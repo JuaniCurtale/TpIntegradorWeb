@@ -66,4 +66,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
         loadClientes(); // carga inicial
     }
+
+    // BARBEROS
+const formBarbero = document.getElementById("form-barbero");
+const barberosContainer = document.getElementById("barberosContainer");
+
+if (formBarbero) {
+    // Envío de formulario barbero
+    formBarbero.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+            nombre: formBarbero.nombre.value,
+            apellido: formBarbero.apellido.value,
+            especialidad: formBarbero.especialidad.value
+        };
+        try {
+            await fetch("/barbero", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            formBarbero.reset();
+            loadBarberos();
+        } catch (err) {
+            console.error("Error creando barbero:", err);
+        }
+    });
+
+    // Cargar barberos
+    async function loadBarberos() {
+        try {
+            const res = await fetch("/barbero");
+            let barberos = await res.json();
+            console.log("Barberos recibidos:", barberos);
+
+            // Asegurarnos de que sea un array
+            if (!barberos || !Array.isArray(barberos)) {
+                console.warn("La API no devolvió un array, usando array vacío");
+                barberos = [];
+            }
+
+            barberosContainer.innerHTML = "";
+
+            barberos.forEach(b => {
+                const div = document.createElement("div");
+                div.dataset.id = b.id_barbero;
+                div.innerHTML = `
+                    ${b.nombre} ${b.apellido} (${b.especialidad})
+                    <button class="btn-eliminar-barbero">Eliminar</button>
+                `;
+                barberosContainer.appendChild(div);
+            });
+
+        } catch (err) {
+            console.error("Error cargando barberos:", err);
+        }
+    }
+
+    // Delegación de eventos para el borrado
+    barberosContainer.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("btn-eliminar-barbero")) {
+            const barberoDiv = e.target.closest("div");
+            const id = Number(barberoDiv.dataset.id);
+            if (!id) return;
+
+            try {
+                const res = await fetch(`/barbero/${id}`, { method: "DELETE" });
+                if (!res.ok) console.error("Error del servidor:", await res.text());
+                loadBarberos();
+            } catch (err) {
+                console.error("Error eliminando barbero:", err);
+            }
+        }
+    });
+
+    loadBarberos(); // carga inicial
+}
+
 });
+

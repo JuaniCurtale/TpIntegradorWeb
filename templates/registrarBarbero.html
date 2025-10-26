@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Barbero - CurtSaide</title>
+</head>
+<body>
+
+<h1>Registrar Barbero</h1>
+
+<form id="form-barbero">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" required placeholder="Martín">
+
+    <label for="apellido">Apellido</label>
+    <input type="text" id="apellido" name="apellido" required placeholder="García">
+
+    <label for="especialidad">Especialidad</label>
+    <input type="text" id="especialidad" name="especialidad" required placeholder="Corte, Barba, etc.">
+
+    <button type="submit">Crear Barbero</button>
+</form>
+
+<div id="barberosContainer"></div>
+
+<script src="/static/app.js"></script>
+
+</body>
+</html>

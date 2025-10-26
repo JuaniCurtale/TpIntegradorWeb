@@ -122,3 +122,7 @@ func HandlerGetClientes(w http.ResponseWriter, r *http.Request, dbConn *sql.DB) 
 func HandlerRegistrarCliente(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "templates/registrarCliente.html")
 }
+
+func HandlerRegistrarBarbero(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/registrarBarbero.html")
+}
