@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
         async function loadClientes() {
             try {
                 const res = await fetch("/cliente");
-                const clientes = await res.json();
+                let clientes = await res.json();
+                if (!clientes || !Array.isArray(clientes)) clientes = [];
                 clientesContainer.innerHTML = "";
                 clientes.forEach(c => {
                     const div = document.createElement("div");
