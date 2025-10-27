@@ -16,6 +16,13 @@ func ConectarDB() *sql.DB { //CONEXION A LA BASE DATOS
 	port := os.Getenv("DB_PORT")
 	dbname := os.Getenv("DB_NAME")
 
+	fmt.Println("--- LEYENDO VARIABLES DE ENTORNO ---")
+	fmt.Printf("DB_HOST: [%s]\n", host)
+	fmt.Printf("DB_PORT: [%s]\n", port)
+	fmt.Printf("DB_USER: [%s]\n", user)
+	fmt.Printf("DB_NAME: [%s]\n", dbname)
+	fmt.Println("------------------------------------")
+
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
 	dbConn, err := sql.Open("postgres", dsn)
 	if err != nil {

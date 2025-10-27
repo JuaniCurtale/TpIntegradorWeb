@@ -153,6 +153,24 @@ func (q *Queries) GetBarberoByID(ctx context.Context, idBarbero int32) (Barbero,
 	return i, err
 }
 
+const getClienteByEmail = `-- name: GetClienteByEmail :one
+SELECT id_cliente, nombre, apellido, telefono, email FROM Cliente
+WHERE email = $1
+`
+
+func (q *Queries) GetClienteByEmail(ctx context.Context, email sql.NullString) (Cliente, error) {
+	row := q.db.QueryRowContext(ctx, getClienteByEmail, email)
+	var i Cliente
+	err := row.Scan(
+		&i.IDCliente,
+		&i.Nombre,
+		&i.Apellido,
+		&i.Telefono,
+		&i.Email,
+	)
+	return i, err
+}
+
 const getClienteByID = `-- name: GetClienteByID :one
 SELECT id_cliente, nombre, apellido, telefono, email FROM Cliente
 WHERE id_cliente = $1
@@ -188,6 +206,76 @@ func (q *Queries) GetTurnoByID(ctx context.Context, idTurno int32) (Turno, error
 		&i.Observaciones,
 	)
 	return i, err
+}
+
+const getTurnosByBarberoID = `-- name: GetTurnosByBarberoID :many
+SELECT id_turno, id_cliente, id_barbero, fechahora, servicio, observaciones FROM Turno
+WHERE id_barbero = $1
+`
+
+func (q *Queries) GetTurnosByBarberoID(ctx context.Context, idBarbero int32) ([]Turno, error) {
+	rows, err := q.db.QueryContext(ctx, getTurnosByBarberoID, idBarbero)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Turno
+	for rows.Next() {
+		var i Turno
+		if err := rows.Scan(
+			&i.IDTurno,
+			&i.IDCliente,
+			&i.IDBarbero,
+			&i.Fechahora,
+			&i.Servicio,
+			&i.Observaciones,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getTurnosByClienteID = `-- name: GetTurnosByClienteID :many
+SELECT id_turno, id_cliente, id_barbero, fechahora, servicio, observaciones FROM Turno
+WHERE id_cliente = $1
+`
+
+func (q *Queries) GetTurnosByClienteID(ctx context.Context, idCliente int32) ([]Turno, error) {
+	rows, err := q.db.QueryContext(ctx, getTurnosByClienteID, idCliente)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Turno
+	for rows.Next() {
+		var i Turno
+		if err := rows.Scan(
+			&i.IDTurno,
+			&i.IDCliente,
+			&i.IDBarbero,
+			&i.Fechahora,
+			&i.Servicio,
+			&i.Observaciones,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listBarberos = `-- name: ListBarberos :many
