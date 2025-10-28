@@ -110,7 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     verTodosBtn.addEventListener('click', async () => {
         try {
-            const response = await fetch('/api/turnos');
+            const response = await fetch('/turno', {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             const turnos = await response.json();
 
             listaTurnos.innerHTML = ''; // Limpiar lista

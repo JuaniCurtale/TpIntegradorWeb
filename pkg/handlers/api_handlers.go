@@ -20,8 +20,19 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "cliente" {
-				w.Header().Set("Content-Type", "text/html; charset=utf-8")
-				http.ServeFile(w, r, "templates/cliente.html")
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					clientes, err := queries.ListClientes(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(clientes)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/cliente.html")
+				}
 				return
 			} else if len(parts) == 2 && parts[0] == "cliente" {
 				// GET by ID
@@ -147,8 +158,19 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "barbero" {
-				w.Header().Set("Content-Type", "text/html; charset=utf-8")
-				http.ServeFile(w, r, "templates/barbero.html")
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					barberos, err := queries.ListBarberos(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(barberos)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/barbero.html")
+				}
 				return
 			} else if len(parts) == 2 && parts[0] == "barbero" {
 				// GET by ID
@@ -268,10 +290,20 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "turno" {
-				w.Header().Set("Content-Type", "text/html; charset=utf-8")
-				http.ServeFile(w, r, "templates/turno.html")
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					turnos, err := queries.ListTurnos(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(turnos)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/turno.html")
+				}
 				return
-
 			} else if len(parts) == 2 && parts[0] == "turno" {
 				id64, err := strconv.ParseInt(parts[1], 10, 32)
 				if err != nil {
@@ -464,109 +496,4 @@ func NullableString(ns sql.NullString) interface{} {
 		return ns.String
 	}
 	return nil
-}
-
-func ListClientesHandler(queries *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		clientes, err := queries.ListClientes(r.Context())
-		if err != nil {
-			http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(clientes)
-	}
-}
-
-func ListBarberosHandler(queries *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		barberos, err := queries.ListBarberos(r.Context())
-		if err != nil {
-			http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(barberos)
-	}
-}
-
-func ListTurnosHandler(queries *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		turnos, err := queries.ListTurnos(r.Context())
-		if err != nil {
-			http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(turnos)
-	}
-}
-
-func ListTurnosByClienteIDHandler(queries *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		path := strings.Trim(r.URL.Path, "/")
-		parts := strings.Split(path, "/")
-
-		if len(parts) != 4 || parts[2] != "cliente" {
-			http.NotFound(w, r)
-			return
-		}
-
-		id64, err := strconv.ParseInt(parts[3], 10, 32)
-		if err != nil {
-			http.Error(w, "ID de cliente inválido", http.StatusBadRequest)
-			return
-		}
-		id := int32(id64)
-
-		turnos, err := queries.GetTurnosByClienteID(r.Context(), id)
-		if err != nil {
-			if err == sql.ErrNoRows {
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode([]db.Turno{})
-			} else {
-				http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			}
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(turnos)
-	}
-}
-
-func ListTurnosByBarberoIDHandler(queries *db.Queries) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		path := strings.Trim(r.URL.Path, "/")
-		parts := strings.Split(path, "/")
-
-		if len(parts) != 4 || parts[2] != "barbero" {
-			http.NotFound(w, r)
-			return
-		}
-
-		id64, err := strconv.ParseInt(parts[3], 10, 32)
-		if err != nil {
-			http.Error(w, "ID de barbero inválido", http.StatusBadRequest)
-			return
-		}
-		id := int32(id64)
-
-		turnos, err := queries.GetTurnosByBarberoID(r.Context(), id)
-		if err != nil {
-			if err == sql.ErrNoRows {
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode([]db.Turno{})
-			} else {
-				http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
-			}
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(turnos)
-	}
 }

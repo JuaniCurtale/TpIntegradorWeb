@@ -35,7 +35,11 @@ const listaBarberos = document.getElementById('lista-barberos');
 
 verTodosBtn.addEventListener('click', async () => {
     try {
-        const response = await fetch('/api/barberos');
+        const response = await fetch('/barbero', {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         const barberos = await response.json();
 
         listaBarberos.innerHTML = ''; // Limpiar lista
@@ -70,7 +74,6 @@ verTodosBtn.addEventListener('click', async () => {
                 <td>${barbero.especialidad.String}</td>
                 <td>
                     <button class="delete-btn" data-id="${barbero.id_barbero}">X</button>
-                    <button class="ver-turnos-btn" data-id="${barbero.id_barbero}">Ver Turnos</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -94,54 +97,6 @@ verTodosBtn.addEventListener('click', async () => {
                     } catch (err) {
                         alert(`Error de red: ${err.message}`);
                     }
-                }
-            }
-
-            if (e.target.classList.contains('ver-turnos-btn')) {
-                const id = e.target.dataset.id;
-                const turnosDiv = document.getElementById('turnos-barbero');
-                try {
-                    const response = await fetch(`/api/turnos/barbero/${id}`);
-                    const turnos = await response.json();
-
-                    turnosDiv.innerHTML = ''; // Limpiar lista
-
-                    if (turnos.length === 0) {
-                        turnosDiv.innerHTML = '<p>No hay turnos para este barbero.</p>';
-                        return;
-                    }
-
-                    const turnosTable = document.createElement('table');
-                    turnosTable.classList.add('results-table');
-
-                    turnosTable.innerHTML = `
-                        <thead>
-                            <tr>
-                                <th>Turno ID</th>
-                                <th>Cliente ID</th>
-                                <th>Fecha</th>
-                                <th>Servicio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    `;
-
-                    const turnosTbody = turnosTable.querySelector('tbody');
-                    turnos.forEach(turno => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${turno.id_turno}</td>
-                            <td>${turno.id_cliente}</td>
-                            <td>${new Date(turno.fechahora).toLocaleString()}</td>
-                            <td>${turno.servicio}</td>
-                        `;
-                        turnosTbody.appendChild(tr);
-                    });
-                    turnosDiv.appendChild(turnosTable);
-                } catch (error) {
-                    turnosDiv.innerHTML = '<p>Error al cargar los turnos.</p>';
-                    console.error('Error:', error);
                 }
             }
         });
