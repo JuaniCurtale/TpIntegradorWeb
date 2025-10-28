@@ -329,6 +329,7 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 			if len(parts) == 1 && parts[0] == "turno" {
 				// CREATE
 				var input struct {
+					IDCliente     int32          `json:"id_cliente"`
 					Nombre        string         `json:"nombre"`
 					Telefono      string         `json:"telefono"`
 					Email         string         `json:"email"`
@@ -337,47 +338,68 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 					Servicio      string         `json:"servicio"`
 					Observaciones sql.NullString `json:"observaciones"`
 				}
+
 				if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 					fmt.Println("json.NewDecoder error:", err)
 					http.Error(w, "JSON inválido", http.StatusBadRequest)
 					return
 				}
+
 				if input.Fechahora.IsZero() || input.Servicio == "" {
 					http.Error(w, "Fechahora y servicio son obligatorios", http.StatusBadRequest)
 					return
 				}
 
-				// Get or create a client
-				cliente, err := queries.GetClienteByEmail(r.Context(), sql.NullString{String: input.Email, Valid: input.Email != ""})
-				if err != nil {
-					if err == sql.ErrNoRows {
-						// Client does not exist, create a new one
-						nombreCompleto := strings.SplitN(input.Nombre, " ", 2)
-						nombre := nombreCompleto[0]
-						apellido := ""
-						if len(nombreCompleto) > 1 {
-							apellido = nombreCompleto[1]
-						}
+				// ----------------------------
+				// BLOQUE PARA OBTENER O CREAR CLIENTE
+				// ----------------------------
+				var cliente db.Cliente
+				var err error
 
-						cliente, err = queries.CreateCliente(r.Context(), db.CreateClienteParams{
-							Nombre:   nombre,
-							Apellido: apellido,
-							Telefono: sql.NullString{String: input.Telefono, Valid: input.Telefono != ""},
-							Email:    sql.NullString{String: input.Email, Valid: input.Email != ""},
-						})
-						if err != nil {
-							fmt.Println("CreateCliente error:", err)
-							http.Error(w, "Error al crear cliente", http.StatusInternalServerError)
-							return
-						}
-					} else {
-						// Other error
-						fmt.Println("GetClienteByEmail error:", err)
-						http.Error(w, "Error al buscar cliente", http.StatusInternalServerError)
+				if input.IDCliente != 0 {
+					// Usar el cliente que ya existe
+					cliente, err = queries.GetClienteByID(r.Context(), input.IDCliente)
+					if err != nil {
+						http.Error(w, "Cliente no encontrado", http.StatusBadRequest)
 						return
 					}
+				} else if input.Email != "" {
+					// Buscar por email
+					cliente, err = queries.GetClienteByEmail(r.Context(), sql.NullString{String: input.Email, Valid: true})
+					if err != nil {
+						if err == sql.ErrNoRows {
+							// Cliente no existe, lo creamos
+							nombreCompleto := strings.SplitN(input.Nombre, " ", 2)
+							nombre := nombreCompleto[0]
+							apellido := ""
+							if len(nombreCompleto) > 1 {
+								apellido = nombreCompleto[1]
+							}
+
+							cliente, err = queries.CreateCliente(r.Context(), db.CreateClienteParams{
+								Nombre:   nombre,
+								Apellido: apellido,
+								Telefono: sql.NullString{String: input.Telefono, Valid: input.Telefono != ""},
+								Email:    sql.NullString{String: input.Email, Valid: true},
+							})
+							if err != nil {
+								fmt.Println("CreateCliente error:", err)
+								http.Error(w, "Error al crear cliente", http.StatusInternalServerError)
+								return
+							}
+						} else {
+							http.Error(w, "Error al buscar cliente", http.StatusInternalServerError)
+							return
+						}
+					}
+				} else {
+					http.Error(w, "Debe pasar id_cliente o email para crear turno", http.StatusBadRequest)
+					return
 				}
 
+				// ----------------------------
+				// CREAR EL TURNO
+				// ----------------------------
 				turnos, err := queries.ListTurnos(r.Context())
 				if err != nil {
 					http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -416,6 +438,7 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 					http.Error(w, "Error al crear turno", http.StatusInternalServerError)
 					return
 				}
+
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusCreated)
 				json.NewEncoder(w).Encode(turno)

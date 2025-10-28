@@ -32,7 +32,7 @@ echo "CLIENTES"
 echo "==============================="
 
 echo "Creo cliente"
-curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}'
+curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678", "email": "juan@mail.com"}'
 
 echo "Listo clientes"
 curl_request GET "cliente"
@@ -81,7 +81,7 @@ echo "Creo barbero para turno"
 curl_request POST "barbero" '{"nombre": "Carlos", "apellido": "Gomez", "especialidad": "Cortes modernos"}'
 
 echo "Creo cliente para turno"
-curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678"}'
+curl_request POST "cliente" '{"nombre": "Juan", "apellido": "Perez", "telefono": "12345678", "email": "juanp@gmail.com"}'
 
 echo "Creo turno"
 curl_request POST "turno" '{"id_cliente":2,"id_barbero":2,"fechahora":"2026-10-15T15:00:00Z","servicio":"Corte de pelo"}'
