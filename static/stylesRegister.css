@@ -6,11 +6,11 @@ body {
     align-items: flex-start; 
     height: 100vh;
     margin: 0;
-    background-image: url('BarberFondo.jpg'); 
+    background-image: url('fondoabout2.png'); 
     color: #f0f0f0;
 }
 
-.form-turno {
+.form-turno, .form-cliente, .form-barbero {
     max-width: 500px;
     margin: 30px auto;
     padding: 35px;
@@ -22,7 +22,7 @@ body {
     
 }
  
-.form-turno h1 {
+.form-turno h1, .form-cliente h1, .form-barbero h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
     margin-bottom: 20px;
@@ -32,7 +32,7 @@ body {
 }
 
 
-.form-turno fieldset {
+.form-turno fieldset, .form-cliente fieldset, .form-barbero fieldset {
     border: none;
     justify-content: center;
     padding: 10px;
@@ -40,15 +40,15 @@ body {
 
 
 
-.form-turno label {
+.form-turno label, .form-cliente label, .form-barbero label {
     display: block;
     margin-top: 15px;
     font-weight: 500;
 }
 
-.form-turno input,
-.form-turno select,
-.form-turno textarea {
+.form-turno input, .form-cliente input, .form-barbero input,
+.form-turno select, .form-cliente select, .form-barbero select,
+.form-turno textarea, .form-cliente textarea, .form-barbero textarea {
     width: 100%;
     padding: 10px;
     margin-top: 6px;
@@ -63,14 +63,14 @@ body {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-turno input:focus,
-.form-turno select:focus,
-.form-turno textarea:focus {
+.form-turno input:focus, .form-cliente input:focus, .form-barbero input:focus,
+.form-turno select:focus, .form-cliente select:focus, .form-barbero select:focus,
+.form-turno textarea:focus, .form-cliente textarea:focus, .form-barbero textarea:focus {
     border-color: #ffd369;
     box-shadow: 0 0 5px #ffd369;
 }
 
-.form-turno button {
+.form-turno button, .form-cliente button, .form-barbero button {
     margin-top: 20px;
     width: 100%;
     padding: 12px;
@@ -84,12 +84,14 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-turno button:hover {
+.form-turno button:hover, .form-cliente button:hover, .form-barbero button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
-.form-turno label input[type="checkbox"] {
+.form-turno label input[type="checkbox"],
+.form-cliente label input[type="checkbox"],
+.form-barbero label input[type="checkbox"] {
     width: 16px;
     height: 16px;
     margin-right: 8px;
@@ -151,4 +153,84 @@ body {
     background: #ffd369;
     box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
     transform: translateY(-2px);
+}
+
+.card {
+    background: rgba(20, 20, 20, 0.85); 
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffd369;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    margin: 10px 0;
+}
+
+.card button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffd369, #d4af37);
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.oculto {
+    display: none;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(20, 20, 20, 0.85); 
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #ffd369;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #ffd369;
+    color: black;
+}
+
+.results-table tr:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }

@@ -10,10 +10,14 @@ BASE_URL="http://localhost:8080"   # URL de la API
 
 function curl_request() {
     # $1 = método, $2 = endpoint, $3 = body (opcional)
-    if [ -z "$3" ]; then # se chequea con -z si el body esta vacio
-        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2")
+    if [ -z "$3" ]; then
+        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2" \
+            -H "Accept: application/json")
     else
-        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2" -H "Content-Type: application/json" -d "$3")
+        response=$(curl -s -w "\n%{http_code}" -X "$1" "$BASE_URL/$2" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "$3")
     fi
     http_code=$(echo "$response" | tail -n1)
     body=$(echo "$response" | head -n-1)
@@ -21,6 +25,7 @@ function curl_request() {
     echo "BODY: $body"
     echo
 }
+
 
 echo "==============================="
 echo "CLIENTES"

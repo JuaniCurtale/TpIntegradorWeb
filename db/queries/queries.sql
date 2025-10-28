@@ -1,4 +1,3 @@
-
 -- CRUD para Cliente
 
 -- name: CreateCliente :one
@@ -23,6 +22,10 @@ SET nombre = $2,
 
 WHERE id_cliente = $1
 RETURNING *;
+
+-- name: GetClienteByEmail :one
+SELECT * FROM Cliente
+WHERE email = $1;
 
 -- name: DeleteCliente :exec
 DELETE FROM Cliente
@@ -85,3 +88,11 @@ RETURNING *;
 -- name: DeleteTurno :exec
 DELETE FROM Turno
 WHERE id_turno = $1;
+
+-- name: GetTurnosByClienteID :many
+SELECT * FROM Turno
+WHERE id_cliente = $1;
+
+-- name: GetTurnosByBarberoID :many
+SELECT * FROM Turno
+WHERE id_barbero = $1;

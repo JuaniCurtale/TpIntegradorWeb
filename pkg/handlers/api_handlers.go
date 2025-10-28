@@ -20,14 +20,19 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "cliente" {
-				// GET all
-				clientes, err := queries.ListClientes(r.Context())
-				if err != nil {
-					http.Error(w, "Error interno", http.StatusInternalServerError)
-					return
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					clientes, err := queries.ListClientes(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(clientes)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/cliente.html")
 				}
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode(clientes)
 				return
 			} else if len(parts) == 2 && parts[0] == "cliente" {
 				// GET by ID
@@ -153,14 +158,19 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "barbero" {
-				// GET all
-				barbero, err := queries.ListBarberos(r.Context())
-				if err != nil {
-					http.Error(w, "Error interno", http.StatusInternalServerError)
-					return
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					barberos, err := queries.ListBarberos(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(barberos)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/barbero.html")
 				}
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode(barbero)
 				return
 			} else if len(parts) == 2 && parts[0] == "barbero" {
 				// GET by ID
@@ -280,17 +290,21 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 		switch r.Method {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "turno" {
-				// GET all
-				turnos, err := queries.ListTurnos(r.Context())
-				if err != nil {
-					http.Error(w, "Error interno", http.StatusInternalServerError)
-					return
+				if strings.Contains(r.Header.Get("Accept"), "application/json") {
+					// GET all (API)
+					turnos, err := queries.ListTurnos(r.Context())
+					if err != nil {
+						http.Error(w, "Error interno", http.StatusInternalServerError)
+						return
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(turnos)
+				} else {
+					// GET Page (Browser)
+					http.ServeFile(w, r, "templates/turno.html")
 				}
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode(turnos)
 				return
 			} else if len(parts) == 2 && parts[0] == "turno" {
-				// GET by ID
 				id64, err := strconv.ParseInt(parts[1], 10, 32)
 				if err != nil {
 					http.Error(w, "ID inválido", http.StatusBadRequest)
@@ -315,7 +329,9 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 			if len(parts) == 1 && parts[0] == "turno" {
 				// CREATE
 				var input struct {
-					IDCliente     int32          `json:"id_cliente"`
+					Nombre        string         `json:"nombre"`
+					Telefono      string         `json:"telefono"`
+					Email         string         `json:"email"`
 					IDBarbero     int32          `json:"id_barbero"`
 					Fechahora     time.Time      `json:"fechahora"`
 					Servicio      string         `json:"servicio"`
@@ -331,6 +347,37 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 					return
 				}
 
+				// Get or create a client
+				cliente, err := queries.GetClienteByEmail(r.Context(), sql.NullString{String: input.Email, Valid: input.Email != ""})
+				if err != nil {
+					if err == sql.ErrNoRows {
+						// Client does not exist, create a new one
+						nombreCompleto := strings.SplitN(input.Nombre, " ", 2)
+						nombre := nombreCompleto[0]
+						apellido := ""
+						if len(nombreCompleto) > 1 {
+							apellido = nombreCompleto[1]
+						}
+
+						cliente, err = queries.CreateCliente(r.Context(), db.CreateClienteParams{
+							Nombre:   nombre,
+							Apellido: apellido,
+							Telefono: sql.NullString{String: input.Telefono, Valid: input.Telefono != ""},
+							Email:    sql.NullString{String: input.Email, Valid: input.Email != ""},
+						})
+						if err != nil {
+							fmt.Println("CreateCliente error:", err)
+							http.Error(w, "Error al crear cliente", http.StatusInternalServerError)
+							return
+						}
+					} else {
+						// Other error
+						fmt.Println("GetClienteByEmail error:", err)
+						http.Error(w, "Error al buscar cliente", http.StatusInternalServerError)
+						return
+					}
+				}
+
 				turnos, err := queries.ListTurnos(r.Context())
 				if err != nil {
 					http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -338,20 +385,28 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 				}
 
 				nuevoTurno := db.Turno{
-					IDCliente:     input.IDCliente,
+					IDCliente:     cliente.IDCliente,
 					IDBarbero:     input.IDBarbero,
 					Fechahora:     input.Fechahora,
 					Servicio:      input.Servicio,
 					Observaciones: input.Observaciones,
 				}
 
-				if !logic.TurnoValido(nuevoTurno, turnos) {
-					http.Error(w, "Turno inválido", http.StatusBadRequest)
+				if !logic.HorarioValido(nuevoTurno.Fechahora) {
+					http.Error(w, "Horario inválido, por favor pida con una hora de anticipación.", http.StatusBadRequest)
+					return
+				}
+				if !logic.PuedeReservar(nuevoTurno.IDCliente, turnos) {
+					http.Error(w, "El cliente ya tiene un turno pendiente.", http.StatusBadRequest)
+					return
+				}
+				if !logic.BarberoDisponible(nuevoTurno.IDBarbero, nuevoTurno.Fechahora, turnos) {
+					http.Error(w, "El barbero no está disponible en ese horario.", http.StatusBadRequest)
 					return
 				}
 
 				turno, err := queries.CreateTurno(r.Context(), db.CreateTurnoParams{
-					IDCliente:     input.IDCliente,
+					IDCliente:     cliente.IDCliente,
 					IDBarbero:     input.IDBarbero,
 					Fechahora:     input.Fechahora,
 					Servicio:      input.Servicio,
