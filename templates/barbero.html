@@ -5,23 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Barbero</title>
     <link rel="stylesheet" href="/static/stylesRegister.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <form accept-charset="utf-8" autocomplete="on" class="form-barbero" id="form-barbero">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+    <div class="page">
+        <section class="panel left-panel">
+            <form accept-charset="utf-8" autocomplete="on" class="form-barbero" id="form-barbero">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-            <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" required>
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
 
-            <label for="especialidad">Especialidad:</label>
-            <input type="text" id="especialidad" name="especialidad">
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" name="especialidad">
 
-            <button type="submit">Crear Barbero</button>
-        </form>
-        <div id="respuestaApi"></div>
-        <button id="ver-todos-barberos">Ver todos</button>
-        <div id="lista-barberos"></div>
+                <button type="submit">Crear Barbero</button>
+            </form>
+            <div id="respuestaApi"></div>
+        </section>
+
+        <aside class="panel right-panel list-panel">
+            <div class="hero-bg message-success hidden" id="msg-success">Barbero creado con éxito.</div>
+            <button id="ver-todos-barberos">Ver todos</button>
+            <div id="lista-barberos"></div>
+        </aside>
     </div>
     <script src="/static/barbero.js"></script>
 </body>
