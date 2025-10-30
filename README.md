@@ -93,6 +93,10 @@ En el caso que desee construir la app, levantar Docker y acceder a la aplicacion
 ```
 docker-compose up --build
 ```
+Para correr los testeo ejecuta el siguiente comando:
+```
+bash requests.sh
+```
 4.  **Acceder a la aplicación**: Abre tu navegador y ve a `http://localhost:8080`.
 
 5. **Navegacion dentro de la aplicacion**
