@@ -48,7 +48,6 @@ En los Trabajos Prácticos N.º 3 y 4 (TP3 y TP4) se integraron ambas capas, se 
     │       └── router.go        # Definición de las rutas
     ├── static/                  # Archivos estáticos (CSS, JS, imágenes)
     ├── templates/               # Plantillas HTML
-    ├── .env                     # Archivo con variables de entorno (no versionado)
     ├── .gitignore
     ├── docker-compose.yml       # Orquestación de los contenedores
     ├── Dockerfile               # Definición del contenedor de la aplicación
