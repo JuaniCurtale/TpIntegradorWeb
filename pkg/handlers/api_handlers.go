@@ -21,10 +21,6 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "cliente" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-<<<<<<< HEAD
-=======
-					// GET all (API)
->>>>>>> d660bfc3464353e374087e3df073da6174584849
 					clientes, err := queries.ListClientes(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -33,10 +29,6 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 					w.Header().Set("Content-Type", "application/json")
 					json.NewEncoder(w).Encode(clientes)
 				} else {
-<<<<<<< HEAD
-=======
-					// GET Page (Browser)
->>>>>>> d660bfc3464353e374087e3df073da6174584849
 					http.ServeFile(w, r, "templates/cliente.html")
 				}
 				return
@@ -163,10 +155,6 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "barbero" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-<<<<<<< HEAD
-=======
-					// GET all (API)
->>>>>>> d660bfc3464353e374087e3df073da6174584849
 					barberos, err := queries.ListBarberos(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -175,10 +163,6 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 					w.Header().Set("Content-Type", "application/json")
 					json.NewEncoder(w).Encode(barberos)
 				} else {
-<<<<<<< HEAD
-=======
-					// GET Page (Browser)
->>>>>>> d660bfc3464353e374087e3df073da6174584849
 					http.ServeFile(w, r, "templates/barbero.html")
 				}
 				return
@@ -299,10 +283,6 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "turno" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-<<<<<<< HEAD
-=======
-					// GET all (API)
->>>>>>> d660bfc3464353e374087e3df073da6174584849
 					turnos, err := queries.ListTurnos(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
