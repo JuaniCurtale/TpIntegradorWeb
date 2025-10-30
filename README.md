@@ -83,7 +83,13 @@ Se han añadido secciones que permiten acceder a los clientes, turnos y barberos
     APP_PORT=8080 
     ```
 3. **Construccion de la app y levantamiento del contenedor**   
-Ejecuta el siguiente comando para construir la aplicación, levantar los contenedores y ejecutar los tests:
+Ejecuta el siguiente comando para construir la aplicación, levantar los contenedores y ejecutar los tests
+En Linux:
+```
+./runtest.sh
+```
+
+En Windows:
 ```
 bash runtest.sh
 ```
@@ -93,7 +99,12 @@ En el caso que desee construir la app, levantar Docker y acceder a la aplicacion
 ```
 docker-compose up --build
 ```
-Para correr los testeo ejecuta el siguiente comando:
+Para correr los testeos manualmente ejecuta el siguiente comando
+En Linux:
+```
+./requests.sh
+```
+En Windows:
 ```
 bash requests.sh
 ```
