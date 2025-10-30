@@ -96,6 +96,20 @@ docker-compose up --build
 ```
 4.  **Acceder a la aplicación**: Abre tu navegador y ve a `http://localhost:8080`.
 
+## 🔧 Mejoras futuras y pendientes
+
+- **Implementar sistema de autenticación y login:**  
+  Agregar un módulo de inicio de sesión que permita identificar a los usuarios (barberos, clientes o administrador) y restringir el acceso según su rol.
+
+- **Gestión de roles y permisos:**  
+  Definir niveles de acceso para cada tipo de usuario, evitando que todos puedan visualizar o modificar información ajena.
+
+- **Validaciones y mensajes de error más detallados:**  
+  Mejorar el manejo de errores tanto en el backend como en el frontend para ofrecer una experiencia más clara al usuario.
+
+- **Optimización del diseño y la interfaz:**  
+  Aplicar un diseño más responsivo y moderno, manteniendo la simplicidad y funcionalidad actual.
+
 
 ## Comentarios
 
