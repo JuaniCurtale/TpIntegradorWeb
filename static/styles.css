@@ -1,10 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
+
+body {
+    position: relative;
+    justify-content: center;
+    align-items: flex-start; 
+    height: 100vh;
+    margin: 0;
+    background-image: url('fondoabout2.png'); 
+    color: #f0f0f0;
+}
+
+.form-turno, .form-cliente, .form-barbero {
+    max-width: 500px;
+    margin: 25px auto;
+    padding: 35px;
+    border-radius: 15px;
+}
+ 
+.form-turno h1, .form-cliente h1, .form-barbero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffffff; 
+    margin-bottom: 0;
+}
+
+
+.form-turno fieldset, .form-cliente fieldset, .form-barbero fieldset {
+    border: none;
+    justify-content: center;
+    padding: 10px;
+}
+
+
+
+.form-turno label, .form-cliente label, .form-barbero label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.form-turno input, .form-cliente input, .form-barbero input,
+.form-turno select, .form-cliente select, .form-barbero select,
+.form-turno textarea, .form-cliente textarea, .form-barbero textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95em;
+    background: #2a2a2a;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-turno input:focus, .form-cliente input:focus, .form-barbero input:focus,
+.form-turno select:focus, .form-cliente select:focus, .form-barbero select:focus,
+.form-turno textarea:focus, .form-cliente textarea:focus, .form-barbero textarea:focus {
+    border-color: #ffd369;
+    box-shadow: 0 0 5px #ffd369;
+}
+
+.form-turno button, .form-cliente button, .form-barbero button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffd369, #d4af37);
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-turno button:hover, .form-cliente button:hover, .form-barbero button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.form-turno label input[type="checkbox"],
+.form-cliente label input[type="checkbox"],
+.form-barbero label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.btn-about,
+.btn-inicio {
+    display: block;             
+    width: 100%;               
+    padding: 18px 0;
+    font-size: 1.25em;
+    background-color: rgba(0,0,0,0.85);
+    color: #ffd369;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6); 
+}
+
+.btn-about:hover,
+.btn-inicio:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 -6px 15px rgba(0,0,0,0.7);
+}
+
+.botones {
+    display: flex;
+    gap: 0;
+}
+
+.botones a {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffd369;
+    background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(40,40,40,0.85));
+    border: 2px solid #ffd369;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.botones a + a {
+    border-left: none;
+}
+
+.botones a:hover {
+    color: #000;
+    background: #ffd369;
+    box-shadow: 0 0 20px #ffd369, 0 0 40px #ffd369;
+    transform: translateY(-2px);
+}
+
+.card {
+    background: rgba(20, 20, 20, 0.85); 
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffd369;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    margin: 10px 0;
+}
+
+.card button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffd369, #d4af37);
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.oculto {
+    display: none;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(20, 20, 20, 0.85); 
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #ffd369;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #ffd369;
+    color: black;
+}
+
+.results-table tr:hover {
+    background-color: rgba(48, 48, 48, 0.85);
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 :root{
 		--bg-1: #0c0a08;
 		--panel-bg: rgba(10,8,7,0.6);
 		--accent: #e3b64b; /* amarillo dorado */
 		--muted: #c8c2b8;
 		--danger: #e74c3c;
-		--card-border: rgba(230,180,90,0.15);
+		--card-border: rgba(230, 181, 90, 0.788);
 		--glass: rgba(255,255,255,0.02);
 }
 
@@ -22,7 +254,6 @@ body{
 	color: var(--muted);
 	-webkit-font-smoothing:antialiased;
 	-moz-osx-font-smoothing:grayscale;
-	padding:2rem;
 	min-height:100vh;
 }
 
@@ -32,14 +263,15 @@ body{
 	display:flex;
 	gap:2rem;
 	align-items:flex-start;
+	margin-top:1rem;
 }
 
 .panel{
-	background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.25));
+	background: rgba(20, 20, 20, 0.85); 
 	border: 1px solid var(--card-border);
 	padding:1.6rem;
 	border-radius:12px;
-	box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+	box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 0, 0, 0.02);
 }
 
 .left-panel{
@@ -84,13 +316,6 @@ button{
 }
 button:hover{filter:brightness(0.96)}
 
-.btn-danger{
-	background:var(--danger);
-	color:white;
-	padding:0.45rem 0.6rem;
-	border-radius:6px;
-}
-
 /* Lista / tabla */
 .list-panel table{width:100%;border-collapse:collapse}
 .list-panel th, .list-panel td{padding:0.6rem 0.8rem;border-bottom:1px solid rgba(255,255,255,0.03);}
@@ -103,6 +328,34 @@ button:hover{filter:brightness(0.96)}
 /* Specific small helpers for register pages */
 .form-barbero, .form-cliente, .form-turno{max-width:100%;}
 .form-barbero button, .form-cliente button, .form-turno button{margin-top:0.6rem}
+
+/* --- Corrección de desbordes en la lista de turnos --- */
+#lista-turnos {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;  /* agrega scroll si se pasa del ancho */
+  display: block;
+  border-radius: 8px;
+}
+
+#lista-turnos table {
+  width: 100%;
+  /* evita que las columnas se expandan */
+  border-collapse: collapse;
+}
+
+#lista-turnos th, #lista-turnos td {
+  text-align: center;
+  white-space: nowrap; /* opcional: evita que las fechas se partan */
+}
+
+#lista-turnos::-webkit-scrollbar {
+  height: 6px;
+}
+#lista-turnos::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 211, 105, 0.6);
+  border-radius: 4px;
+}
 
 /* Responsive */
 @media (max-width:980px){
@@ -120,4 +373,3 @@ button:hover{filter:brightness(0.96)}
 
 /* Utility */
 .hidden{display:none}
-
