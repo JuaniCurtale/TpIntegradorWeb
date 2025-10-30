@@ -1,4 +1,4 @@
-# Etapa 1: Build del binario
+# Build del binario
 FROM golang:1.24.6 AS builder
 
 # Establecer el directorio de trabajo dentro del contenedor
@@ -11,12 +11,10 @@ RUN go mod download
 # Copiar el resto del código fuente
 COPY . .
 
-
 # Compilar la aplicación
 RUN go build -o app ./cmd
 
-
-# Etapa 2: Imagen final
+# Imagen final
 FROM debian:bookworm-slim
 
 # Crear directorio de trabajo
@@ -35,5 +33,5 @@ COPY .env .env
 # Exponer el puerto del servidor
 EXPOSE 8080
 
-# Comando por defecto para ejecutar la app
+# Ejecutar la aplicación
 CMD ["./app"]

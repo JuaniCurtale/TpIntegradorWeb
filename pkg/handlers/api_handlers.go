@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"database/sql"
-	"encoding/json"
+	"encoding/json" //Codifica y decodifica datos en formato JSON, que es lo que usa el frontend para comunicarse con la API
 	"fmt"
 	"net/http"
-	"strconv"
-	"strings"
+	"strconv" //Convierte strings a numeros y viceversa. Se utiliza cuando se extrae un id desde la URL
+	"strings" //Manipula strings, lo usamos para dividir la URL en partes para identificar recursos
 	"time"
 	db "tpIntegradorSaideCurtale/db/sqlc"
 	"tpIntegradorSaideCurtale/logic"
@@ -21,7 +21,6 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "cliente" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-					// GET all (API)
 					clientes, err := queries.ListClientes(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -30,12 +29,10 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 					w.Header().Set("Content-Type", "application/json")
 					json.NewEncoder(w).Encode(clientes)
 				} else {
-					// GET Page (Browser)
 					http.ServeFile(w, r, "templates/cliente.html")
 				}
 				return
 			} else if len(parts) == 2 && parts[0] == "cliente" {
-				// GET by ID
 				id64, err := strconv.ParseInt(parts[1], 10, 32)
 				if err != nil {
 					http.Error(w, "ID inválido", http.StatusBadRequest)
@@ -58,7 +55,6 @@ func ClienteHandler(queries *db.Queries) http.HandlerFunc {
 
 		case http.MethodPost:
 			if len(parts) == 1 && parts[0] == "cliente" {
-				// CREATE
 				var input struct {
 					Nombre   string `json:"nombre"`
 					Apellido string `json:"apellido"`
@@ -159,7 +155,6 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "barbero" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-					// GET all (API)
 					barberos, err := queries.ListBarberos(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -168,12 +163,10 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 					w.Header().Set("Content-Type", "application/json")
 					json.NewEncoder(w).Encode(barberos)
 				} else {
-					// GET Page (Browser)
 					http.ServeFile(w, r, "templates/barbero.html")
 				}
 				return
 			} else if len(parts) == 2 && parts[0] == "barbero" {
-				// GET by ID
 				id64, err := strconv.ParseInt(parts[1], 10, 32)
 				if err != nil {
 					http.Error(w, "ID inválido", http.StatusBadRequest)
@@ -196,7 +189,6 @@ func BarberoHandler(queries *db.Queries) http.HandlerFunc {
 
 		case http.MethodPost:
 			if len(parts) == 1 && parts[0] == "barbero" {
-				// CREATE
 				var input struct {
 					Nombre       string `json:"nombre"`
 					Apellido     string `json:"apellido"`
@@ -291,7 +283,6 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 		case http.MethodGet:
 			if len(parts) == 1 && parts[0] == "turno" {
 				if strings.Contains(r.Header.Get("Accept"), "application/json") {
-					// GET all (API)
 					turnos, err := queries.ListTurnos(r.Context())
 					if err != nil {
 						http.Error(w, "Error interno", http.StatusInternalServerError)
@@ -327,7 +318,6 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 
 		case http.MethodPost:
 			if len(parts) == 1 && parts[0] == "turno" {
-				// CREATE
 				var input struct {
 					IDCliente     int32          `json:"id_cliente"`
 					Nombre        string         `json:"nombre"`
@@ -349,10 +339,6 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 					http.Error(w, "Fechahora y servicio son obligatorios", http.StatusBadRequest)
 					return
 				}
-
-				// ----------------------------
-				// BLOQUE PARA OBTENER O CREAR CLIENTE
-				// ----------------------------
 				var cliente db.Cliente
 				var err error
 
@@ -397,9 +383,6 @@ func TurnoHandler(queries *db.Queries) http.HandlerFunc {
 					return
 				}
 
-				// ----------------------------
-				// CREAR EL TURNO
-				// ----------------------------
 				turnos, err := queries.ListTurnos(r.Context())
 				if err != nil {
 					http.Error(w, "Error interno", http.StatusInternalServerError)

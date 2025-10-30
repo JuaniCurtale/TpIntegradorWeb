@@ -9,7 +9,7 @@ import (
 
 func NewRouter(dbconn *sql.DB) http.Handler {
 	queries := db.New(dbconn)
-	mux := http.NewServeMux()
+	mux := http.NewServeMux() // Enrutador para las distintas rutas del servidor.
 
 	mux.HandleFunc("/", handlers.HandlerDescrip)
 	mux.HandleFunc("/aboutUs", handlers.HandlerAbout)

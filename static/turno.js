@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 notas: form.notas.value
             };
 
-        // Mapeo de valores del form a IDs/datos para el API
+        // Mapeo de valores del form a IDs/datos para el API (por si no estan creados los barberos previamente)
         const barberoMap = { 'martin': 1, 'sofia': 2, 'lucas': 3, 'cualquiera': 1 };
         const servicioMap = { 'corte': 'Corte', 'barba': 'Barba', 'corte-barba': 'Corte + Barba', 'afeitado': 'Afeitado tradicional', 'color': 'Color/Matiz' };
         
@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Oculta el form y muestra la card de éxito
             console.log('Respuesta de la API (turno creado): ', data);
 
             form.style.display = 'none';

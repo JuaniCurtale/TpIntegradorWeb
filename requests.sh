@@ -1,12 +1,10 @@
 #!/bin/bash
-# ==========================================
-# PRUEBAS API - TP INTEGRADOR WEB (con HTTP codes)
-# ==========================================
 
-DB_CONTAINER="barberia_db"   # nombre del contenedor de la DB
-DB_USER="postgres"           # usuario de la DB
-DB_NAME="barberia"           # nombre de la DB
-BASE_URL="http://localhost:8080"   # URL de la API
+# PRUEBAS API (con HTTP codes)
+DB_CONTAINER="barberia_db"   
+DB_USER="postgres"           
+DB_NAME="barberia"           
+BASE_URL="http://localhost:8080"   
 
 function curl_request() {
     # $1 = método, $2 = endpoint, $3 = body (opcional)

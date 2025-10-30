@@ -10,7 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func ConectarDB() *sql.DB { //CONEXION A LA BASE DATOS
+func ConectarDB() *sql.DB {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
