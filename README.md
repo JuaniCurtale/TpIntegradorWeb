@@ -110,13 +110,14 @@ bash requests.sh
 ```
 4.  **Acceder a la aplicación**: Abre tu navegador y ve a `http://localhost:8080`.
 
-5. **Navegacion dentro de la aplicacion**
+## 🖱️Navegacion dentro de la aplicacion
    Una vez dentro de la aplicación, podrás navegar por las distintas secciones disponibles desde el menú principal, tales como:
 
-   * **Sobre Nosotros**: información general sobre la barbería.
-   * **Registrar Cliente**: formulario para agregar nuevos clientes.
-   * **Registrar Barbero**: sección para registrar barberos en el sistema.
-   * **Sacar Turno**: permite asignar turnos a los clientes con un barbero determinado.
+   * **Inicio**: Pagina de home.
+   * **Sobre Nosotros**: Información general sobre la barbería.
+   * **Registrar Cliente**: Formulario para agregar,eliminar y visualizar los clientes.
+   * **Registrar Barbero**: Sección para registrar, eliminar y visualizar barberos en el sistema.
+   * **Sacar Turno**: Permite asignar turnos a los clientes con un barbero determinado.
 
 ## 🔧 Mejoras futuras y pendientes
 
@@ -135,8 +136,8 @@ bash requests.sh
 
 ## Comentarios
 
-*   Se tomo la decision de separar en tres paginas HTML las entidades para poder darle protagonismo a cada una y que su utilizacion sea mas comoda
-*   Sobre cliente se decidio que el email sea la Primary Key, de esta manera al crear el cliente y luego sacar el turno, si se saca el turno con el mismo email que se registro el cliente este turno correspondera a ese cliente, si se ingresa un email no registrado en la tabla de clientes, se creara uno
+*   Se tomo la decision de separar en tres paginas HTML diferentes las entidades para poder darle protagonismo a cada una y que su utilizacion sea mas comoda
+*   Sobre Cliente se decidio que el email sea la Primary Key, de esta manera al crear el cliente y luego sacar el turno, si se saca el turno con el mismo email que se registro el cliente este turno correspondera a ese cliente, si se ingresa un email no registrado en la tabla de clientes, se creara uno
 *   La aplicación ahora cuenta con la vista del **Cliente** y del **Barbero**.
 *   La capa de datos está conectada al servidor web.
 
