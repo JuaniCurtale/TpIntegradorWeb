@@ -10,6 +10,14 @@ Se pueden registrar clientes y barberos, y asignar turnos específicos para cada
 
 Con esta aplicación, los turnos pueden ser agregados, modificados, consultados o eliminados, permitiendo llevar un control completo de la agenda de la barbería y mejorar la organización del servicio.
 
+## 🛠️ Tecnologías utilizadas
+* Go
+* PostgreSQL
+* Docker & Docker Compose
+* HTML, CSS, JavaScript
+* sqlc
+* Bash
+
 ## 📂 Estructura del Proyecto
 
 En el Trabajo Práctico N.º 1 (TP1) se implementó la capa web del sistema. <br>
@@ -76,7 +84,7 @@ Se han añadido secciones que permiten acceder a los clientes, turnos y barberos
     APP_PORT=8080 
     ```
 3. **Construccion de la app y levantamiento del contenedor**   
-Ejecutar el siguiente comando para construir la app, levantar Docker y correr los testeos:
+Ejecuta el siguiente comando para construir la aplicación, levantar los contenedores y ejecutar los tests:
 ```
 bash runtest.sh
 ```
@@ -91,6 +99,7 @@ docker-compose up --build
 
 ## Comentarios
 
+*   Se tomo la decision de separar en tres paginas HTML las entidades para poder darle protagonismo a cada una y que su utilizacion sea mas comoda
 *   La aplicación ahora cuenta con la vista del **Cliente** y del **Barbero**.
 *   La capa de datos está conectada al servidor web.
 
