@@ -18,13 +18,33 @@
         <section class="panel left-panel">
             <form accept-charset="utf-8" autocomplete="on" class="form-cliente" id="form-cliente">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input 
+                type="text" 
+                id="nombre" 
+                name="nombre" 
+                placeholder="Juan"
+                pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                required>
 
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
+                <input 
+                type="text" 
+                id="apellido" 
+                name="apellido" 
+                placeholder="Gonzalez"
+                pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                required>
 
                 <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono">
+                <input id="telefono" 
+                   name="telefono" 
+                   type="tel" 
+                   required 
+                   autocomplete="tel" 
+                   placeholder="54 9 11 1234-5678"
+                   pattern="[0-9]+"
+                   maxlength="20"
+                   title="Solo se permiten números (máximo 20 dígitos)" />
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email">
@@ -35,6 +55,7 @@
         </section>
 
         <aside class="panel right-panel list-panel">
+            
             <button id="ver-todos-clientes">Ver todos</button>
             <div id="lista-clientes"></div>
         </aside>

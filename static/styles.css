@@ -357,6 +357,60 @@ button:hover{filter:brightness(0.96)}
   border-radius: 4px;
 }
 
+#lista-barberos {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;  
+  display: block;
+  border-radius: 8px;
+}
+
+#lista-barberos table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#lista-barberos th, #lista-barberos td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* scrollbar */
+#lista-barberos::-webkit-scrollbar {
+  height: 6px;
+}
+#lista-barberos::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 211, 105, 0.6);
+  border-radius: 4px;
+}
+
+#lista-clientes {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;  
+  display: block;
+  border-radius: 8px;
+}
+
+#lista-clientes table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#lista-clientes th, #lista-clientes td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* scrollbar */
+#lista-clientes::-webkit-scrollbar {
+  height: 6px;
+}
+#lista-clientes::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 211, 105, 0.6);
+  border-radius: 4px;
+}
+
 /* Responsive */
 @media (max-width:980px){
 	.page{flex-direction:column}
