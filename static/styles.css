@@ -329,8 +329,8 @@ button:hover{filter:brightness(0.96)}
 .form-barbero, .form-cliente, .form-turno{max-width:100%;}
 .form-barbero button, .form-cliente button, .form-turno button{margin-top:0.6rem}
 
-/* --- Corrección de desbordes en la lista de turnos --- */
-#lista-turnos {
+/* --- Corrección de desbordes en las listas  --- */
+#lista-turnos, #lista-clientes, #lista-barberos {
   width: 100%;
   max-width: 100%;
   overflow-x: auto;  /* agrega scroll si se pasa del ancho */
@@ -338,75 +338,22 @@ button:hover{filter:brightness(0.96)}
   border-radius: 8px;
 }
 
-#lista-turnos table {
+#lista-turnos table,#lista-barberos table, #lista-clientes table {
   width: 100%;
   /* evita que las columnas se expandan */
   border-collapse: collapse;
 }
 
-#lista-turnos th, #lista-turnos td {
+#lista-turnos th, #lista-turnos td,#lista-barberos th, #lista-barberos td,#lista-clientes th, #lista-clientes td {
   text-align: center;
   white-space: nowrap; /* opcional: evita que las fechas se partan */
 }
 
-#lista-turnos::-webkit-scrollbar {
-  height: 6px;
-}
-#lista-turnos::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 211, 105, 0.6);
-  border-radius: 4px;
-}
-
-#lista-barberos {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;  
-  display: block;
-  border-radius: 8px;
-}
-
-#lista-barberos table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#lista-barberos th, #lista-barberos td {
-  text-align: center;
-  white-space: nowrap;
-}
-
 /* scrollbar */
-#lista-barberos::-webkit-scrollbar {
+#lista-turnos::-webkit-scrollbar,#lista-barberos::-webkit-scrollbar,#lista-clientes::-webkit-scrollbar {
   height: 6px;
 }
-#lista-barberos::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 211, 105, 0.6);
-  border-radius: 4px;
-}
-
-#lista-clientes {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;  
-  display: block;
-  border-radius: 8px;
-}
-
-#lista-clientes table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#lista-clientes th, #lista-clientes td {
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* scrollbar */
-#lista-clientes::-webkit-scrollbar {
-  height: 6px;
-}
-#lista-clientes::-webkit-scrollbar-thumb {
+#lista-turnos::-webkit-scrollbar-thumb,#lista-barberos::-webkit-scrollbar-thumb,#lista-clientes::-webkit-scrollbar-thumb  {
   background-color: rgba(255, 211, 105, 0.6);
   border-radius: 4px;
 }
@@ -422,7 +369,6 @@ button:hover{filter:brightness(0.96)}
 	input[type="text"], button, select, textarea{padding:0.65rem}
 }
 
-/* Small visual polish for the look in the screenshot */
 .hero-bg{background-image:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.25));padding:1rem;border-radius:10px}
 
 /* Utility */
