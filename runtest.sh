@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e #el script termine inmediatamente si algún comando falla
 
 echo "🚀 Construyendo y levantando contenedores..."
 docker compose up --build -d
@@ -7,7 +7,7 @@ docker compose up --build -d
 # Esperar que la API esté lista
 echo "⏳ Esperando que la API responda..."
 for i in {1..10}; do
-  if curl -s http://localhost:8080/health > /dev/null; then
+  if curl -s http://localhost:8080/health > /dev/null; then # Comprueba si la API responde correctamente 
     echo "✅ API lista!"
     break
   fi
