@@ -20,12 +20,12 @@ templ TurnoList(turnos []db.Turno) {
 			<tbody>
 				for _, turno := range turnos {
 					<tr>
-						<td>{ turno.id_turno }</td>
-						<td>{ turno.id_cliente }</td>
-						<td>{ turno.id_barbero }</td>
-						<td>{ turno.fechaHora }</td>
-						<td>{ turno.servicio} </td>
-						<td>{ turno.observaciones}</td>
+						<td>{ turno.Id_turno }</td>
+						<td>{ turno.Id_cliente }</td>
+						<td>{ turno.Id_barbero }</td>
+						<td>{ turno.FechaHora }</td>
+						<td>{ turno.Servicio} </td>
+						<td>{ turno.Observaciones}</td>
 					</tr>
 				}
 			</tbody>
