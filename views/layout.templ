@@ -1,0 +1,21 @@
+package views
+
+templ Layout(title string, child templ.Component) {
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{ title }</title>
+        <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    </head>
+    <body>
+        <header>
+            <h1>{ title }</h1>
+        </header>
+        <main>
+            @child
+        </main>
+    </body>
+    </html>
+}
