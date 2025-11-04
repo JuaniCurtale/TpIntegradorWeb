@@ -1,23 +1,46 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
 	"net/http"
-	"tpIntegradorSaideCurtale/pkg/database"
-	"tpIntegradorSaideCurtale/pkg/router"
+
+	db "tpIntegradorSaideCurtale/db/sqlc"
+
+	database "tpIntegradorSaideCurtale/pkg/database"
+	"tpIntegradorSaideCurtale/views"
+
+	"github.com/a-h/templ"
 )
 
 func main() {
+	// --- 1. Conectar a la base de datos ---
 	dbconn := database.ConectarDB()
 	defer dbconn.Close()
 
-	r := router.NewRouter(dbconn)
+	// --- 2. Crear instancia de queries ---
+	queries := db.New(dbconn)
 
-	port := ":8080"
-	fmt.Printf("Servidor escuchando en http://localhost%s\n", port)
+	// --- 3. Handler principal ---
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+			return
+		}
 
-	if err := http.ListenAndServe(port, r); err != nil {
-		log.Fatalf("Error al iniciar el servidor: %v", err)
-	}
+		// --- Obtener todos los clientes ---
+		clientes, err := queries.ListClientes(context.Background())
+		if err != nil {
+			http.Error(w, "Error obteniendo clientes: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// --- Renderizar la página ---
+		component1 := views.Layout("Layout", views.ClientList(clientes))
+		templ.Handler(component1).ServeHTTP(w, r)
+	})
+
+	// --- 4. Iniciar servidor ---
+	log.Println("Servidor escuchando en http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

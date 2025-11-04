@@ -9,7 +9,7 @@ templ TurnoForm(clientes []db.Cliente, barberos []db.Barbero) {
 		<select id="cliente" name="id_cliente" required>
 			<option value="">Seleccionar cliente</option>
 			for _, c := range clientes {
-				<option value={ c.ID }>{ c.Nombre } { c.Apellido }</option>
+				<option value={ c.IDCliente }>{ c.Nombre } { c.Apellido }</option>
 			}
 		</select>
 
@@ -17,7 +17,7 @@ templ TurnoForm(clientes []db.Cliente, barberos []db.Barbero) {
 		<select id="barbero" name="id_barbero" required>
 			<option value="">Seleccionar barbero</option>
 			for _, b := range barberos {
-				<option value={ b.ID }>{ b.Nombre } { b.Apellido }</option>
+				<option value={ b.IDBarbero }>{ b.Nombre } { b.Apellido }</option>
 			}
 		</select>
 

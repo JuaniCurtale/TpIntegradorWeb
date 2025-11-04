@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 	"time"
 )
 
@@ -19,9 +18,9 @@ RETURNING id_barbero, nombre, apellido, especialidad
 `
 
 type CreateBarberoParams struct {
-	Nombre       string         `json:"nombre"`
-	Apellido     string         `json:"apellido"`
-	Especialidad sql.NullString `json:"especialidad"`
+	Nombre       string `json:"nombre"`
+	Apellido     string `json:"apellido"`
+	Especialidad string `json:"especialidad"`
 }
 
 // CRUD para Barbero
@@ -45,10 +44,10 @@ RETURNING id_cliente, nombre, apellido, telefono, email
 `
 
 type CreateClienteParams struct {
-	Nombre   string         `json:"nombre"`
-	Apellido string         `json:"apellido"`
-	Telefono sql.NullString `json:"telefono"`
-	Email    sql.NullString `json:"email"`
+	Nombre   string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Telefono string `json:"telefono"`
+	Email    string `json:"email"`
 }
 
 // CRUD para Cliente
@@ -78,11 +77,11 @@ RETURNING id_turno, id_cliente, id_barbero, fechahora, servicio, observaciones
 `
 
 type CreateTurnoParams struct {
-	IDCliente     int32          `json:"id_cliente"`
-	IDBarbero     int32          `json:"id_barbero"`
-	Fechahora     time.Time      `json:"fechahora"`
-	Servicio      string         `json:"servicio"`
-	Observaciones sql.NullString `json:"observaciones"`
+	IDCliente     int32     `json:"id_cliente"`
+	IDBarbero     int32     `json:"id_barbero"`
+	Fechahora     time.Time `json:"fechahora"`
+	Servicio      string    `json:"servicio"`
+	Observaciones string    `json:"observaciones"`
 }
 
 // CRUD para Turno
@@ -158,7 +157,7 @@ SELECT id_cliente, nombre, apellido, telefono, email FROM Cliente
 WHERE email = $1
 `
 
-func (q *Queries) GetClienteByEmail(ctx context.Context, email sql.NullString) (Cliente, error) {
+func (q *Queries) GetClienteByEmail(ctx context.Context, email string) (Cliente, error) {
 	row := q.db.QueryRowContext(ctx, getClienteByEmail, email)
 	var i Cliente
 	err := row.Scan(
@@ -390,10 +389,10 @@ RETURNING id_barbero, nombre, apellido, especialidad
 `
 
 type UpdateBarberoParams struct {
-	IDBarbero    int32          `json:"id_barbero"`
-	Nombre       string         `json:"nombre"`
-	Apellido     string         `json:"apellido"`
-	Especialidad sql.NullString `json:"especialidad"`
+	IDBarbero    int32  `json:"id_barbero"`
+	Nombre       string `json:"nombre"`
+	Apellido     string `json:"apellido"`
+	Especialidad string `json:"especialidad"`
 }
 
 func (q *Queries) UpdateBarbero(ctx context.Context, arg UpdateBarberoParams) (Barbero, error) {
@@ -425,11 +424,11 @@ RETURNING id_cliente, nombre, apellido, telefono, email
 `
 
 type UpdateClienteParams struct {
-	IDCliente int32          `json:"id_cliente"`
-	Nombre    string         `json:"nombre"`
-	Apellido  string         `json:"apellido"`
-	Telefono  sql.NullString `json:"telefono"`
-	Email     sql.NullString `json:"email"`
+	IDCliente int32  `json:"id_cliente"`
+	Nombre    string `json:"nombre"`
+	Apellido  string `json:"apellido"`
+	Telefono  string `json:"telefono"`
+	Email     string `json:"email"`
 }
 
 func (q *Queries) UpdateCliente(ctx context.Context, arg UpdateClienteParams) (Cliente, error) {
@@ -463,12 +462,12 @@ RETURNING id_turno, id_cliente, id_barbero, fechahora, servicio, observaciones
 `
 
 type UpdateTurnoParams struct {
-	IDTurno       int32          `json:"id_turno"`
-	IDCliente     int32          `json:"id_cliente"`
-	IDBarbero     int32          `json:"id_barbero"`
-	Fechahora     time.Time      `json:"fechahora"`
-	Servicio      string         `json:"servicio"`
-	Observaciones sql.NullString `json:"observaciones"`
+	IDTurno       int32     `json:"id_turno"`
+	IDCliente     int32     `json:"id_cliente"`
+	IDBarbero     int32     `json:"id_barbero"`
+	Fechahora     time.Time `json:"fechahora"`
+	Servicio      string    `json:"servicio"`
+	Observaciones string    `json:"observaciones"`
 }
 
 func (q *Queries) UpdateTurno(ctx context.Context, arg UpdateTurnoParams) (Turno, error) {
