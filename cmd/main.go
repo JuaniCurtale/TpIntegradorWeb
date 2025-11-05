@@ -35,8 +35,20 @@ func main() {
 			return
 		}
 
+		barberos, err := queries.ListBarberos(context.Background())
+		if err != nil {
+			http.Error(w, "Error obteniendo barberos: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		turnos, err := queries.ListTurnos(context.Background())
+		if err != nil {
+			http.Error(w, "Error obteniendo turnos: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		// --- Renderizar la página ---
-		component1 := views.Layout("Layout", views.ClientList(clientes))
+		component1 := views.IndexPage("Gestion Barber", clientes, barberos, turnos)
 		templ.Handler(component1).ServeHTTP(w, r)
 	})
 

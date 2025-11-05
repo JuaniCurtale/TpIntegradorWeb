@@ -1,7 +1,6 @@
 package views
 
-
-templ Layout(title string, child templ.Component) {
+templ Layout(title string) {
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -12,7 +11,7 @@ templ Layout(title string, child templ.Component) {
     </head>
     <body>
         <header>
-        <nav>
+            <nav>
                 <ul>
                     <li><a href="/clientes">Clientes</a></li>
                     <li><a href="/barberos">Barberos</a></li>
@@ -22,7 +21,7 @@ templ Layout(title string, child templ.Component) {
             <h1>{ title }</h1>
         </header>
         <main>
-            @child
+            @children
         </main>
     </body>
     </html>

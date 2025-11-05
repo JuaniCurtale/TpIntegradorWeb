@@ -2,6 +2,27 @@ package views
 
 import "tpIntegradorSaideCurtale/db/sqlc"
 
-templ IndexPage(title string, clientes []db.Cliente) {
-    @Layout(title, ClientList(clientes))
+
+templ IndexPage(title string, clientes []db.Cliente, barberos []db.Barbero, turnos []db.Turno) {
+    @Layout(title) {
+        <h1>Gestión del Sistema</h1>
+
+        <section>
+            <h2>Clientes</h2>
+            @ClienteForm()
+            @ClientList(clientes)
+        </section>
+
+        <section>
+            <h2>Barberos</h2>
+            @BarberoForm()
+            @BarberList(barberos)
+        </section>
+
+        <section>
+            <h2>Turnos</h2>
+            @TurnoForm(clientes, barberos)
+            @TurnoList(turnos)
+        </section>
+    }
 }
