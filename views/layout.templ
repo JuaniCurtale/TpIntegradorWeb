@@ -1,7 +1,6 @@
 package views
 
-
-templ Layout(title string, child templ.Component) {
+templ Layout(title string, active string, child templ.Component) {
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -12,11 +11,11 @@ templ Layout(title string, child templ.Component) {
     </head>
     <body>
         <header>
-        <nav>
+            <nav>
                 <ul>
-                    <li><a href="/clientes">Clientes</a></li>
-                    <li><a href="/barberos">Barberos</a></li>
-                    <li><a href="/turnos">Turnos</a></li>
+                    <li><a href="/clientes" class={ CSS(map[string]bool{"contrast": active == "clientes"}) }>Clientes</a></li>
+                    <li><a href="/barberos" class={ CSS(map[string]bool{"contrast": active == "barberos"}) }>Barberos</a></li>
+                    <li><a href="/turnos" class={ CSS(map[string]bool{"contrast": active == "turnos"}) }>Turnos</a></li>
                 </ul>
             </nav>
             <h1>{ title }</h1>

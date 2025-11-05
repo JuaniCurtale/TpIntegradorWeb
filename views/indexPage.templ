@@ -1,7 +1,12 @@
 package views
 
-import "tpIntegradorSaideCurtale/db/sqlc"
+templ IndexContent() {
+    <section>
+        <h2>Bienvenido</h2>
+        <p>Elegí una sección desde la barra.</p>
+    </section>
+}
 
-templ IndexPage(title string, clientes []db.Cliente) {
-    @Layout(title, ClientList(clientes))
+templ IndexPage() {
+    @Layout("Inicio", "inicio", IndexContent())
 }

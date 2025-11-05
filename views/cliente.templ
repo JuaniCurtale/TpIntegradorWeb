@@ -1,13 +1,8 @@
 package views
 
+import db "tpIntegradorSaideCurtale/db/sqlc"
 
 templ ClientesPage(clientes []db.Cliente) {
-    @Layout("Clientes", 
-        <section>
-            <h2>Lista de Clientes</h2>
-            @ClientList(clientes)
-            <h3>Agregar nuevo cliente</h3>
-            @ClienteForm()
-        </section>
-    )
+    @Layout("Clientes", "clientes", ClientList(clientes))
+    @ClienteForm()
 }

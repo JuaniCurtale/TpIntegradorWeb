@@ -3,7 +3,7 @@ package views
 import "tpIntegradorSaideCurtale/db/sqlc"
 
 
-templ BarberList(barberos []db.Barbero) {
+templ BarberoList(barberos []db.Barbero) {
 	if len(barberos) == 0 {
 		<p>No hay barberos para mostrar.</p>
 	} else {
