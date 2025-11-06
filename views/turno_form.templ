@@ -1,9 +1,9 @@
 package views
 
-import "tpIntegradorSaideCurtale/db/sqlc"
+import db "tpIntegradorSaideCurtale/db/sqlc"
 
 
-templ TurnoForm(clientes []db.Cliente, barberos []db.Barbero) {
+templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
 	<form method="post" action="/turno">
 		<label for="cliente">Cliente:</label>
 		<select id="cliente" name="id_cliente" required>

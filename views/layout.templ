@@ -1,6 +1,14 @@
 package views
 
-templ Layout(title string) {
+
+func ActiveClass(active, name string) string {
+    if active == name {
+        return "contrast"
+    }
+    return ""
+}
+
+templ Layout(title string, active string, child templ.Component) {
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -13,15 +21,15 @@ templ Layout(title string) {
         <header>
             <nav>
                 <ul>
-                    <li><a href="/clientes">Clientes</a></li>
-                    <li><a href="/barberos">Barberos</a></li>
-                    <li><a href="/turnos">Turnos</a></li>
+                    <li><a href="/clientes" class={ ActiveClass(active, "clientes") }>Clientes</a></li>
+                    <li><a href="/barberos" class={ ActiveClass(active, "barberos") }>Barberos</a></li>
+                    <li><a href="/turnos" class={ ActiveClass(active, "turnos") }>Turnos</a></li>
                 </ul>
             </nav>
             <h1>{ title }</h1>
         </header>
         <main>
-            @children
+            @child
         </main>
     </body>
     </html>
