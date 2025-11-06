@@ -83,3 +83,31 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}
 }
+
+// INSERT INTO Turno (id_cliente, id_barbero, fechaHora, servicio, observaciones)
+// VALUES ($1, $2, $3, $4, $5)
+// RETURNING *;
+func handlerTurnos(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		turnos, _ := queries.ListTurnos(context.Background())
+		templ.Handler(views.TurnosPage(turnos)).ServeHTTP(w, r)
+
+	case http.MethodPost:
+		r.ParseForm()
+		nombre := r.FormValue("nombre")
+		apellido := r.FormValue("apellido")
+		especialidad := r.FormValue("especialidad")
+
+		queries.CreateBarbero(r.Context(), db.CreateBarberoParams{
+			Nombre:       nombre,
+			Apellido:     apellido,
+			Especialidad: especialidad,
+		})
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+
+	default:
+		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+	}
+}

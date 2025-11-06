@@ -10,7 +10,7 @@ templ ClientList(clientes []db.Cliente) {
 		<table>
 			<thead>
 				<tr>
-		//			<th>id_cliente</th>
+					<th>id_cliente</th>
 					<th>nombre</th>
 					<th>apellido</th>
 					<th>telefono</th>
@@ -20,7 +20,7 @@ templ ClientList(clientes []db.Cliente) {
 			<tbody>
 				for _, cliente := range clientes {
 					<tr>
-	//					<td>{ cliente.id_cliente }</td>
+						<td>{ cliente.IDCliente }</td>
 						<td>{ cliente.Nombre }</td>
 						<td>{ cliente.Apellido  }</td>
 						<td>{ cliente.Telefono} </td>
