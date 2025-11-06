@@ -53,7 +53,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			Email:    email,
 		})
 
-		http.Redirect(w, r, "/cliente", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}
@@ -77,7 +77,7 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 			Especialidad: especialidad,
 		})
 
-		http.Redirect(w, r, "/barbero", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
