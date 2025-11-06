@@ -28,6 +28,7 @@ func main() {
 
 	// --- CLIENTES ---
 	http.HandleFunc("/cliente", handlerClientes)
+	http.HandleFunc("/barbero", handlerBarberos)
 
 	log.Println("Servidor escuchando en http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -53,6 +54,31 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		})
 
 		http.Redirect(w, r, "/cliente", http.StatusSeeOther)
+	default:
+		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+	}
+}
+
+func handlerBarberos(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		barberos, _ := queries.ListBarberos(context.Background())
+		templ.Handler(views.BarberosPage(barberos)).ServeHTTP(w, r)
+
+	case http.MethodPost:
+		r.ParseForm()
+		nombre := r.FormValue("nombre")
+		apellido := r.FormValue("apellido")
+		especialidad := r.FormValue("especialidad")
+
+		queries.CreateBarbero(r.Context(), db.CreateBarberoParams{
+			Nombre:       nombre,
+			Apellido:     apellido,
+			Especialidad: especialidad,
+		})
+
+		http.Redirect(w, r, "/barbero", http.StatusSeeOther)
+
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}
