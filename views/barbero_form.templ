@@ -1,0 +1,16 @@
+package views
+
+templ BarberoForm() {
+	<form method="post" action="/barbero">
+		<label for="nombre">Nombre:</label>
+		<input type="text" id="nombre" name="nombre" required>
+
+		<label for="apellido">Apellido:</label>
+		<input type="text" id="apellido" name="apellido" required>
+
+		<label for="especialidad">Especialidad:</label>
+		<input type="text" id="especialidad" name="especialidad" placeholder="Ej. Corte, Afeitado, Tinte" required>
+
+		<button type="submit">Agregar Barbero</button>
+	</form>
+}

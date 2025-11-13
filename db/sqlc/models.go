@@ -5,30 +5,29 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 )
 
 type Barbero struct {
-	IDBarbero    int32          `json:"id_barbero"`
-	Nombre       string         `json:"nombre"`
-	Apellido     string         `json:"apellido"`
-	Especialidad sql.NullString `json:"especialidad"`
+	IDBarbero    int32  `json:"id_barbero"`
+	Nombre       string `json:"nombre"`
+	Apellido     string `json:"apellido"`
+	Especialidad string `json:"especialidad"`
 }
 
 type Cliente struct {
-	IDCliente int32          `json:"id_cliente"`
-	Nombre    string         `json:"nombre"`
-	Apellido  string         `json:"apellido"`
-	Telefono  sql.NullString `json:"telefono"`
-	Email     sql.NullString `json:"email"`
+	IDCliente int32  `json:"id_cliente"`
+	Nombre    string `json:"nombre"`
+	Apellido  string `json:"apellido"`
+	Telefono  string `json:"telefono"`
+	Email     string `json:"email"`
 }
 
 type Turno struct {
-	IDTurno       int32          `json:"id_turno"`
-	IDCliente     int32          `json:"id_cliente"`
-	IDBarbero     int32          `json:"id_barbero"`
-	Fechahora     time.Time      `json:"fechahora"`
-	Servicio      string         `json:"servicio"`
-	Observaciones sql.NullString `json:"observaciones"`
+	IDTurno       int32     `json:"id_turno"`
+	IDCliente     int32     `json:"id_cliente"`
+	IDBarbero     int32     `json:"id_barbero"`
+	Fechahora     time.Time `json:"fechahora"`
+	Servicio      string    `json:"servicio"`
+	Observaciones string    `json:"observaciones"`
 }

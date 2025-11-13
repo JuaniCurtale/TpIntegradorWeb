@@ -1,0 +1,33 @@
+package views
+
+
+import "tpIntegradorSaideCurtale/db/sqlc"
+
+templ ClientList(clientes []db.Cliente) {
+	if len(clientes) == 0 {
+		<p>No hay clientes para mostrar.</p>
+	} else {
+		<table>
+			<thead>
+				<tr>
+					<th>id_cliente</th>
+					<th>nombre</th>
+					<th>apellido</th>
+					<th>telefono</th>
+					<th>email</th>
+				</tr>
+			</thead>
+			<tbody>
+				for _, cliente := range clientes {
+					<tr>
+						<td>{ cliente.IDCliente }</td>
+						<td>{ cliente.Nombre }</td>
+						<td>{ cliente.Apellido  }</td>
+						<td>{ cliente.Telefono} </td>
+						<td>{ cliente.Email}</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+}

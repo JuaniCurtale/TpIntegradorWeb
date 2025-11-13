@@ -1,0 +1,35 @@
+package views
+
+
+import "tpIntegradorSaideCurtale/db/sqlc"
+
+templ TurnoList(turnos []db.Turno) {
+	if len(turnos) == 0 {
+		<p>No hay turnos para mostrar.</p>
+	} else {
+		<table>
+			<thead>
+				<tr>
+					<th>id_turno</th>
+					<th>id_cliente</th>					
+					<th>id_barbero</th>
+					<th>fechaHora</th>
+					<th>servicio</th>
+					<th>observaciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				for _, turno := range turnos {
+					<tr>
+						<td>{ turno.IDTurno }</td>
+						<td>{ turno.IDCliente }</td>
+						<td>{ turno.IDBarbero }</td>
+						<td>{ turno.Fechahora.Format("02/01/2006 15:04") }</td>
+						<td>{ turno.Servicio} </td>
+						<td>{ turno.Observaciones}</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+}

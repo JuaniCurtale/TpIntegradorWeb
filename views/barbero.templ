@@ -1,0 +1,8 @@
+package views
+
+import db "tpIntegradorSaideCurtale/db/sqlc"
+
+templ BarberosPage(barberos []db.Barbero) {
+    @Layout("Barberos", "barberos", BarberList(barberos))
+    @BarberoForm()
+}

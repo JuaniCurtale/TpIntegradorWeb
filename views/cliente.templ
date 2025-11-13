@@ -1,0 +1,8 @@
+package views
+
+import db "tpIntegradorSaideCurtale/db/sqlc"
+
+templ ClientesPage(clientes []db.Cliente) {
+    @Layout("Clientes", "clientes", ClientList(clientes))
+    @ClienteForm()
+}

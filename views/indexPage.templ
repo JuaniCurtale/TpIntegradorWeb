@@ -1,0 +1,12 @@
+package views
+
+templ IndexContent() {
+    <section>
+        <h2>Bienvenido</h2>
+        <p>Elegí una sección desde la barra.</p>
+    </section>
+}
+
+templ IndexPage() {
+    @Layout("Inicio", "inicio", IndexContent())
+}
