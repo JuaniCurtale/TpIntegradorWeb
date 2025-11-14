@@ -69,7 +69,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// 3. Devolver SOLO el componente de lista
-		views.ClientList(clientes).Render(r.Context(), w)
+		views.ClientListRows(clientes).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)

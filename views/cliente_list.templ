@@ -13,22 +13,8 @@ templ ClientList(clientes []db.Cliente) {
 				<th>email</th>
 			</tr>
 		</thead>
-		<tbody>
-			if len(clientes) == 0 {
-				<tr>
-					<td colspan="5">No hay clientes para mostrar.</td>
-				</tr>
-			} else {
-				for _, cliente := range clientes {
-					<tr>
-						<td>{ cliente.IDCliente }</td>
-						<td>{ cliente.Nombre }</td>
-						<td>{ cliente.Apellido }</td>
-						<td>{ cliente.Telefono }</td>
-						<td>{ cliente.Email }</td>
-					</tr>
-				}
-			}
+		<tbody id="clientes-tbody">
+			@ClientListRows(clientes)
 		</tbody>
 	</table>
 }
