@@ -56,7 +56,6 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			Email:    email,
 		})
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}
@@ -74,13 +73,26 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 		apellido := r.FormValue("apellido")
 		especialidad := r.FormValue("especialidad")
 
-		queries.CreateBarbero(r.Context(), db.CreateBarberoParams{
+		// 1. Crear barbero
+		_, err := queries.CreateBarbero(r.Context(), db.CreateBarberoParams{
 			Nombre:       nombre,
 			Apellido:     apellido,
 			Especialidad: especialidad,
 		})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		// 2. Volver a consultar la lista actualizada
+		barberos, err := queries.ListBarberos(r.Context())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Devolver SOLO el componente BarberList (fragmento)
+		views.BarberList(barberos).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
@@ -151,8 +163,6 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error al guardar turno: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
-
-		http.Redirect(w, r, "/", http.StatusSeeOther)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)

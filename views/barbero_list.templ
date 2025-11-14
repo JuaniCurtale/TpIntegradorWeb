@@ -2,30 +2,32 @@ package views
 
 import "tpIntegradorSaideCurtale/db/sqlc"
 
-
 templ BarberList(barberos []db.Barbero) {
-	if len(barberos) == 0 {
-		<p>No hay barberos para mostrar.</p>
-	} else {
-		<table>
-			<thead>
+	<table id="barberos-list">
+		<thead>
+			<tr>
+				<th>Id_barbero</th>
+				<th>nombre</th>
+				<th>apellido</th>
+				<th>especialidad</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			if len(barberos) == 0 {
 				<tr>
-					<th>Id_barbero</th>
-					<th>nombre</th>
-					<th>apellido</th>
-					<th>especialidad</th>
+					<td colspan="4">No hay barberos para mostrar.</td>
 				</tr>
-			</thead>
-			<tbody>
+			} else {
 				for _, barbero := range barberos {
 					<tr>
 						<td>{ barbero.IDBarbero }</td>
 						<td>{ barbero.Nombre }</td>
-						<td>{ barbero.Apellido  }</td>
-						<td>{ barbero.Especialidad} </td>
+						<td>{ barbero.Apellido }</td>
+						<td>{ barbero.Especialidad }</td>
 					</tr>
 				}
-			</tbody>
-		</table>
-	}
+			}
+		</tbody>
+	</table>
 }

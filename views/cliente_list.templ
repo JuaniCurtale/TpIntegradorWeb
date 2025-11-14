@@ -7,7 +7,7 @@ templ ClientList(clientes []db.Cliente) {
 	if len(clientes) == 0 {
 		<p>No hay clientes para mostrar.</p>
 	} else {
-		<table>
+		<table id="clientes-list">
 			<thead>
 				<tr>
 					<th>id_cliente</th>

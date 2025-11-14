@@ -4,7 +4,7 @@ import db "tpIntegradorSaideCurtale/db/sqlc"
 
 
 templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
-	<form method="post" action="/turno">
+	<form hx-post="/turno" hx-target="#turnos-list" hx-swap="beforeend">
 		<label for="cliente">Cliente:</label>
 		<select id="cliente" name="id_cliente" required>
 			<option value="">Seleccionar cliente</option>

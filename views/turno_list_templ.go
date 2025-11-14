@@ -37,7 +37,7 @@ func TurnoList(turnos []db.Turno) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<table><thead><tr><th>id_turno</th><th>id_cliente</th><th>id_barbero</th><th>fechaHora</th><th>servicio</th><th>observaciones</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<table id=\"turnos-list\"><thead><tr><th>id_turno</th><th>id_cliente</th><th>id_barbero</th><th>fechaHora</th><th>servicio</th><th>observaciones</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

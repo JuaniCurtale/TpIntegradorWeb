@@ -29,7 +29,7 @@ func BarberoForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form method=\"post\" action=\"/barbero\"><label for=\"nombre\">Nombre:</label> <input type=\"text\" id=\"nombre\" name=\"nombre\" required> <label for=\"apellido\">Apellido:</label> <input type=\"text\" id=\"apellido\" name=\"apellido\" required> <label for=\"especialidad\">Especialidad:</label> <input type=\"text\" id=\"especialidad\" name=\"especialidad\" placeholder=\"Ej. Corte, Afeitado, Tinte\" required> <button type=\"submit\">Agregar Barbero</button></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/barbero\" hx-target=\"#barberos-list\" hx-swap=\"outerHTML\"><label for=\"nombre\">Nombre:</label> <input type=\"text\" id=\"nombre\" name=\"nombre\" required> <label for=\"apellido\">Apellido:</label> <input type=\"text\" id=\"apellido\" name=\"apellido\" required> <label for=\"especialidad\">Especialidad:</label> <input type=\"text\" id=\"especialidad\" name=\"especialidad\" placeholder=\"Ej. Corte, Afeitado, Tinte\" required> <button type=\"submit\">Agregar Barbero</button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

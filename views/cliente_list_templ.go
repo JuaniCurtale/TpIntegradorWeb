@@ -37,7 +37,7 @@ func ClientList(clientes []db.Cliente) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<table><thead><tr><th>id_cliente</th><th>nombre</th><th>apellido</th><th>telefono</th><th>email</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<table id=\"clientes-list\"><thead><tr><th>id_cliente</th><th>nombre</th><th>apellido</th><th>telefono</th><th>email</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

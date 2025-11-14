@@ -1,7 +1,7 @@
 package views
 
 templ BarberoForm() {
-	<form method="post" action="/barbero">
+	<form hx-post="/barbero" hx-target="#barberos-list" hx-swap="outerHTML">
 		<label for="nombre">Nombre:</label>
 		<input type="text" id="nombre" name="nombre" required>
 
