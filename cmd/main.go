@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	db "tpIntegradorSaideCurtale/db/sqlc"
 	database "tpIntegradorSaideCurtale/pkg/database"
@@ -137,30 +139,32 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 
 	case http.MethodPost:
 		r.ParseForm()
-		nombre := r.FormValue("nombre")
-		apellido := r.FormValue("apellido")
-		telefono := r.FormValue("telefono")
-		email := r.FormValue("email")
+		idCliente, _ := strconv.Atoi(r.FormValue("id_cliente"))
+		idBarbero, _ := strconv.Atoi(r.FormValue("id_barbero"))
+		fechaHora, _ := time.Parse("2006-01-02T15:04", r.FormValue("fechaHora"))
+		servicio := r.FormValue("servicio")
+		observaciones := r.FormValue("observaciones")
 
-		_, err := queries.CreateCliente(r.Context(), db.CreateClienteParams{
-			Nombre:   nombre,
-			Apellido: apellido,
-			Telefono: telefono,
-			Email:    email,
+		_, err := queries.CreateTurno(r.Context(), db.CreateTurnoParams{
+			IDCliente:     int32(idCliente),
+			IDBarbero:     int32(idBarbero),
+			Fechahora:     fechaHora,
+			Servicio:      servicio,
+			Observaciones: observaciones,
 		})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Devolver el <tbody> completo
-		clientes, err := queries.ListClientes(r.Context())
+		// Devolver solo el <tbody> actualizado
+		turnos, err := queries.ListTurnos(r.Context())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		views.ClientListRows(clientes).Render(r.Context(), w)
+		views.TurnoListRows(turnos).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
