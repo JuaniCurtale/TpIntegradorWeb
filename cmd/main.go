@@ -49,12 +49,27 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		telefono := r.FormValue("telefono")
 		email := r.FormValue("email")
 
-		queries.CreateCliente(r.Context(), db.CreateClienteParams{
+		// 1. Crear cliente
+		_, err := queries.CreateCliente(r.Context(), db.CreateClienteParams{
 			Nombre:   nombre,
 			Apellido: apellido,
 			Telefono: telefono,
 			Email:    email,
 		})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 2. Consultar lista actualizada
+		clientes, err := queries.ListClientes(r.Context())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Devolver SOLO el componente de lista
+		views.ClientList(clientes).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
