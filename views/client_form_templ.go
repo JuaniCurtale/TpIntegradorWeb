@@ -29,7 +29,7 @@ func ClienteForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/cliente\" hx-target=\"#clientes-tbody\" hx-swap=\"innerHTML\"><label for=\"nombre\">Nombre:</label><br><input type=\"text\" id=\"nombre\" name=\"nombre\" required><br><label for=\"apellido\">Apellido:</label><br><input type=\"text\" id=\"apellido\" name=\"apellido\" required><br><label for=\"telefono\">Teléfono:</label><br><input type=\"tel\" id=\"telefono\" name=\"telefono\"><br><label for=\"email\">Email:</label><br><input type=\"email\" id=\"email\" name=\"email\"><br><button type=\"submit\">Agregar Cliente</button></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/cliente\" hx-target=\"#clientes-tbody\" hx-swap=\"outerHTML\"><label for=\"nombre\">Nombre:</label><br><input type=\"text\" id=\"nombre\" name=\"nombre\" required><br><label for=\"apellido\">Apellido:</label><br><input type=\"text\" id=\"apellido\" name=\"apellido\" required><br><label for=\"telefono\">Teléfono:</label><br><input type=\"tel\" id=\"telefono\" name=\"telefono\"><br><label for=\"email\">Email:</label><br><input type=\"email\" id=\"email\" name=\"email\"><br><button type=\"submit\">Agregar Cliente</button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

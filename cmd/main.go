@@ -4,8 +4,6 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 
 	db "tpIntegradorSaideCurtale/db/sqlc"
 	database "tpIntegradorSaideCurtale/pkg/database"
@@ -107,7 +105,7 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// 3. Devolver SOLO el componente BarberList (fragmento)
-		views.BarberList(barberos).Render(r.Context(), w)
+		views.BarberListRows(barberos).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
@@ -138,46 +136,31 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		templ.Handler(views.TurnosPage(turnos, clientes, barberos)).ServeHTTP(w, r)
 
 	case http.MethodPost:
-		if err := r.ParseForm(); err != nil {
-			http.Error(w, "Error al procesar formulario", http.StatusBadRequest)
-			return
-		}
+		r.ParseForm()
+		nombre := r.FormValue("nombre")
+		apellido := r.FormValue("apellido")
+		telefono := r.FormValue("telefono")
+		email := r.FormValue("email")
 
-		idClienteStr := r.FormValue("id_cliente")
-		idBarberoStr := r.FormValue("id_barbero")
-		fechaHoraStr := r.FormValue("fechaHora")
-		servicio := r.FormValue("servicio")
-		observaciones := r.FormValue("observaciones")
-
-		idCliente, err := strconv.ParseInt(idClienteStr, 10, 32)
-		if err != nil {
-			http.Error(w, "ID de cliente inválido", http.StatusBadRequest)
-			return
-		}
-
-		idBarbero, err := strconv.ParseInt(idBarberoStr, 10, 32)
-		if err != nil {
-			http.Error(w, "ID de barbero inválido", http.StatusBadRequest)
-			return
-		}
-
-		fechaHora, err := time.Parse("2006-01-02T15:04", fechaHoraStr)
-		if err != nil {
-			http.Error(w, "Formato de fecha/hora inválido", http.StatusBadRequest)
-			return
-		}
-
-		_, err = queries.CreateTurno(r.Context(), db.CreateTurnoParams{
-			IDCliente:     int32(idCliente),
-			IDBarbero:     int32(idBarbero),
-			Fechahora:     fechaHora,
-			Servicio:      servicio,
-			Observaciones: observaciones,
+		_, err := queries.CreateCliente(r.Context(), db.CreateClienteParams{
+			Nombre:   nombre,
+			Apellido: apellido,
+			Telefono: telefono,
+			Email:    email,
 		})
 		if err != nil {
-			http.Error(w, "Error al guardar turno: "+err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		// Devolver el <tbody> completo
+		clientes, err := queries.ListClientes(r.Context())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		views.ClientListRows(clientes).Render(r.Context(), w)
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
