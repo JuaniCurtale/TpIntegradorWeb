@@ -38,6 +38,7 @@ func main() {
 	http.HandleFunc("/cliente", handlerClientes)
 	http.HandleFunc("/cliente/", handlerClientes)
 	http.HandleFunc("/barbero", handlerBarberos)
+	http.HandleFunc("/barbero/", handlerBarberos)
 	http.HandleFunc("/turno", handlerTurnos)
 
 	log.Println("Servidor escuchando en http://localhost:8080")
@@ -135,6 +136,26 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 
 		// 3. Devolver SOLO el componente BarberList (fragmento)
 		views.BarberListRows(barberos).Render(r.Context(), w)
+
+	case http.MethodDelete:
+		// 1. Obtener ID del URL
+		idStr := strings.TrimPrefix(r.URL.Path, "/barbero/")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "ID inválido", http.StatusBadRequest)
+			return
+		}
+
+		// 2. Llamar al método DeleteCliente de sqlc
+		err = queries.DeleteBarbero(r.Context(), int32(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Respuesta vacía para HTMX
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(""))
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)

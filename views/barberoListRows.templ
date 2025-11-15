@@ -1,7 +1,7 @@
 package views
 
 import "tpIntegradorSaideCurtale/db/sqlc"
-
+import "strconv"
 templ BarberListRows(barberos []db.Barbero) {
     <tbody id="barberos-tbody">
         if len(barberos) == 0 {
@@ -15,6 +15,16 @@ templ BarberListRows(barberos []db.Barbero) {
                     <td>{ barbero.Nombre }</td>
                     <td>{ barbero.Apellido }</td>
                     <td>{ barbero.Especialidad }</td>
+                    <td>
+                        <button 
+                        hx-delete={"/barbero/" + strconv.Itoa(int(barbero.IDBarbero))}
+                        hx-target="closest tr" 
+                        hx-swap="outerHTML"
+                        hx-confirm="¿Seguro que querés borrar este cliente?"
+                        >
+                        Borrar
+                    </button>
+                    </td>
                 </tr>
             }
         }
