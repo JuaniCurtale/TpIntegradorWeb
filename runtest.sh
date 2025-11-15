@@ -4,21 +4,11 @@ set -e #el script termine inmediatamente si algún comando falla
 echo "🚀 Construyendo y levantando contenedores..."
 docker compose up --build -d
 
-# Esperar que la API esté lista
-echo "⏳ Esperando que la API responda..."
-for i in {1..10}; do
-  if curl -s http://localhost:8080/health > /dev/null; then # Comprueba si la API responde correctamente 
-    echo "✅ API lista!"
-    break
-  fi
-  echo "Esperando..."
-  sleep 3
-done
+echo "✨ Generando componentes templ..."
+templ generate
 
-echo "🧪 Ejecutando pruebas con curl..."
-bash requests.sh
-
-echo "🧹 Bajando contenedores..."
-docker compose down
+# 👉 Abrir navegador automáticamente
+echo "🪟 Abriendo navegador"
+start http://localhost:8080
 
 echo "✅ Todo finalizó correctamente."
