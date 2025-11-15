@@ -40,6 +40,7 @@ func main() {
 	http.HandleFunc("/barbero", handlerBarberos)
 	http.HandleFunc("/barbero/", handlerBarberos)
 	http.HandleFunc("/turno", handlerTurnos)
+	http.HandleFunc("/turno/", handlerTurnos)
 
 	log.Println("Servidor escuchando en http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -214,6 +215,24 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 
 		views.TurnoListRows(turnos).Render(r.Context(), w)
 
+	case http.MethodDelete:
+		idStr := strings.TrimPrefix(r.URL.Path, "/turno/")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "ID inválido", http.StatusBadRequest)
+			return
+		}
+
+		// 2. Llamar al método DeleteCliente de sqlc
+		err = queries.DeleteTurno(r.Context(), int32(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Respuesta vacía para HTMX
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(""))
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}
