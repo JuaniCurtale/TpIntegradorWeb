@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	db "tpIntegradorSaideCurtale/db/sqlc"
@@ -24,12 +25,18 @@ func main() {
 
 	// --- Página principal ---
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+
 		component := views.IndexPage()
 		templ.Handler(component).ServeHTTP(w, r)
 	})
 
 	// --- HANDLERS ---
 	http.HandleFunc("/cliente", handlerClientes)
+	http.HandleFunc("/cliente/", handlerClientes)
 	http.HandleFunc("/barbero", handlerBarberos)
 	http.HandleFunc("/turno", handlerTurnos)
 
@@ -70,6 +77,26 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 
 		// 3. Devolver SOLO el componente de lista
 		views.ClientListRows(clientes).Render(r.Context(), w)
+
+	case http.MethodDelete:
+		// 1. Obtener ID del URL (ejemplo: /cliente/{id})
+		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "ID inválido", http.StatusBadRequest)
+			return
+		}
+
+		// 2. Llamar al método DeleteCliente de sqlc
+		err = queries.DeleteCliente(r.Context(), int32(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// 3. Respuesta vacía para HTMX
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(""))
 
 	default:
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
