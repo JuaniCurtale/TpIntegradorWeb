@@ -2,7 +2,15 @@ package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
 
+templ barberosPageContent(barberos []db.Barbero) {
+	<h2>Listado</h2>
+	@BarberList(barberos)
+	<hr/>
+	<h2>Agregar</h2>
+	@BarberoForm()
+
+}
+
 templ BarberosPage(barberos []db.Barbero) {
-    @Layout("Barberos", "barberos", BarberList(barberos))
-    @BarberoForm()
+	@Layout("Barberos", "barberos", barberosPageContent(barberos))
 }

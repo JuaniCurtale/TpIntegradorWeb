@@ -2,7 +2,15 @@ package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
 
+templ clientesPageContent(clientes []db.Cliente) {
+	
+    <h2>Listado</h2>
+	@ClientList(clientes)
+    <hr/>
+    <h2>Agregar</h2>
+	@ClienteForm()
+}
+
 templ ClientesPage(clientes []db.Cliente) {
-    @Layout("Clientes", "clientes", ClientList(clientes))
-    @ClienteForm()
+	@Layout("Clientes", "clientes", clientesPageContent(clientes))
 }

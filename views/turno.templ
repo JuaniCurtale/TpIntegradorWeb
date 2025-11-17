@@ -2,9 +2,15 @@ package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
 
-templ TurnosPage(turnos []db.Turno,clientes []db.Cliente, barberos []db.Barbero) {
-    @Layout("Turnos", "turnos", TurnoList(turnos))
-  //  @BarberList(barberos)
-  //  @ClientList(clientes)
-    @TurnoForm(turnos,clientes,barberos)
+templ turnosPageContent(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+	<h2>Turnos</h2>
+	@TurnoList(turnos)
+	<hr/>
+	<h2>Agendar</h2>
+	@TurnoForm(turnos, clientes, barberos)
+
+}
+
+templ TurnosPage(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+	@Layout("Turnos", "turnos", turnosPageContent(turnos, clientes, barberos))
 }
