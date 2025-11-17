@@ -23,5 +23,5 @@ CREATE TABLE Turno (
     servicio VARCHAR(100) NOT NULL,
     observaciones TEXT NOT NULL,
     CONSTRAINT fk_cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE,
-    CONSTRAINT fk_barbero FOREIGN KEY (id_barbero) REFERENCES Barbero (id_barbero)
+    CONSTRAINT fk_barbero FOREIGN KEY (id_barbero) REFERENCES Barbero (id_barbero) ON DELETE CASCADE
 );
