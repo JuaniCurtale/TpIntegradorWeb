@@ -66,20 +66,25 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			Email:    email,
 		})
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			if strings.Contains(err.Error(), "duplicate key") {
+				views.NotificacionError("El email ya se encuentra registrado.").Render(r.Context(), w)
+				clientes, _ := queries.ListClientes(r.Context())
+				views.ClientListRows(clientes).Render(r.Context(), w)
+				return
+			}
+			views.NotificacionError("Error al guardar el cliente: "+err.Error()).Render(r.Context(), w)
 			return
 		}
 
-		// 2. Consultar lista actualizada
+		// SI ES ÉXITO:
 		clientes, err := queries.ListClientes(r.Context())
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			views.NotificacionError("Cliente guardado, pero falló la lista.").Render(r.Context(), w)
 			return
 		}
 
-		// 3. Devolver SOLO el componente de lista
+		// 2. Renderizamos la fila nueva en la tabla
 		views.ClientListRows(clientes).Render(r.Context(), w)
-
 	case http.MethodDelete:
 		// 1. Obtener ID del URL (ejemplo: /cliente/{id})
 		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
@@ -194,6 +199,12 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		servicio := r.FormValue("servicio")
 		observaciones := r.FormValue("observaciones")
 
+		if fechaHora.Before(time.Now()) {
+			views.NotificacionError("La fecha debe ser superior a la actual").Render(r.Context(), w)
+			turnos, _ := queries.ListTurnos(r.Context())
+			views.TurnoListRows(turnos).Render(r.Context(), w)
+			return
+		}
 		_, err := queries.CreateTurno(r.Context(), db.CreateTurnoParams{
 			IDCliente:     int32(idCliente),
 			IDBarbero:     int32(idBarbero),
@@ -201,18 +212,19 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 			Servicio:      servicio,
 			Observaciones: observaciones,
 		})
+
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			views.NotificacionError("Error al guardar el turno: "+err.Error()).Render(r.Context(), w)
 			return
 		}
 
-		// Devolver solo el <tbody> actualizado
+		// SI ES ÉXITO:
 		turnos, err := queries.ListTurnos(r.Context())
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			views.NotificacionError("Turno guardado, pero falló la lista.").Render(r.Context(), w)
 			return
 		}
-
+		// 2. Renderizamos la fila nueva en la tabla
 		views.TurnoListRows(turnos).Render(r.Context(), w)
 
 	case http.MethodDelete:

@@ -1,6 +1,5 @@
 package views
 
-
 func ActiveClass(active, name string) string {
     if active == name {
         return "contrast"
@@ -17,10 +16,9 @@ templ Layout(title string, active string, child templ.Component) {
         <title>{ title }</title>
         <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
         <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-
     </head>
     <body>
-        <header>
+        <header class="container">
             <nav>
                 <ul>
                     <li><a href="/cliente" class={ ActiveClass(active, "clientes") }>Clientes</a></li>
@@ -30,7 +28,10 @@ templ Layout(title string, active string, child templ.Component) {
             </nav>
             <h1>{ title }</h1>
         </header>
-        <main>
+        
+        <main class="container">
+            <div id="notificaciones"></div> 
+
             @child
         </main>
     </body>

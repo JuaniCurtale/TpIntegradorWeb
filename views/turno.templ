@@ -4,7 +4,7 @@ import db "tpIntegradorSaideCurtale/db/sqlc"
 
 templ TurnosPage(turnos []db.Turno,clientes []db.Cliente, barberos []db.Barbero) {
     @Layout("Turnos", "turnos", TurnoList(turnos))
-    @BarberList(barberos)
-    @ClientList(clientes)
+  //  @BarberList(barberos)
+  //  @ClientList(clientes)
     @TurnoForm(turnos,clientes,barberos)
 }

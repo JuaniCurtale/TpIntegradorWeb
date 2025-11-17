@@ -1,7 +1,7 @@
 package views
 
 templ ClienteForm(){
-<form hx-post="/cliente" hx-target="#clientes-tbody" hx-swap="outerHTML">
+<form id="form-cliente" hx-post="/cliente" hx-target="#clientes-tbody" hx-swap="outerHTML" hx-on::after-request="this.reset()">
 
         <label for="nombre">Nombre:</label><br>
         <input type="text" id="nombre" name="nombre" required><br>
@@ -19,3 +19,9 @@ templ ClienteForm(){
     </form>
 }
 
+templ ClienteFormOOB() {
+    // Este div envuelve al form y le dice a HTMX: "Busca el id 'form-cliente' y reemplázalo"
+    <div id="form-cliente" hx-swap-oob="true">
+        @ClienteForm()
+    </div>
+}

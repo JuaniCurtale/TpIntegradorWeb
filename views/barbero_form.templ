@@ -1,7 +1,7 @@
 package views
 
 templ BarberoForm() {
-<form hx-post="/barbero" hx-target="#barberos-tbody" hx-swap="outerHTML">
+<form id="form-barbero" hx-post="/barbero" hx-target="#barberos-tbody" hx-swap="outerHTML"hx-on::after-request="this.reset()"> 
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" required>
 
@@ -13,4 +13,11 @@ templ BarberoForm() {
 
     <button type="submit">Agregar Barbero</button>
 </form>
+}
+
+templ BarberoFormOOB() {
+    // Este div envuelve al form y le dice a HTMX: "Busca el id 'form-barbero' y reemplázalo"
+    <div id="form-barbero" hx-swap-oob="true">
+        @BarberoForm()
+    </div>
 }

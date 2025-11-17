@@ -4,7 +4,7 @@ import db "tpIntegradorSaideCurtale/db/sqlc"
 
 
 templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
-	<form hx-post="/turno" hx-target="#turnos-tbody" hx-swap="outerHTML">
+	<form id="form-turno" hx-post="/turno" hx-target="#turnos-tbody" hx-swap="outerHTML" hx-on::after-request="this.reset()">
 		<label for="cliente">Cliente:</label>
 		<select id="cliente" name="id_cliente" required>
 			<option value="">Seleccionar cliente</option>
@@ -32,4 +32,10 @@ templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero)
 
 		<button type="submit">Agendar Turno</button>
 	</form>
+}
+
+templ TurnoFormOOB(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+    <div id="form-turno" hx-swap-oob="true">
+        @TurnoForm(turnos, clientes, barberos)
+    </div>
 }
