@@ -66,10 +66,9 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			Email:    email,
 		})
 		if err != nil {
+			w.Header().Set("HX-Retarget", "#notificaciones")
 			if strings.Contains(err.Error(), "duplicate key") {
 				views.NotificacionError("El email ya se encuentra registrado.").Render(r.Context(), w)
-				clientes, _ := queries.ListClientes(r.Context())
-				views.ClientListRows(clientes).Render(r.Context(), w)
 				return
 			}
 			views.NotificacionError("Error al guardar el cliente: "+err.Error()).Render(r.Context(), w)
@@ -200,9 +199,8 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		observaciones := r.FormValue("observaciones")
 
 		if fechaHora.Before(time.Now()) {
+			w.Header().Set("HX-Retarget", "#notificaciones")
 			views.NotificacionError("La fecha debe ser superior a la actual").Render(r.Context(), w)
-			turnos, _ := queries.ListTurnos(r.Context())
-			views.TurnoListRows(turnos).Render(r.Context(), w)
 			return
 		}
 		_, err := queries.CreateTurno(r.Context(), db.CreateTurnoParams{
@@ -214,6 +212,7 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		})
 
 		if err != nil {
+
 			views.NotificacionError("Error al guardar el turno: "+err.Error()).Render(r.Context(), w)
 			return
 		}
