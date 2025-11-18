@@ -1,8 +1,12 @@
 package views
 
-templ ClienteForm(){
-<form id="form-cliente" hx-post="/cliente" hx-target="#clientes-tbody" hx-swap="outerHTML" hx-on::after-request="this.reset()">
-
+templ ClienteForm() {
+    // Quitamos el reset de JS porque usaremos OOB
+    <form id="form-cliente" 
+          hx-post="/cliente" 
+          hx-target="#clientes-list" 
+          hx-swap="outerHTML">
+        
         <label for="nombre">Nombre:</label><br>
         <input type="text" id="nombre" name="nombre" required><br>
 
@@ -20,7 +24,7 @@ templ ClienteForm(){
 }
 
 templ ClienteFormOOB() {
-    // Este div envuelve al form y le dice a HTMX: "Busca el id 'form-cliente' y reemplázalo"
+    // Consigna Ejercicio 3: Envolver en un div con el mismo ID y hx-swap-oob="true"
     <div id="form-cliente" hx-swap-oob="true">
         @ClienteForm()
     </div>

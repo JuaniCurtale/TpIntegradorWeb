@@ -51,6 +51,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		clientes, _ := queries.ListClientes(context.Background())
 		templ.Handler(views.ClientesPage(clientes)).ServeHTTP(w, r)
+
 	case http.MethodPost:
 		r.ParseForm()
 		nombre := r.FormValue("nombre")
@@ -66,26 +67,31 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			Email:    email,
 		})
 		if err != nil {
+			// Intenta usar NotificacionError si existe, sino usa http.Error
 			w.Header().Set("HX-Retarget", "#notificaciones")
 			if strings.Contains(err.Error(), "duplicate key") {
-				views.NotificacionError("El email ya se encuentra registrado.").Render(r.Context(), w)
+				// Si tienes el componente NotificacionError:
+				// views.NotificacionError("El email ya se encuentra registrado.").Render(r.Context(), w)
+				http.Error(w, "El email ya se encuentra registrado.", http.StatusConflict)
 				return
 			}
-			views.NotificacionError("Error al guardar el cliente: "+err.Error()).Render(r.Context(), w)
+			http.Error(w, "Error al guardar el cliente: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// SI ES ÉXITO:
+		// 2. Consultar lista actualizada
 		clientes, err := queries.ListClientes(r.Context())
 		if err != nil {
-			views.NotificacionError("Cliente guardado, pero falló la lista.").Render(r.Context(), w)
+			http.Error(w, "Cliente guardado, pero falló la lista.", http.StatusInternalServerError)
 			return
 		}
 
-		// 2. Renderizamos la fila nueva en la tabla
-		views.ClientListRows(clientes).Render(r.Context(), w)
+		// 3. Renderizar la LISTA COMPLETA (ClientList)
+		// Esto reemplazará toda la tabla #clientes-list gracias al hx-target del form
+		views.ClientList(clientes).Render(r.Context(), w)
+
 	case http.MethodDelete:
-		// 1. Obtener ID del URL (ejemplo: /cliente/{id})
+		// 1. Obtener ID del URL
 		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -93,14 +99,14 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 2. Llamar al método DeleteCliente de sqlc
+		// 2. Eliminar
 		err = queries.DeleteCliente(r.Context(), int32(id))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// 3. Respuesta vacía para HTMX
+		// 3. Respuesta vacía para HTMX (elimina la fila de la vista actual)
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(""))
 
@@ -139,11 +145,11 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 3. Devolver SOLO el componente BarberList (fragmento)
-		views.BarberListRows(barberos).Render(r.Context(), w)
+		// 3. Renderizar la LISTA COMPLETA (BarberList)
+		// Esto reemplazará toda la tabla #barberos-list
+		views.BarberList(barberos).Render(r.Context(), w)
 
 	case http.MethodDelete:
-		// 1. Obtener ID del URL
 		idStr := strings.TrimPrefix(r.URL.Path, "/barbero/")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -151,14 +157,12 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 2. Llamar al método DeleteCliente de sqlc
 		err = queries.DeleteBarbero(r.Context(), int32(id))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// 3. Respuesta vacía para HTMX
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(""))
 
@@ -194,15 +198,18 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		idCliente, _ := strconv.Atoi(r.FormValue("id_cliente"))
 		idBarbero, _ := strconv.Atoi(r.FormValue("id_barbero"))
+		// Se asume formato datetime-local del HTML5
 		fechaHora, _ := time.Parse("2006-01-02T15:04", r.FormValue("fechaHora"))
 		servicio := r.FormValue("servicio")
 		observaciones := r.FormValue("observaciones")
 
 		if fechaHora.Before(time.Now()) {
 			w.Header().Set("HX-Retarget", "#notificaciones")
-			views.NotificacionError("La fecha debe ser superior a la actual").Render(r.Context(), w)
+			// views.NotificacionError("La fecha debe ser superior a la actual").Render(r.Context(), w)
+			http.Error(w, "La fecha debe ser superior a la actual", http.StatusBadRequest)
 			return
 		}
+
 		_, err := queries.CreateTurno(r.Context(), db.CreateTurnoParams{
 			IDCliente:     int32(idCliente),
 			IDBarbero:     int32(idBarbero),
@@ -212,19 +219,20 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		})
 
 		if err != nil {
-
-			views.NotificacionError("Error al guardar el turno: "+err.Error()).Render(r.Context(), w)
+			http.Error(w, "Error al guardar el turno: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// SI ES ÉXITO:
 		turnos, err := queries.ListTurnos(r.Context())
 		if err != nil {
-			views.NotificacionError("Turno guardado, pero falló la lista.").Render(r.Context(), w)
+			http.Error(w, "Turno guardado, pero falló la lista.", http.StatusInternalServerError)
 			return
 		}
-		// 2. Renderizamos la fila nueva en la tabla
-		views.TurnoListRows(turnos).Render(r.Context(), w)
+
+		// 3. Renderizar la LISTA COMPLETA (TurnoList)
+		// Esto reemplazará toda la tabla #turnos-list
+		views.TurnoList(turnos).Render(r.Context(), w)
 
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/turno/")
@@ -234,14 +242,12 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 2. Llamar al método DeleteCliente de sqlc
 		err = queries.DeleteTurno(r.Context(), int32(id))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// 3. Respuesta vacía para HTMX
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(""))
 	default:

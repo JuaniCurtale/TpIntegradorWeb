@@ -31,7 +31,7 @@ func TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) 
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form id=\"form-turno\" hx-post=\"/turno\" hx-target=\"#turnos-tbody\" hx-swap=\"outerHTML\" hx-on::after-request=\"this.reset()\"><label for=\"cliente\">Cliente:</label> <select id=\"cliente\" name=\"id_cliente\" required><option value=\"\">Seleccionar cliente</option> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form id=\"form-turno\" hx-post=\"/turno\" hx-target=\"#turnos-list\" hx-swap=\"outerHTML\" hx-on::after-request=\"this.reset()\"><label for=\"cliente\">Cliente:</label> <select id=\"cliente\" name=\"id_cliente\" required><option value=\"\">Seleccionar cliente</option> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
