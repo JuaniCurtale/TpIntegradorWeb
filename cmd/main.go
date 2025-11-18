@@ -225,6 +225,17 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// SI ES ÉXITO:
+		clientes, err := queries.ListClientes(r.Context())
+		if err != nil {
+			http.Error(w, "Error obteniendo clientes para el form.", http.StatusInternalServerError)
+			return
+		}
+
+		barberos, err := queries.ListBarberos(r.Context())
+		if err != nil {
+			http.Error(w, "Error obteniendo barberos para el form.", http.StatusInternalServerError)
+			return
+		}
 		turnos, err := queries.ListTurnos(r.Context())
 		if err != nil {
 			http.Error(w, "Turno guardado, pero falló la lista.", http.StatusInternalServerError)
@@ -234,6 +245,7 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		// 3. Renderizar la LISTA COMPLETA (TurnoList)
 		// Esto reemplazará toda la tabla #turnos-list
 		views.TurnoList(turnos).Render(r.Context(), w)
+		views.TurnoFormOOB(turnos, clientes, barberos).Render(r.Context(), w)
 
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/turno/")
