@@ -89,7 +89,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		// 3. Renderizar la LISTA COMPLETA (ClientList)
 		// Esto reemplazará toda la tabla #clientes-list gracias al hx-target del form
 		views.ClientList(clientes).Render(r.Context(), w)
-
+		views.ClienteFormOOB().Render(r.Context(), w)
 	case http.MethodDelete:
 		// 1. Obtener ID del URL
 		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
@@ -148,6 +148,7 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 		// 3. Renderizar la LISTA COMPLETA (BarberList)
 		// Esto reemplazará toda la tabla #barberos-list
 		views.BarberList(barberos).Render(r.Context(), w)
+		views.BarberoFormOOB().Render(r.Context(), w)
 
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/barbero/")
