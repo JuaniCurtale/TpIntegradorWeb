@@ -1,7 +1,7 @@
 package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
-
+import "strconv"
 templ turnosPageContent(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
 	<h2>Turnos</h2>
 	@TurnoList(turnos)
@@ -14,3 +14,90 @@ templ turnosPageContent(turnos []db.Turno, clientes []db.Cliente, barberos []db.
 templ TurnosPage(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
 	@Layout("Turnos", "turnos", turnosPageContent(turnos, clientes, barberos))
 }
+
+templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+	<form id="form-turno" hx-post="/turno" hx-target="#turnos-list" hx-swap="outerHTML" >
+		<label for="cliente">Cliente:</label>
+		<select id="cliente" name="id_cliente" required>
+			<option value="">Seleccionar cliente</option>
+			for _, c := range clientes {
+				<option value={ c.IDCliente }>{ c.Nombre } { c.Apellido }</option>
+			}
+		</select>
+
+		<label for="barbero">Barbero:</label>
+		<select id="barbero" name="id_barbero" required>
+			<option value="">Seleccionar barbero</option>
+			for _, b := range barberos {
+				<option value={ b.IDBarbero }>{ b.Nombre } { b.Apellido }</option>
+			}
+		</select>
+
+		<label for="fechaHora">Fecha y hora:</label>
+		<input type="datetime-local" id="fechaHora" name="fechaHora" required>
+
+		<label for="servicio">Servicio:</label>
+		<input type="text" id="servicio" name="servicio" required>
+
+		<label for="observaciones">Observaciones:</label>
+		<textarea id="observaciones" name="observaciones" rows="3"></textarea>
+
+		<button type="submit">Agendar Turno</button>
+	</form>
+}
+
+templ TurnoFormOOB(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+    <div id="form-turno" hx-swap-oob="true">
+        @TurnoForm(turnos, clientes, barberos)
+    </div>
+}
+
+
+
+templ TurnoList(turnos []db.Turno) {
+    <table id="turnos-list">
+        <thead>
+            <tr>
+                <th>id_turno</th>
+                <th>id_cliente</th>					
+                <th>id_barbero</th>
+                <th>fechaHora</th>
+                <th>servicio</th>
+                <th>observaciones</th>
+            </tr>
+        </thead>
+        @TurnoListRows(turnos)
+    </table>
+}
+
+templ TurnoListRows(turnos []db.Turno) {
+    <tbody id="turnos-tbody">
+        if len(turnos) == 0 {
+            <tr>
+                <td colspan="6">No hay turnos para mostrar.</td>
+            </tr>
+        } else {
+            for _, turno := range turnos {
+                <tr>
+                    <td>{ turno.IDTurno }</td>
+                    <td>{ turno.IDCliente }</td>
+                    <td>{ turno.IDBarbero }</td>
+                    <td>{ turno.Fechahora.Format("02/01/2006 15:04") }</td>
+                    <td>{ turno.Servicio }</td>
+                    <td>{ turno.Observaciones }</td>
+                    <td>
+                        <button 
+                        hx-delete={"/turno/" + strconv.Itoa(int(turno.IDTurno))}
+                        hx-target="closest tr" 
+                        hx-swap="outerHTML"
+                        hx-confirm="¿Seguro que querés borrar este cliente?"
+                        >
+                        Borrar
+                    </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+}
+

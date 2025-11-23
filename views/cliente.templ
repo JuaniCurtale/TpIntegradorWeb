@@ -1,6 +1,8 @@
 package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
+import "strconv"
+
 
 templ clientesPageContent(clientes []db.Cliente) {
 	
@@ -13,4 +15,77 @@ templ clientesPageContent(clientes []db.Cliente) {
 
 templ ClientesPage(clientes []db.Cliente) {
 	@Layout("Clientes", "clientes", clientesPageContent(clientes))
+}
+
+templ ClienteForm() {
+    <form id="form-cliente" 
+          hx-post="/cliente" 
+          hx-target="#clientes-list" 
+          hx-swap="outerHTML">
+        
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br>
+
+        <label for="apellido">Apellido:</label><br>
+        <input type="text" id="apellido" name="apellido" required><br>
+
+        <label for="telefono">Teléfono:</label><br>
+        <input type="tel" id="telefono" name="telefono"><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+
+        <button type="submit">Agregar Cliente</button>
+    </form>
+}
+
+templ ClienteFormOOB() {
+    <div id="form-cliente" hx-swap-oob="true">
+        @ClienteForm()
+    </div>
+}
+
+templ ClientList(clientes []db.Cliente) {
+    <table id="clientes-list">
+        <thead>
+            <tr>
+                <th>id_cliente</th>
+                <th>nombre</th>
+                <th>apellido</th>
+                <th>telefono</th>
+                <th>email</th>
+            </tr>
+        </thead>
+        @ClientListRows(clientes)
+    </table>
+}
+
+templ ClientListRows(clientes []db.Cliente) {
+    <tbody id="clientes-tbody">
+        if len(clientes) == 0 {
+            <tr>
+                <td colspan="5">No hay clientes para mostrar.</td>
+            </tr>
+        } else {
+            for _, cliente := range clientes {
+                <tr>
+                    <td>{ cliente.IDCliente }</td>
+                    <td>{ cliente.Nombre }</td>
+                    <td>{ cliente.Apellido }</td>
+                    <td>{ cliente.Telefono }</td>
+                    <td>{ cliente.Email }</td>
+                    <td>
+                        <button 
+                        hx-delete={"/cliente/" + strconv.Itoa(int(cliente.IDCliente))}
+                        hx-target="closest tr" 
+                        hx-swap="outerHTML"
+                        hx-confirm="¿Seguro que querés borrar este cliente?"
+                        >
+                        Borrar
+                    </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
 }
