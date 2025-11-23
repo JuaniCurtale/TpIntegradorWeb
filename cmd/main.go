@@ -59,23 +59,25 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		telefono := r.FormValue("telefono")
 		email := r.FormValue("email")
 
+		// Primero verificamos si el email ya existe
+		existe, err := queries.GetClienteByEmail(r.Context(), email)
+		if err == nil && existe.Email == email {
+			// Ya existe
+			w.WriteHeader(http.StatusOK)
+			views.ErrorCliente(nombre, apellido, telefono, email, "El email ya está registrado").Render(r.Context(), w)
+			return
+		}
+
 		// 1. Crear cliente
-		_, err := queries.CreateCliente(r.Context(), db.CreateClienteParams{
+		_, err = queries.CreateCliente(r.Context(), db.CreateClienteParams{
 			Nombre:   nombre,
 			Apellido: apellido,
 			Telefono: telefono,
 			Email:    email,
 		})
+
 		if err != nil {
-			// Intenta usar NotificacionError si existe, sino usa http.Error
-			w.Header().Set("HX-Retarget", "#notificaciones")
-			if strings.Contains(err.Error(), "duplicate key") {
-				// Si tienes el componente NotificacionError:
-				// views.NotificacionError("El email ya se encuentra registrado.").Render(r.Context(), w)
-				http.Error(w, "El email ya se encuentra registrado.", http.StatusConflict)
-				return
-			}
-			http.Error(w, "Error al guardar el cliente: "+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Error al crear cliente", http.StatusInternalServerError)
 			return
 		}
 
@@ -91,7 +93,6 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		views.ClientList(clientes).Render(r.Context(), w)
 		views.ClienteFormOOB().Render(r.Context(), w)
 	case http.MethodDelete:
-		// 1. Obtener ID del URL
 		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -199,15 +200,12 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		idCliente, _ := strconv.Atoi(r.FormValue("id_cliente"))
 		idBarbero, _ := strconv.Atoi(r.FormValue("id_barbero"))
-		// Se asume formato datetime-local del HTML5
 		fechaHora, _ := time.Parse("2006-01-02T15:04", r.FormValue("fechaHora"))
 		servicio := r.FormValue("servicio")
 		observaciones := r.FormValue("observaciones")
 
 		if fechaHora.Before(time.Now()) {
-			w.Header().Set("HX-Retarget", "#notificaciones")
-			// views.NotificacionError("La fecha debe ser superior a la actual").Render(r.Context(), w)
-			http.Error(w, "La fecha debe ser superior a la actual", http.StatusBadRequest)
+			http.Error(w, "La fecha y hora deben ser posteriores al momento actual", http.StatusBadRequest)
 			return
 		}
 

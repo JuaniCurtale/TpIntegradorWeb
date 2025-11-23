@@ -89,3 +89,39 @@ templ ClientListRows(clientes []db.Cliente) {
         }
     </tbody>
 }
+
+templ ErrorCliente(nombre, apellido, telefono, email, errorMsg string) {
+    // Agregamos hx-swap-oob="true" para asegurar que reemplace al formulario 
+    // existente, aunque el request original apuntara a la tabla.
+    <form id="form-cliente" 
+          hx-post="/cliente" 
+          hx-target="#clientes-list" 
+          hx-swap="outerHTML"
+          hx-swap-oob="true">
+        
+        // Mensaje de error
+        if errorMsg != "" {
+            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 10px;">
+                <strong>Error:</strong> { errorMsg }
+            </div>
+        }
+
+        <label for="nombre">Nombre:</label><br>
+        // Rellenamos el value con la variable 'nombre'
+        <input type="text" id="nombre" name="nombre" value={ nombre } required><br>
+
+        <label for="apellido">Apellido:</label><br>
+        // Rellenamos el value con la variable 'apellido'
+        <input type="text" id="apellido" name="apellido" value={ apellido } required><br>
+
+        <label for="telefono">Teléfono:</label><br>
+        // Rellenamos el value con la variable 'telefono'
+        <input type="tel" id="telefono" name="telefono" value={ telefono }><br>
+
+        <label for="email">Email:</label><br>
+        // Rellenamos el value con la variable 'email' (el que causó el error)
+        <input type="email" id="email" name="email" value={ email }><br>
+
+        <button type="submit">Agregar Cliente</button>
+    </form>
+}
