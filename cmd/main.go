@@ -63,6 +63,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		existe, err := queries.GetClienteByEmail(r.Context(), email)
 		if err == nil && existe.Email == email {
 			// Ya existe
+			w.Header().Set("HX-Reswap", "none")
 			w.WriteHeader(http.StatusOK)
 			views.ErrorCliente(nombre, apellido, telefono, email, "El email ya está registrado").Render(r.Context(), w)
 			return
