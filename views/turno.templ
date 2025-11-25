@@ -36,7 +36,7 @@ templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero)
 		</select>
 
 		<label for="fechaHora">Fecha y hora:</label>
-<input type="datetime-local" id="fechaHora" name="fechaHora" min={ time.Now().Format("2006-01-02T15:04") }
+<input type="datetime-local" id="fechaHora" name="fechaHora" min={ time.Now().Add(-3 * time.Hour).Format("2006-01-02T15:04") }
  required/>
 		<label for="servicio">Servicio:</label>
 		<input type="text" id="servicio" name="servicio" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" required>
@@ -103,3 +103,53 @@ templ TurnoListRows(turnos []db.Turno) {
     </tbody>
 }
 
+templ ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorMsg string, clientes []db.Cliente, barberos []db.Barbero) {
+    <form id="form-turno"
+          hx-post="/turno"
+          hx-target="#turnos-list"
+          hx-swap="outerHTML"
+          hx-swap-oob="true">
+
+        if errorMsg != "" {
+            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 10px;">
+                <strong>Error:</strong> { errorMsg }
+            </div>
+        }
+
+        <label>Cliente:</label>
+        <select name="id_cliente" required>
+            <option value="">Seleccionar cliente</option>
+            for _, c := range clientes {
+                <option value={ c.IDCliente } selected={ strconv.Itoa(int(c.IDCliente)) == idCliente }>
+                    { c.Nombre } { c.Apellido }
+                </option>
+            }
+        </select>
+
+        <label>Barbero:</label>
+        <select name="id_barbero" required>
+            <option value="">Seleccionar barbero</option>
+            for _, b := range barberos {
+                <option value={ b.IDBarbero } selected={ strconv.Itoa(int(b.IDBarbero)) == idBarbero }>
+                    { b.Nombre } { b.Apellido }
+                </option>
+            }
+        </select>
+
+        <label>Fecha y hora:</label>
+        <input type="datetime-local" name="fechaHora" value={ fechaHora } required>
+
+        <label>Servicio:</label>
+        <input type="text" name="servicio" value={ servicio } required>
+
+        <label>Observaciones:</label>
+        <textarea name="observaciones">{ observaciones }</textarea>
+
+        <button type="submit">Agendar Turno</button>
+    </form>
+}
+
+templ TurnoGuardadoExito(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
+    @TurnoList(turnos)
+    @TurnoFormOOB(turnos, clientes, barberos)
+}
