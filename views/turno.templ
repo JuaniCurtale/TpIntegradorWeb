@@ -2,6 +2,8 @@ package views
 
 import db "tpIntegradorSaideCurtale/db/sqlc"
 import "strconv"
+import "time"
+
 templ turnosPageContent(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero) {
 	<h2>Turnos</h2>
 	@TurnoList(turnos)
@@ -34,10 +36,10 @@ templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero)
 		</select>
 
 		<label for="fechaHora">Fecha y hora:</label>
-		<input type="datetime-local" id="fechaHora" name="fechaHora" required>
-
+<input type="datetime-local" id="fechaHora" name="fechaHora" min={ time.Now().Format("2006-01-02T15:04") }
+ required/>
 		<label for="servicio">Servicio:</label>
-		<input type="text" id="servicio" name="servicio" required>
+		<input type="text" id="servicio" name="servicio" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" required>
 
 		<label for="observaciones">Observaciones:</label>
 		<textarea id="observaciones" name="observaciones" rows="3"></textarea>

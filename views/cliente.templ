@@ -38,6 +38,8 @@ templ ClienteFormOOB() {
     </form>
 }
 
+
+
 templ ClientList(clientes []db.Cliente) {
     <table id="clientes-list">
         <thead>
@@ -85,13 +87,13 @@ templ ClientListRows(clientes []db.Cliente) {
 
 templ ClienteCampos(nombre, apellido, telefono, email string) {
     <label for="nombre">Nombre:</label><br>
-    <input type="text" id="nombre" name="nombre" value={ nombre } required><br>
+    <input type="text" id="nombre" name="nombre" value={ nombre } pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" required><br>
 
     <label for="apellido">Apellido:</label><br>
-    <input type="text" id="apellido" name="apellido" value={ apellido } required><br>
+    <input type="text" id="apellido" name="apellido" value={ apellido } pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" required><br>
 
     <label for="telefono">Teléfono:</label><br>
-    <input type="tel" id="telefono" name="telefono" value={ telefono }><br>
+    <input type="tel" id="telefono" name="telefono" value={ telefono } pattern="[0-9]+" ><br>
 
     <label for="email">Email:</label><br>
     <input type="email" id="email" name="email" value={ email }><br>
