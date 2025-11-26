@@ -28,18 +28,11 @@ En los Trabajos Prácticos N.º 3 y 4 (TP3 y TP4) se integraron ambas capas, se 
     │       ├── db.go
     │       ├── models.go
     │       └── queries.sql.go   # Código Go generado por sqlc
-    ├── logic/
-    │   └── logic.go             # Lógica de negocio de la aplicación
     ├── pkg/
-    │   ├── database/
-    │   │   └── database.go      # Conexión a la base de datos
-    │   ├── handlers/
-    │   │   ├── api_handlers.go  # Handlers de la API
-    │   │   └── handlers.go      # Handlers de las páginas web HTML
-    │   └── router/
-    │       └── router.go        # Definición de las rutas
-    ├── static/                  # Archivos estáticos (CSS, JS, imágenes)
-    ├── templates/               # Plantillas HTML
+    │   └── database/
+    │        └── database.go      # Conexión a la base de datosL
+    │       
+    ├── view/                    # Archivos templ
     ├── .env                     # Archivo con variables de entorno (no versionado)
     ├── .gitignore
     ├── docker-compose.yml       # Orquestación de los contenedores
@@ -47,7 +40,6 @@ En los Trabajos Prácticos N.º 3 y 4 (TP3 y TP4) se integraron ambas capas, se 
     ├── go.mod
     ├── go.sum
     ├── README.md
-    ├── requests.sh              # Ejemplos de requests a la API
     ├── runtest.sh               # Script para construir la app, levantar Docker y correr los testeos
     └── sqlc.yaml                # Configuración de sqlc
 

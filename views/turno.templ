@@ -36,7 +36,7 @@ templ TurnoForm(turnos []db.Turno, clientes []db.Cliente, barberos []db.Barbero)
 		</select>
 
 		<label for="fechaHora">Fecha y hora:</label>
-<input type="datetime-local" id="fechaHora" name="fechaHora" min={ time.Now().Add(-3 * time.Hour).Format("2006-01-02T15:04") }
+<input type="datetime-local" id="fechaHora" name="fechaHora" min={ time.Now().Add(-3 * time.Hour).Format("2006-01-02T15:04")} max={ time.Now().AddDate(0, 1, 0).Add(-3 * time.Hour).Format("2006-01-02T15:04") } title="Por favor ingresa un correo válido (ej: usuario@dominio.com)" 
  required/>
 		<label for="servicio">Servicio:</label>
 		<input type="text" id="servicio" name="servicio" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" required>
