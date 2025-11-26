@@ -208,7 +208,7 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		if fechaHora.Before(time.Now()) {
 			clientes, _ := queries.ListClientes(r.Context())
 			barberos, _ := queries.ListBarberos(r.Context())
-			w.WriteHeader(422)
+			w.WriteHeader(http.StatusUnprocessableEntity)
 			views.ErrorTurno(
 				idCliente,
 				idBarbero,
