@@ -16,6 +16,35 @@ templ Layout(title string, active string, child templ.Component) {
         <title>{ title }</title>
         <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
         <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+        <style>
+            //efecto desvanecimiento
+			@keyframes fadeOut {
+				0%   { opacity: 1; transform: translateY(0); }     // Empieza totalmente visible 
+				70%  { opacity: 1; transform: translateY(0); }     // Se queda quieto y visible hasta el 70% del tiempo
+				100% { opacity: 0; transform: translateY(-20px); } // En el último 30%, se desvanece y sube 
+			}
+
+			.toast-animado {
+				//La animación dura 4 segundos en total
+				animation: fadeOut 4s forwards ease-in-out;
+				
+				margin-bottom: 1rem;
+				padding: 1rem;
+				border-radius: 5px;
+				color: white;
+				font-weight: bold;
+				box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra para que destaque más */
+			}
+
+			/* Estilos del botón cargando */
+			button.htmx-request {
+				opacity: 0.7;
+				cursor: wait;
+			}
+			button.htmx-request::after {
+				content: " ...";
+			}
+		</style>
     </head>
     <body>
         <header class="container">
@@ -31,9 +60,29 @@ templ Layout(title string, active string, child templ.Component) {
         
         <main class="container">
             <div id="notificaciones"></div> 
-
             @child
         </main>
     </body>
     </html>
+}
+
+templ Notification(mensaje string, tipo string) {
+	<div hx-swap-oob="afterbegin:#notificaciones">
+		
+		<div hx-get="/" 
+		     hx-trigger="load delay:4s" 
+		     hx-swap="delete"
+		     hx-target="this">
+			
+			if tipo == "error" {
+				<article class="toast-animado" style="background-color: #c53030;">
+					{ mensaje }
+				</article>
+			} else {
+				<article class="toast-animado" style="background-color: #2f855a;">
+					{ mensaje }
+				</article>
+			}
+		</div>
+	</div>
 }

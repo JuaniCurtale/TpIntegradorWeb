@@ -93,6 +93,7 @@ func handlerClientes(w http.ResponseWriter, r *http.Request) {
 		// Esto reemplazará toda la tabla #clientes-list gracias al hx-target del form
 		views.ClientList(clientes).Render(r.Context(), w)
 		views.ClienteFormOOB().Render(r.Context(), w)
+		views.Notification("¡Cliente guardado con éxito!", "success").Render(r.Context(), w)
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/cliente/")
 		id, err := strconv.Atoi(idStr)
@@ -151,7 +152,7 @@ func handlerBarberos(w http.ResponseWriter, r *http.Request) {
 		// Esto reemplazará toda la tabla #barberos-list
 		views.BarberList(barberos).Render(r.Context(), w)
 		views.BarberoFormOOB().Render(r.Context(), w)
-
+		views.Notification("¡Barbero guardado con éxito!", "success").Render(r.Context(), w)
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/barbero/")
 		id, err := strconv.Atoi(idStr)
@@ -258,7 +259,7 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		// Esto reemplazará toda la tabla #turnos-list
 		views.TurnoList(turnos).Render(r.Context(), w)
 		views.TurnoFormOOB(turnos, clientes, barberos).Render(r.Context(), w)
-
+		views.Notification("Turno guardado con éxito!", "success").Render(r.Context(), w)
 	case http.MethodDelete:
 		idStr := strings.TrimPrefix(r.URL.Path, "/turno/")
 		id, err := strconv.Atoi(idStr)
