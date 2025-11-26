@@ -32,20 +32,30 @@ En los Trabajos Prácticos N.º 3 y 4 (TP3 y TP4) se integraron ambas capas, se 
     │   └── database/
     │        └── database.go      # Conexión a la base de datosL
     │       
-    ├── view/                    # Archivos templ
+    ├── views/                    # Componentes visuales (.templ), contiene estructura base HTML + importación de HTMX, ademas de pagina de inicio y UI de entidades
     ├── .env                     # Archivo con variables de entorno (no versionado)
     ├── .gitignore
-    ├── docker-compose.yml       # Orquestación de los contenedores
+    ├── docker-compose.yml       # Orquestación de servicios (App + DB)
     ├── Dockerfile               # Definición del contenedor de la aplicación
     ├── go.mod
     ├── go.sum
     ├── README.md
-    ├── runtest.sh               # Script para construir la app, levantar Docker y correr los testeos
+    ├── runtest.sh               # Script de automatización
     └── sqlc.yaml                # Configuración de sqlc
 
-## 📍 Alcance actual
+## 📍 Evolución del desarrollo 
+En esta entrega final, se ha implementado la capa de Interfaces Dinámicas, transformando la experiencia de usuario:
 
-Se han añadido secciones que permiten acceder a los clientes, turnos y barberos. Se puede realizar desde la creacion de los mismos, hasta el listado y la eliminacion de los objetos ya creados
+Integración de HTMX: Se incorporó la librería en el layout principal para habilitar capacidades AJAX declarativas.
+
+Formularios Asíncronos: Conversión de formularios tradicionales a peticiones hx-post, eliminando la recarga completa de la página.
+
+Actualización Parcial (SPA feel): Uso de hx-target y hx-swap para actualizar únicamente las tablas de datos tras una operación exitosa.
+
+Feedback y UX: Limpieza automática de formularios tras un envío exitoso utilizando Out-of-Band Swaps (hx-swap-oob).
+
+Borrado en Línea: Implementación de eliminación de registros directamente desde la lista (hx-delete) con confirmación en el cliente (hx-confirm).
+
 
 ## 🚀 Cómo ejecutar el servidor
 
@@ -68,13 +78,12 @@ Se han añadido secciones que permiten acceder a los clientes, turnos y barberos
     APP_PORT=8080 
     ```
 3. **Construccion de la app y levantamiento del contenedor**   
-Ejecutar el siguiente comando para construir la app, levantar Docker y correr los testeos:
+Ejecutar el siguiente comando para construir la imagen, levantar los contenedores y abrir el navegador
 ```
-bash runtest.sh
+./runtest.sh
 ```
-Este comando hara lo dicho anteriormente además de dar de baja los contenedores al finalizar
 
-En el caso que desee construir la app, levantar Docker y acceder a la aplicacion ejecute el siguiente comando:
+En el caso que desee construir la app, levantar Docker y acceder a la aplicacion de manera manual ejecute el siguiente comando:
 ```
 docker-compose up --build
 ```
