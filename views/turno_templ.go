@@ -433,7 +433,7 @@ func TurnoListRows(turnos []db.Turno) templ.Component {
 	})
 }
 
-func ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorMsg string, clientes []db.Cliente, barberos []db.Barbero) templ.Component {
+func ErrorTurno(idCliente int, idBarbero int, fechaHora string, servicio string, observaciones string, errorMsg string, clientes []db.Cliente, barberos []db.Barbero) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -454,7 +454,7 @@ func ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorM
 			templ_7745c5c3_Var21 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<form id=\"form-turno\" hx-post=\"/turno\" hx-target=\"#turnos-list\" hx-swap=\"outerHTML\" hx-swap-oob=\"true\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<form id=\"form-turno\" hx-post=\"/turno\" hx-target=\"#turnos-list\" hx-swap=\"none\" hx-swap-oob=\"true\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -500,9 +500,9 @@ func ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorM
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var24 string
-			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(c.IDCliente)) == idCliente)
+			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(c.IDCliente)) == strconv.Itoa(idCliente))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/turno.templ`, Line: 123, Col: 100}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/turno.templ`, Line: 123, Col: 114}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 			if templ_7745c5c3_Err != nil {
@@ -562,9 +562,9 @@ func ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorM
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var28 string
-			templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(b.IDBarbero)) == idBarbero)
+			templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(b.IDBarbero)) == strconv.Itoa(idBarbero))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/turno.templ`, Line: 133, Col: 100}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/turno.templ`, Line: 133, Col: 114}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 			if templ_7745c5c3_Err != nil {

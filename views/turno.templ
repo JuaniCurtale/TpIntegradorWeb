@@ -103,11 +103,11 @@ templ TurnoListRows(turnos []db.Turno) {
     </tbody>
 }
 
-templ ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, errorMsg string, clientes []db.Cliente, barberos []db.Barbero) {
+templ ErrorTurno(idCliente int, idBarbero int, fechaHora string, servicio string, observaciones string, errorMsg string, clientes []db.Cliente, barberos []db.Barbero) {
     <form id="form-turno"
           hx-post="/turno"
           hx-target="#turnos-list"
-          hx-swap="outerHTML"
+          hx-swap="none"
           hx-swap-oob="true">
 
         if errorMsg != "" {
@@ -120,7 +120,7 @@ templ ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, error
         <select name="id_cliente" required>
             <option value="">Seleccionar cliente</option>
             for _, c := range clientes {
-                <option value={ c.IDCliente } selected={ strconv.Itoa(int(c.IDCliente)) == idCliente }>
+                <option value={ c.IDCliente } selected={ strconv.Itoa(int(c.IDCliente)) == strconv.Itoa(idCliente) }>
                     { c.Nombre } { c.Apellido }
                 </option>
             }
@@ -130,7 +130,7 @@ templ ErrorTurno(idCliente, idBarbero, fechaHora, servicio, observaciones, error
         <select name="id_barbero" required>
             <option value="">Seleccionar barbero</option>
             for _, b := range barberos {
-                <option value={ b.IDBarbero } selected={ strconv.Itoa(int(b.IDBarbero)) == idBarbero }>
+                <option value={ b.IDBarbero } selected={ strconv.Itoa(int(b.IDBarbero)) == strconv.Itoa(idBarbero)}>
                     { b.Nombre } { b.Apellido }
                 </option>
             }

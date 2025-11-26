@@ -206,7 +206,20 @@ func handlerTurnos(w http.ResponseWriter, r *http.Request) {
 		observaciones := r.FormValue("observaciones")
 
 		if fechaHora.Before(time.Now()) {
-			http.Error(w, "La fecha y hora deben ser posteriores al momento actual", http.StatusBadRequest)
+			clientes, _ := queries.ListClientes(r.Context())
+			barberos, _ := queries.ListBarberos(r.Context())
+			w.WriteHeader(422)
+			views.ErrorTurno(
+				idCliente,
+				idBarbero,
+				fechaHora.Format("2006-01-02T15:04"),
+				servicio,
+				observaciones,
+				"La fecha debe ser futura",
+				clientes,
+				barberos,
+			).Render(r.Context(), w)
+
 			return
 		}
 
