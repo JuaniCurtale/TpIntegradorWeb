@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e #el script termine inmediatamente si algún comando falla
+echo "✨ Generando componentes templ..."
+templ generate
 
 echo "🚀 Construyendo y levantando contenedores..."
 docker compose up --build -d
-
-echo "✨ Generando componentes templ..."
-templ generate
 
 # 👉 Abrir navegador automáticamente
 echo "🪟 Abriendo navegador"
